@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include pdf_on_submit *.css
+recursive-include pdf_on_submit *.csv
+recursive-include pdf_on_submit *.html
+recursive-include pdf_on_submit *.ico
+recursive-include pdf_on_submit *.js
+recursive-include pdf_on_submit *.json
+recursive-include pdf_on_submit *.md
+recursive-include pdf_on_submit *.png
+recursive-include pdf_on_submit *.py
+recursive-include pdf_on_submit *.svg
+recursive-include pdf_on_submit *.txt
+recursive-exclude pdf_on_submit *.pyc
