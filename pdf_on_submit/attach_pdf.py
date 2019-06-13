@@ -20,19 +20,23 @@ from frappe import _
 
 def sales_invoice(doc, event=None):
     if frappe.get_single("PDF on Submit Settings").sales_invoice:
-        execute("Sales Invoice", doc.name, doc.customer)
+        frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
+            **{"doctype": "Sales Invoice", "name": doc.name, "party": doc.customer})
 
 def delivery_note(doc, event=None):
     if frappe.get_single("PDF on Submit Settings").delivery_note:
-        execute("Delivery Note", doc.name, doc.customer)
+        frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
+            **{"doctype": "Delivery Note", "name": doc.name, "party": doc.customer})
 
 def quotation(doc, event=None):
     if frappe.get_single("PDF on Submit Settings").quotation:
-        execute("Quotation", doc.name, doc.party_name)
+        frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
+            **{"doctype": "Quotation", "name": doc.name, "party": doc.party_name})
 
 def sales_order(doc, event=None):
     if frappe.get_single("PDF on Submit Settings").sales_order:
-        execute("Sales Order", doc.name, doc.customer)
+        frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
+            **{"doctype": "Sales Order", "name": doc.name, "party": doc.customer})
 
 def execute(doctype, name, party):
     doctype_folder = create_folder(_(doctype), "Home")
