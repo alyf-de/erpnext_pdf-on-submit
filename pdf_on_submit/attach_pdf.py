@@ -20,41 +20,69 @@ from frappe import _
 
 
 def sales_invoice(doc, event=None):
+    """Execute on_submit of Sales Invoice."""
     if frappe.get_single("PDF on Submit Settings").sales_invoice:
-        frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
-                       **{"doctype": "Sales Invoice", "name": doc.name, "party": doc.customer})
+        enqueue({
+            "doctype": "Sales Invoice",
+            "name": doc.name,
+            "party": doc.customer
+        })
 
 
 def delivery_note(doc, event=None):
+    """Execute on_submit of Delivery Note."""
     if frappe.get_single("PDF on Submit Settings").delivery_note:
-        frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
-                       **{"doctype": "Delivery Note", "name": doc.name, "party": doc.customer})
-
-
-def quotation(doc, event=None):
-    if frappe.get_single("PDF on Submit Settings").quotation:
-        frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
-                       **{"doctype": "Quotation", "name": doc.name, "party": doc.party_name})
+        enqueue({
+            "doctype": "Delivery Note",
+            "name": doc.name,
+            "party": doc.customer
+        })
 
 
 def sales_order(doc, event=None):
+    """Execute on_submit of Sales Order."""
     if frappe.get_single("PDF on Submit Settings").sales_order:
-        frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
-                       **{"doctype": "Sales Order", "name": doc.name, "party": doc.customer})
+        enqueue({
+            "doctype": "Sales Order",
+            "name": doc.name,
+            "party": doc.customer
+        })
+
+
+def quotation(doc, event=None):
+    """Execute on_submit of Quotation."""
+    if frappe.get_single("PDF on Submit Settings").quotation:
+        enqueue({
+            "doctype": "Quotation",
+            "name": doc.name,
+            "party": doc.party_name
+        })
 
 
 def dunning(doc, event=None):
+    """Execute on_submit of Dunning."""
     if frappe.get_single("PDF on Submit Settings").dunning:
-        args = {
+        enqueue({
             "doctype": "Dunning",
             "name": doc.name,
             "party": frappe.get_value("Sales Invoice", doc.sales_invoice, "customer")
-        }
-        frappe.enqueue(method=execute, queue='long',
-                       timeout=30, is_async=True, **args)
+        })
+
+
+def enqueue(args):
+    """Add method `execute` with given args to the queue."""
+    frappe.enqueue(method=execute, queue='long',
+                   timeout=30, is_async=True, **args)
 
 
 def execute(doctype, name, party):
+    """
+    Queue calls this method, when it's ready.
+
+    1. Create necessary folders
+    2. Get raw PDF data
+    3. Save PDF file and attach it to the document
+    """
     doctype_folder = create_folder(_(doctype), "Home")
     party_folder = create_folder(party, doctype_folder)
     pdf_data = get_pdf_data(doctype, name)
