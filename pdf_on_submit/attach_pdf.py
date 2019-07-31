@@ -18,31 +18,48 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import frappe
 from frappe import _
 
+
 def sales_invoice(doc, event=None):
     if frappe.get_single("PDF on Submit Settings").sales_invoice:
         frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
-            **{"doctype": "Sales Invoice", "name": doc.name, "party": doc.customer})
+                       **{"doctype": "Sales Invoice", "name": doc.name, "party": doc.customer})
+
 
 def delivery_note(doc, event=None):
     if frappe.get_single("PDF on Submit Settings").delivery_note:
         frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
-            **{"doctype": "Delivery Note", "name": doc.name, "party": doc.customer})
+                       **{"doctype": "Delivery Note", "name": doc.name, "party": doc.customer})
+
 
 def quotation(doc, event=None):
     if frappe.get_single("PDF on Submit Settings").quotation:
         frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
-            **{"doctype": "Quotation", "name": doc.name, "party": doc.party_name})
+                       **{"doctype": "Quotation", "name": doc.name, "party": doc.party_name})
+
 
 def sales_order(doc, event=None):
     if frappe.get_single("PDF on Submit Settings").sales_order:
         frappe.enqueue(method=execute, queue='long', timeout=30, is_async=True,
-            **{"doctype": "Sales Order", "name": doc.name, "party": doc.customer})
+                       **{"doctype": "Sales Order", "name": doc.name, "party": doc.customer})
+
+
+def dunning(doc, event=None):
+    if frappe.get_single("PDF on Submit Settings").dunning:
+        args = {
+            "doctype": "Dunning",
+            "name": doc.name,
+            "party": frappe.get_value("Sales Invoice", doc.sales_invoice, "customer")
+        }
+        frappe.enqueue(method=execute, queue='long',
+                       timeout=30, is_async=True, **args)
+
 
 def execute(doctype, name, party):
     doctype_folder = create_folder(_(doctype), "Home")
     party_folder = create_folder(party, doctype_folder)
     pdf_data = get_pdf_data(doctype, name)
     save_and_attach(pdf_data, doctype, name, party_folder)
+
 
 def create_folder(folder, parent):
     """Make sure the folder exists and return it's name."""
@@ -54,18 +71,20 @@ def create_folder(folder, parent):
 
     return "/".join([parent, folder])
 
+
 def get_pdf_data(doctype, name):
     """Document -> HTML -> PDF."""
     html = frappe.get_print(doctype, name)
     return frappe.utils.pdf.get_pdf(html)
 
+
 def save_and_attach(content, to_doctype, to_name, folder):
     """
     Save content to disk and create a File document.
-    
+
     File document is linked to another document.
     """
     from frappe.utils.file_manager import save_file
     file_name = "{}.pdf".format(to_name.replace(" ", "-").replace("/", "-"))
-    save_file(file_name, content, to_doctype, to_name, folder=folder, is_private=1)
-
+    save_file(file_name, content, to_doctype,
+              to_name, folder=folder, is_private=1)

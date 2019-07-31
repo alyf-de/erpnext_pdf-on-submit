@@ -5,6 +5,8 @@ All can be turned off via `PDF on Submit Settings`.
 
 ![](screencast.gif)
 
+This also works with https://github.com/alyf-de/dunning .
+
 ### Install
 
 ```bash

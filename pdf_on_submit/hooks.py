@@ -96,6 +96,9 @@ doc_events = {
     },
     "Delivery Note": {
         "on_submit": "pdf_on_submit.attach_pdf.delivery_note"
+    },
+    "Dunning": {
+        "on_submit": "pdf_on_submit.attach_pdf.dunning"
     }
 }
 
