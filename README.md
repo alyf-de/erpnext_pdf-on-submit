@@ -5,6 +5,18 @@ All can be turned off via `PDF on Submit Settings`.
 
 ![](screencast.gif)
 
+### Install
+
+```bash
+cd frappe-bench
+bench get-app https://github.com/alyf-de/pdf_on_submit.git
+bench --site erp.my-company.com install-app pdf_on_submit
+```
+
+(Replace `erp.my-company.com` with your site name.)
+
+For some reason, the `on_submit` trigger still runs before submission is complete. That's why there will be **DRAFT** printed on your documents. If you do not want this, got to Print Settings and uncheck `Always add "Draft" Heading for printing draft documents`.
+
 #### License
 
 Copyright (C) 2019  Raffael Meyer <raffael@alyf.de>
