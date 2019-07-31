@@ -86,16 +86,16 @@ doc_events = {
 #       "on_trash": "method"
 #   }
     "Quotation": {
-        "after_submit": "pdf_on_submit.attach_pdf.quotation"
+        "on_submit": "pdf_on_submit.attach_pdf.quotation"
     },
     "Sales Order": {
-        "after_submit": "pdf_on_submit.attach_pdf.sales_order"
+        "on_submit": "pdf_on_submit.attach_pdf.sales_order"
     },
     "Sales Invoice": {
-        "after_submit": "pdf_on_submit.attach_pdf.sales_invoice"
+        "on_submit": "pdf_on_submit.attach_pdf.sales_invoice"
     },
     "Delivery Note": {
-        "after_submit": "pdf_on_submit.attach_pdf.delivery_note"
+        "on_submit": "pdf_on_submit.attach_pdf.delivery_note"
     }
 }
 
