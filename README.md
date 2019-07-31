@@ -1,11 +1,9 @@
 ## PDF on Submit
 
-Generate a PDF on submit of Quotation, Sales Order, Sales Invoice or Delivery Note.
+Generate a PDF on submit of Quotation, Sales Order, Sales Invoice, Delivery Note or [Dunning](https://github.com/alyf-de/dunning).
 All can be turned off via `PDF on Submit Settings`.
 
 ![](screencast.gif)
-
-This also works with https://github.com/alyf-de/dunning .
 
 ### Install
 
