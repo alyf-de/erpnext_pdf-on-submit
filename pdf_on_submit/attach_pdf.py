@@ -18,63 +18,31 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import frappe
 from frappe import _
 
+def attach_pdf(doc, event=None):
+    args = {
+        "doctype": doc.doctype,
+        "name": doc.name,
+        "party": doc.customer or "",
+        "lang": doc.language or "en"
+    }
 
-def sales_invoice(doc, event=None):
-    """Execute on_submit of Sales Invoice."""
-    if frappe.get_single("PDF on Submit Settings").sales_invoice:
-        enqueue({
-            "doctype": "Sales Invoice",
-            "name": doc.name,
-            "party": doc.customer,
-            "lang": doc.language
-        })
+    if doc.doctype == "Quotation":
+        args["party"] = doc.party_name
 
+    if doc.doctype == "Dunning":
+        party = frappe.get_value("Sales Invoice", doc.sales_invoice, "customer")
+        lang = frappe.get_value("Sales Invoice", doc.sales_invoice, "language")
+        args["party"] = party
+        args["lang"] = lang
 
-def delivery_note(doc, event=None):
-    """Execute on_submit of Delivery Note."""
-    if frappe.get_single("PDF on Submit Settings").delivery_note:
-        enqueue({
-            "doctype": "Delivery Note",
-            "name": doc.name,
-            "party": doc.customer,
-            "lang": doc.language
-        })
+    settings = frappe.get_single("PDF on Submit Settings")
+    slug = "_".join(doc.doctype.lower().split(" ")) # "Sales Invoice" -> "sales_invoice"
 
-
-def sales_order(doc, event=None):
-    """Execute on_submit of Sales Order."""
-    if frappe.get_single("PDF on Submit Settings").sales_order:
-        enqueue({
-            "doctype": "Sales Order",
-            "name": doc.name,
-            "party": doc.customer,
-            "lang": doc.language
-        })
-
-
-def quotation(doc, event=None):
-    """Execute on_submit of Quotation."""
-    if frappe.get_single("PDF on Submit Settings").quotation:
-        enqueue({
-            "doctype": "Quotation",
-            "name": doc.name,
-            "party": doc.party_name,
-            "lang": doc.language
-        })
-
-
-def dunning(doc, event=None):
-    """Execute on_submit of Dunning."""
-    party = frappe.get_value("Sales Invoice", doc.sales_invoice, "customer")
-    lang = frappe.get_value("Sales Invoice", doc.sales_invoice, "language")
-
-    if frappe.get_single("PDF on Submit Settings").dunning:
-        enqueue({
-            "doctype": "Dunning",
-            "name": doc.name,
-            "party": party,
-            "lang": lang
-        })
+    if settings[slug]:
+        if settings.create_pdf_in_background:
+            enqueue(args)
+        else:
+            execute(**args)
 
 
 def enqueue(args):
@@ -94,10 +62,14 @@ def execute(doctype, name, party, lang=None):
     if lang:
         frappe.local.lang = lang
     
+    frappe.publish_progress(percent=0, title=_("Creating Folders ..."), doctype=doctype, name=name)
     doctype_folder = create_folder(_(doctype), "Home")
     party_folder = create_folder(party, doctype_folder)
+    frappe.publish_progress(percent=33, title=_("Creating PDF ..."), doctype=doctype, name=name)
     pdf_data = get_pdf_data(doctype, name)
+    frappe.publish_progress(percent=66, title=_("Creating PDF ..."), doctype=doctype, name=name)
     save_and_attach(pdf_data, doctype, name, party_folder)
+    frappe.publish_progress(percent=100, title=_("Creating PDF ..."), doctype=doctype, name=name)
 
 
 def create_folder(folder, parent):
