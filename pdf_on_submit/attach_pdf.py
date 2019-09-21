@@ -59,17 +59,29 @@ def execute(doctype, name, party, lang=None):
     2. Get raw PDF data
     3. Save PDF file and attach it to the document
     """
+    settings = frappe.get_single("PDF on Submit Settings")
+    
+    def notify(p, title):
+        if not settings.create_pdf_in_background:
+            frappe.publish_progress(percent=p, title=title, doctype=doctype, docname=name)
+
     if lang:
         frappe.local.lang = lang
+
+    notify(0, _("Creating Folders ..."))
     
-    frappe.publish_progress(percent=0, title=_("Creating Folders ..."), doctype=doctype, docname=name)
     doctype_folder = create_folder(_(doctype), "Home")
     party_folder = create_folder(party, doctype_folder)
-    frappe.publish_progress(percent=33, title=_("Creating PDF ..."), doctype=doctype, docname=name)
+
+    notify(33, _("Creating PDF ..."))
+    
     pdf_data = get_pdf_data(doctype, name)
-    frappe.publish_progress(percent=66, title=_("Creating PDF ..."), doctype=doctype, docname=name)
+    
+    notify(66, _("Saving PDF ..."))
+    
     save_and_attach(pdf_data, doctype, name, party_folder)
-    frappe.publish_progress(percent=100, title=_("Creating PDF ..."), doctype=doctype, docname=name)
+    
+    notify(100, _("Done"))
 
 
 def create_folder(folder, parent):
