@@ -62,14 +62,14 @@ def execute(doctype, name, party, lang=None):
     if lang:
         frappe.local.lang = lang
     
-    frappe.publish_progress(percent=0, title=_("Creating Folders ..."), doctype=doctype, name=name)
+    frappe.publish_progress(percent=0, title=_("Creating Folders ..."), doctype=doctype, docname=name)
     doctype_folder = create_folder(_(doctype), "Home")
     party_folder = create_folder(party, doctype_folder)
-    frappe.publish_progress(percent=33, title=_("Creating PDF ..."), doctype=doctype, name=name)
+    frappe.publish_progress(percent=33, title=_("Creating PDF ..."), doctype=doctype, docname=name)
     pdf_data = get_pdf_data(doctype, name)
-    frappe.publish_progress(percent=66, title=_("Creating PDF ..."), doctype=doctype, name=name)
+    frappe.publish_progress(percent=66, title=_("Creating PDF ..."), doctype=doctype, docname=name)
     save_and_attach(pdf_data, doctype, name, party_folder)
-    frappe.publish_progress(percent=100, title=_("Creating PDF ..."), doctype=doctype, name=name)
+    frappe.publish_progress(percent=100, title=_("Creating PDF ..."), doctype=doctype, docname=name)
 
 
 def create_folder(folder, parent):
