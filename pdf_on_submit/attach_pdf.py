@@ -25,7 +25,8 @@ def sales_invoice(doc, event=None):
         enqueue({
             "doctype": "Sales Invoice",
             "name": doc.name,
-            "party": doc.customer
+            "party": doc.customer,
+            "lang": doc.language
         })
 
 
@@ -35,7 +36,8 @@ def delivery_note(doc, event=None):
         enqueue({
             "doctype": "Delivery Note",
             "name": doc.name,
-            "party": doc.customer
+            "party": doc.customer,
+            "lang": doc.language
         })
 
 
@@ -45,7 +47,8 @@ def sales_order(doc, event=None):
         enqueue({
             "doctype": "Sales Order",
             "name": doc.name,
-            "party": doc.customer
+            "party": doc.customer,
+            "lang": doc.language
         })
 
 
@@ -55,17 +58,22 @@ def quotation(doc, event=None):
         enqueue({
             "doctype": "Quotation",
             "name": doc.name,
-            "party": doc.party_name
+            "party": doc.party_name,
+            "lang": doc.language
         })
 
 
 def dunning(doc, event=None):
     """Execute on_submit of Dunning."""
+    party = frappe.get_value("Sales Invoice", doc.sales_invoice, "customer")
+    lang = frappe.get_value("Sales Invoice", doc.sales_invoice, "language")
+
     if frappe.get_single("PDF on Submit Settings").dunning:
         enqueue({
             "doctype": "Dunning",
             "name": doc.name,
-            "party": frappe.get_value("Sales Invoice", doc.sales_invoice, "customer")
+            "party": party,
+            "lang": lang
         })
 
 
@@ -75,7 +83,7 @@ def enqueue(args):
                    timeout=30, is_async=True, **args)
 
 
-def execute(doctype, name, party):
+def execute(doctype, name, party, lang=None):
     """
     Queue calls this method, when it's ready.
 
@@ -83,6 +91,9 @@ def execute(doctype, name, party):
     2. Get raw PDF data
     3. Save PDF file and attach it to the document
     """
+    if lang:
+        frappe.local.lang = lang
+    
     doctype_folder = create_folder(_(doctype), "Home")
     party_folder = create_folder(party, doctype_folder)
     pdf_data = get_pdf_data(doctype, name)
