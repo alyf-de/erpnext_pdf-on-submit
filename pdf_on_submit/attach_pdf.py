@@ -38,7 +38,7 @@ def attach_pdf(doc, event=None):
     settings = frappe.get_single("PDF on Submit Settings")
     slug = "_".join(doc.doctype.lower().split(" ")) # "Sales Invoice" -> "sales_invoice"
 
-    if settings[slug]:
+    if settings.get(slug):
         if settings.create_pdf_in_background:
             enqueue(args)
         else:
