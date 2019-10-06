@@ -89,12 +89,12 @@ def execute(doctype, name, party, lang=None):
 def create_folder(folder, parent):
     """Make sure the folder exists and return it's name."""
     from frappe.core.doctype.file.file import create_new_folder
-    try:
+    new_folder_name = "/".join([parent, folder])
+    
+    if not frappe.db.exists("File", new_folder_name):
         create_new_folder(folder, parent)
-    except frappe.DuplicateEntryError:
-        pass
-
-    return "/".join([parent, folder])
+    
+    return new_folder_name
 
 
 def get_pdf_data(doctype, name):
