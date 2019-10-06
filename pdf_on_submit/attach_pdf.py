@@ -17,64 +17,33 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import frappe
 from frappe import _
+from frappe import publish_progress
 
+def attach_pdf(doc, event=None):
+    args = {
+        "doctype": doc.doctype,
+        "name": doc.name,
+        "party": getattr(doc, "customer", _("Unknown")),
+        "lang": getattr(doc, "language", "en")
+    }
 
-def sales_invoice(doc, event=None):
-    """Execute on_submit of Sales Invoice."""
-    if frappe.get_single("PDF on Submit Settings").sales_invoice:
-        enqueue({
-            "doctype": "Sales Invoice",
-            "name": doc.name,
-            "party": doc.customer,
-            "lang": doc.language
-        })
+    if doc.doctype == "Quotation":
+        args["party"] = doc.party_name
 
+    if doc.doctype == "Dunning":
+        party = frappe.get_value("Sales Invoice", doc.sales_invoice, "customer")
+        lang = frappe.get_value("Sales Invoice", doc.sales_invoice, "language")
+        args["party"] = party
+        args["lang"] = lang
 
-def delivery_note(doc, event=None):
-    """Execute on_submit of Delivery Note."""
-    if frappe.get_single("PDF on Submit Settings").delivery_note:
-        enqueue({
-            "doctype": "Delivery Note",
-            "name": doc.name,
-            "party": doc.customer,
-            "lang": doc.language
-        })
+    settings = frappe.get_single("PDF on Submit Settings")
+    slug = "_".join(doc.doctype.lower().split(" ")) # "Sales Invoice" -> "sales_invoice"
 
-
-def sales_order(doc, event=None):
-    """Execute on_submit of Sales Order."""
-    if frappe.get_single("PDF on Submit Settings").sales_order:
-        enqueue({
-            "doctype": "Sales Order",
-            "name": doc.name,
-            "party": doc.customer,
-            "lang": doc.language
-        })
-
-
-def quotation(doc, event=None):
-    """Execute on_submit of Quotation."""
-    if frappe.get_single("PDF on Submit Settings").quotation:
-        enqueue({
-            "doctype": "Quotation",
-            "name": doc.name,
-            "party": doc.party_name,
-            "lang": doc.language
-        })
-
-
-def dunning(doc, event=None):
-    """Execute on_submit of Dunning."""
-    party = frappe.get_value("Sales Invoice", doc.sales_invoice, "customer")
-    lang = frappe.get_value("Sales Invoice", doc.sales_invoice, "language")
-
-    if frappe.get_single("PDF on Submit Settings").dunning:
-        enqueue({
-            "doctype": "Dunning",
-            "name": doc.name,
-            "party": party,
-            "lang": lang
-        })
+    if settings.get(slug):
+        if settings.create_pdf_in_background:
+            enqueue(args)
+        else:
+            execute(**args)
 
 
 def enqueue(args):
@@ -91,24 +60,42 @@ def execute(doctype, name, party, lang=None):
     2. Get raw PDF data
     3. Save PDF file and attach it to the document
     """
+    settings = frappe.get_single("PDF on Submit Settings")
+    show_progress = not settings.create_pdf_in_background
+    progress_title = _("Creating PDF ...")
+
     if lang:
         frappe.local.lang = lang
+
+    if show_progress:
+        publish_progress(percent=0, title=progress_title)
     
     doctype_folder = create_folder(_(doctype), "Home")
     party_folder = create_folder(party, doctype_folder)
+
+    if show_progress:
+        publish_progress(percent=33, title=progress_title)
+    
     pdf_data = get_pdf_data(doctype, name)
+    
+    if show_progress:
+        publish_progress(percent=66, title=progress_title)
+    
     save_and_attach(pdf_data, doctype, name, party_folder)
+    
+    if show_progress:
+        publish_progress(percent=100, title=progress_title)
 
 
 def create_folder(folder, parent):
     """Make sure the folder exists and return it's name."""
     from frappe.core.doctype.file.file import create_new_folder
-    try:
+    new_folder_name = "/".join([parent, folder])
+    
+    if not frappe.db.exists("File", new_folder_name):
         create_new_folder(folder, parent)
-    except frappe.DuplicateEntryError:
-        pass
-
-    return "/".join([parent, folder])
+    
+    return new_folder_name
 
 
 def get_pdf_data(doctype, name):
