@@ -22,8 +22,8 @@ def attach_pdf(doc, event=None):
     args = {
         "doctype": doc.doctype,
         "name": doc.name,
-        "party": doc.customer or _("Unknown"),
-        "lang": doc.language or "en"
+        "party": getattr(doc, "customer", _("Unknown")),
+        "lang": getattr(doc, "language", "en")
     }
 
     if doc.doctype == "Quotation":
