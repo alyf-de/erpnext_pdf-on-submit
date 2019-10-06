@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import frappe
 from frappe import _
+from frappe import publish_progress
 
 def attach_pdf(doc, event=None):
     args = {
@@ -60,30 +61,30 @@ def execute(doctype, name, party, lang=None):
     3. Save PDF file and attach it to the document
     """
     settings = frappe.get_single("PDF on Submit Settings")
-    show_progress = True if settings.create_pdf_in_background is "0" else False
+    show_progress = not settings.create_pdf_in_background
     doc = {"doctype": doctype, "docname": name}
 
     if lang:
         frappe.local.lang = lang
 
     if show_progress:
-        frappe.publish_progress(percent=0, title=_("Creating Folders ..."), **doc)
+        publish_progress(percent=0, title=_("Creating Folders ..."), **doc)
     
     doctype_folder = create_folder(_(doctype), "Home")
     party_folder = create_folder(party, doctype_folder)
 
     if show_progress:
-        frappe.publish_progress(percent=33, title=_("Creating PDF ..."), **doc)
+        publish_progress(percent=33, title=_("Creating PDF ..."), **doc)
     
     pdf_data = get_pdf_data(doctype, name)
     
     if show_progress:
-        frappe.publish_progress(percent=66, title=_("Saving PDF ..."), **doc)
+        publish_progress(percent=66, title=_("Saving PDF ..."), **doc)
     
     save_and_attach(pdf_data, doctype, name, party_folder)
     
     if show_progress:
-        frappe.publish_progress(percent=100, title=_("Done"), **doc)
+        publish_progress(percent=100, title=_("Done"), **doc)
 
 
 def create_folder(folder, parent):
