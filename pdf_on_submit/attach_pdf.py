@@ -62,29 +62,30 @@ def execute(doctype, name, party, lang=None):
     """
     settings = frappe.get_single("PDF on Submit Settings")
     show_progress = not settings.create_pdf_in_background
-    doc = {"doctype": doctype, "docname": name}
+    progress_title = _("Creating PDF ...")
+    # doc = {"doctype": doctype, "docname": name}
 
     if lang:
         frappe.local.lang = lang
 
     if show_progress:
-        publish_progress(percent=0, title=_("Creating Folders ..."), **doc)
+        publish_progress(percent=0, title=progress_title)
     
     doctype_folder = create_folder(_(doctype), "Home")
     party_folder = create_folder(party, doctype_folder)
 
     if show_progress:
-        publish_progress(percent=33, title=_("Creating PDF ..."), **doc)
+        publish_progress(percent=33, title=progress_title)
     
     pdf_data = get_pdf_data(doctype, name)
     
     if show_progress:
-        publish_progress(percent=66, title=_("Saving PDF ..."), **doc)
+        publish_progress(percent=66, title=progress_title)
     
     save_and_attach(pdf_data, doctype, name, party_folder)
     
     if show_progress:
-        publish_progress(percent=100, title=_("Done"), **doc)
+        publish_progress(percent=100, title=progress_title)
 
 
 def create_folder(folder, parent):
