@@ -63,7 +63,6 @@ def execute(doctype, name, party, lang=None):
     settings = frappe.get_single("PDF on Submit Settings")
     show_progress = not settings.create_pdf_in_background
     progress_title = _("Creating PDF ...")
-    # doc = {"doctype": doctype, "docname": name}
 
     if lang:
         frappe.local.lang = lang
