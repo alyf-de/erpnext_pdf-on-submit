@@ -3,6 +3,10 @@
 Generate a PDF on submit of Quotation, Sales Order, Sales Invoice, Delivery Note or [Dunning](https://github.com/alyf-de/dunning).
 All can be turned off via `PDF on Submit Settings`.
 
+If "Create PDF in Background" is enabled, you can continue to work on other documents immediately, even if you submit in bulk. The PDFs will just appear when they are created. This might require a reload of the current document.
+
+If "Create PDF in Background" is disabled, you will see a progress bar and the system will be blocked until the PDF is created. This might take some time for bulk submissions.
+
 ![](screencast.gif)
 
 ### Install
