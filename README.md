@@ -1,29 +1,44 @@
-## PDF on Submit
+# PDF on Submit
 
-Generate a PDF on submit of Quotation, Sales Order, Sales Invoice, Delivery Note or [Dunning](https://github.com/alyf-de/dunning).
-All can be turned off via `PDF on Submit Settings`.
+Automatically generates and attaches a PDF when a sales document gets submitted. Works for **Quotation**, **Sales Order**, **Sales Invoice**, **Delivery Note** and **Dunning**.
 
-If "Create PDF in Background" is enabled, you can continue to work on other documents immediately, even if you submit in bulk. The PDFs will just appear when they are created. This might require a reload of the current document.
+![Screencast of PDF generation](docs/screencast.gif)
 
-If "Create PDF in Background" is disabled, you will see a progress bar and the system will be blocked until the PDF is created. This might take some time for bulk submissions.
+## Install on Frappe Cloud
 
-![](screencast.gif)
+1. Go to https://frappecloud.com/dashboard/#/sites and click the "New Site" button.
+2. In Step 2 ("Select apps to install"), select "PDF on Submit".
+3. Complete the new site wizard.
 
-### Install
+## Install on Self-Hosted
 
 ```bash
 cd frappe-bench
 bench get-app https://github.com/alyf-de/pdf_on_submit.git
-bench --site erp.my-company.com install-app pdf_on_submit
+bench --site MY_SITE install-app pdf_on_submit
 ```
 
-(Replace `erp.my-company.com` with your site name.)
+> Remeber to replace `MY_SITE` with your site name.
 
-For some reason, the `on_submit` trigger still runs before submission is complete. That's why there will be **DRAFT** printed on your documents. If you do not want this, got to Print Settings and uncheck `Always add "Draft" Heading for printing draft documents`.
+## Settings
 
-#### License
+To change the settings of this app, you can open **PDF on Submit Settings** via the search bar.
 
-Copyright (C) 2019  Raffael Meyer <raffael@alyf.de>
+- Choose active DocTypes
+
+  Here you can select for which DocTypes this app is active. DocTypes that are disabled will be ignored.
+
+- Create PDF in Background
+
+    Enable this option if you want to continue your work immediately. The PDFs will just appear once they are created. (This might require a reload of the current document.) Recommended if you usually submit many sales documents in bulk.
+    
+    Disable this option to get the PDF immediately. When you submit the document you will see a progress bar while the PDF gets created. When it's done you immediately see the PDF attached to the document.
+
+![PDF on Submit Settings](docs/settings.png)
+
+## Licence
+
+Copyright (C) 2020  ALYF GmbH <hallo@alyf.de>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
