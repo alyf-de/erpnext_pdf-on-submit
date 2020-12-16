@@ -36,6 +36,14 @@ To change the settings of this app, you can open **PDF on Submit Settings** via 
 
 ![PDF on Submit Settings](docs/settings.png)
 
+This app uses the Default Print Format. To change the Default Print Format,
+
+1. Open the list view of a supported DocType,
+2. Go to Menu > Customize,
+3. In section "View Settings", select a Default Print Format.
+
+The PDF will be created in the language that is specified in the "Language" field of the current document. In your **Customer** and **Supplier** masters you can choose the default "Print Language".
+
 ## Licence
 
 Copyright (C) 2020  ALYF GmbH <hallo@alyf.de>
