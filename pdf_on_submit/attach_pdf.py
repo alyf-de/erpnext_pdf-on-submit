@@ -30,12 +30,6 @@ def attach_pdf(doc, event=None):
     if doc.doctype == "Quotation":
         args["party"] = doc.party_name
 
-    if doc.doctype == "Dunning":
-        party = frappe.get_value("Sales Invoice", doc.sales_invoice, "customer")
-        lang = frappe.get_value("Sales Invoice", doc.sales_invoice, "language")
-        args["party"] = party
-        args["lang"] = lang
-
     settings = frappe.get_single("PDF on Submit Settings")
     slug = "_".join(doc.doctype.lower().split(" ")) # "Sales Invoice" -> "sales_invoice"
 
