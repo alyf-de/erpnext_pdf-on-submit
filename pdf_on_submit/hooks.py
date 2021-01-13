@@ -85,19 +85,7 @@ doc_events = {
 #       "on_cancel": "method",
 #       "on_trash": "method"
 #   }
-    "Quotation": {
-        "on_submit": "pdf_on_submit.attach_pdf.attach_pdf"
-    },
-    "Sales Order": {
-        "on_submit": "pdf_on_submit.attach_pdf.attach_pdf"
-    },
-    "Sales Invoice": {
-        "on_submit": "pdf_on_submit.attach_pdf.attach_pdf"
-    },
-    "Delivery Note": {
-        "on_submit": "pdf_on_submit.attach_pdf.attach_pdf"
-    },
-    "Dunning": {
+    "*": {
         "on_submit": "pdf_on_submit.attach_pdf.attach_pdf"
     }
 }
