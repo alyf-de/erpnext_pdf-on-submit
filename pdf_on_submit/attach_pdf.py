@@ -25,7 +25,7 @@ from frappe.utils.file_manager import save_file
 
 def attach_pdf(doc, event=None):
     settings = frappe.get_single("PDF on Submit Settings")
-    enabled = [row.doctype for row in doc.enabled_for]
+    enabled = [row.document_type for row in settings.enabled_for]
 
     if doc.doctype not in enabled:
         return
