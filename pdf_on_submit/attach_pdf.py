@@ -30,11 +30,12 @@ def attach_pdf(doc, event=None):
     if doc.doctype not in enabled:
         return
 
+    fallback_language = frappe.db.get_single_value("System Settings", "language") or "en"
     args = {
         "doctype": doc.doctype,
         "name": doc.name,
         "title": doc.get_title(),
-        "lang": getattr(doc, "language", "en"),
+        "lang": getattr(doc, "language", fallback_language),
         "show_progress": not settings.create_pdf_in_background
     }
 
