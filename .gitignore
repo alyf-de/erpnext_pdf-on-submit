@@ -4,3 +4,4 @@
 *.swp
 tags
 pdf_on_submit/docs/current
+*__pycache__*
