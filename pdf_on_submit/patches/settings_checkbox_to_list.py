@@ -12,7 +12,7 @@ def execute():
     frappe.reload_doc("pdf_on_submit", "doctype", "pdf_on_submit_settings")
 
     settings = frappe.get_single("PDF on Submit Settings")
-    for dt in ("Quotation", "Sales Order", "Sales Invoice", "Dunning", "Delivery Note"):
+    for dt in ("Quotation", "Sales Order", "Sales Invoice", "Dunning", "Delivery Note", "Shift Report", "Shift Report UG"):
         if cint(settings.get(scrub(dt))):
             settings.append("enabled_for", {"document_type": dt})
 
