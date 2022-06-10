@@ -26,7 +26,6 @@ from frappe.model.naming import _format_autoname
 
 def attach_pdf(doc, event=None):
     settings = frappe.get_single("PDF on Submit Settings")
-    enabled = [row.document_type for row in settings.enabled_for]
     enabled, auto_name = zip(*[(row.document_type, row.auto_name) for row in settings.enabled_for])
 
     enabled = list(enabled)
