@@ -21,7 +21,7 @@ from frappe import _
 from frappe import publish_progress
 from frappe.core.doctype.file.file import create_new_folder
 from frappe.utils.file_manager import save_file
-from frappe.model.naming import _field_autoname, set_name_by_naming_series, _prompt_autoname, _format_autoname, make_autoname
+from frappe.model.naming import _format_autoname
 
 
 
@@ -137,14 +137,7 @@ def set_name_from_naming_options(autoname, doc):
 
     _autoname = autoname.lower()
 
-    if _autoname.startswith("field:"):
-        name = _field_autoname(autoname, doc)
-    elif _autoname.startswith("naming_series:"):
-        set_name_by_naming_series(doc)
-    elif _autoname.startswith("prompt"):
-        _prompt_autoname(autoname, doc)
-    elif _autoname.startswith("format:"):
+    if _autoname.startswith("format:"):
         name = _format_autoname(autoname, doc)
-    elif "#" in autoname:
-        name = make_autoname(autoname, doc=doc)
-    return name
+        return name
+    return doc.name
