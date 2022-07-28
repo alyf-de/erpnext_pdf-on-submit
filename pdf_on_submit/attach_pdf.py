@@ -26,13 +26,12 @@ from frappe.model.naming import _format_autoname
 
 def attach_pdf(doc, event=None):
     settings = frappe.get_single("PDF on Submit Settings")
-    enabled, auto_name = zip(*[(row.document_type, row.auto_name) for row in settings.enabled_for])
+    enabled_doctype = settings.get("enabled_for", {"document_type": doc.doctype})
 
-    enabled = list(enabled)
-    auto_name = ''.join(map(str, auto_name))
-
-    if doc.doctype not in enabled:
+    if not enabled_doctype:
         return
+
+    auto_name = enabled_doctype[0].auto_name
 
     fallback_language = frappe.db.get_single_value("System Settings", "language") or "en"
     args = {
@@ -84,6 +83,7 @@ def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None)
     if show_progress:
         progress.percent = 66
         publish_progress(**progress)
+
     save_and_attach(pdf_data, doctype, name, title_folder, auto_name)
 
     if show_progress:
@@ -107,35 +107,30 @@ def get_pdf_data(doctype, name):
     return frappe.utils.pdf.get_pdf(html)
 
 
-def save_and_attach(content, to_doctype, to_name, folder, auto_name):
+def save_and_attach(content, to_doctype, to_name, folder, auto_name=None):
     """
     Save content to disk and create a File document.
 
     File document is linked to another document.
     """
-     # fetch file auto name format from doctype.
-    file_autoname = auto_name
-
-    doc = frappe.get_doc(to_doctype, to_name)
-
-    if file_autoname:
+    if auto_name:
+        doc = frappe.get_doc(to_doctype, to_name)
         # based on type of format used set_name_form_naming_option return result.
-        pdf_name = set_name_from_naming_options(file_autoname, doc)
-        file_name = "{pdf_name}.pdf".format(pdf_name=pdf_name.replace(" ", "-").replace("/", "-"))
+        pdf_name = set_name_from_naming_options(auto_name, doc)
+        file_name = "{pdf_name}.pdf".format(pdf_name=pdf_name.replace("/", "-"))
     else:
-        file_name = "{to_name}.pdf".format(to_name=to_name.replace(" ", "-").replace("/", "-"))
+        file_name = "{to_name}.pdf".format(to_name=to_name.replace("/", "-"))
 
-    save_file(file_name, content, to_doctype,
-        to_name, folder=folder, is_private=1)
+    save_file(file_name, content, to_doctype, to_name, folder=folder, is_private=1)
+
 
 def set_name_from_naming_options(autoname, doc):
     """
     Get a name based on the autoname field option
     """
-
     _autoname = autoname.lower()
 
     if _autoname.startswith("format:"):
-        name = _format_autoname(autoname, doc)
-        return name
+        return _format_autoname(autoname, doc)
+
     return doc.name
