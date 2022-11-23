@@ -22,16 +22,20 @@ from frappe import publish_progress
 from frappe.core.doctype.file.file import create_new_folder
 from frappe.utils.file_manager import save_file
 from frappe.model.naming import _format_autoname
+from frappe.utils.weasyprint import PrintFormatGenerator
 
 
 def attach_pdf(doc, event=None):
     settings = frappe.get_single("PDF on Submit Settings")
-    enabled_doctype = settings.get("enabled_for", {"document_type": doc.doctype})
 
-    if not enabled_doctype:
+    if enabled_doctypes := settings.get("enabled_for", {"document_type": doc.doctype}):
+        enabled_doctype = enabled_doctypes[0]
+    else:
         return
 
-    auto_name = enabled_doctype[0].auto_name
+    auto_name = enabled_doctype.auto_name
+    print_format = enabled_doctype.print_format or doc.meta.default_print_format or "Standard"
+    letter_head = enabled_doctype.letter_head or None
 
     fallback_language = frappe.db.get_single_value("System Settings", "language") or "en"
     args = {
@@ -40,7 +44,9 @@ def attach_pdf(doc, event=None):
         "title": doc.get_title(),
         "lang": getattr(doc, "language", fallback_language),
         "show_progress": not settings.create_pdf_in_background,
-        "auto_name": auto_name
+        "auto_name": auto_name,
+        "print_format": print_format,
+        "letter_head": letter_head,
     }
 
     if settings.create_pdf_in_background:
@@ -55,7 +61,7 @@ def enqueue(args):
                    timeout=30, is_async=True, **args)
 
 
-def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None):
+def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None, print_format=None, letter_head=None):
     """
     Queue calls this method, when it's ready.
 
@@ -79,7 +85,11 @@ def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None)
         progress.percent = 33
         publish_progress(**progress)
 
-    pdf_data = get_pdf_data(doctype, name)
+    if frappe.db.get_value("Print Format", print_format, "print_format_builder_beta"):
+        doc = frappe.get_doc(doctype, name)
+        pdf_data = PrintFormatGenerator(print_format, doc, letter_head).render_pdf()
+    else:
+        pdf_data = get_pdf_data(doctype, name, print_format)
 
     if show_progress:
         progress.percent = 66
@@ -102,9 +112,9 @@ def create_folder(folder, parent):
     return new_folder_name
 
 
-def get_pdf_data(doctype, name):
+def get_pdf_data(doctype, name, print_format):
     """Document -> HTML -> PDF."""
-    html = frappe.get_print(doctype, name)
+    html = frappe.get_print(doctype, name, print_format)
     return frappe.utils.pdf.get_pdf(html)
 
 
