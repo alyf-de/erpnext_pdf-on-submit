@@ -6,6 +6,8 @@
  "engine": "InnoDB",
  "field_order": [
   "document_type",
+  "print_format",
+  "letter_head",
   "auto_name"
  ],
  "fields": [
@@ -22,11 +24,25 @@
    "fieldname": "auto_name",
    "fieldtype": "Data",
    "label": "Auto Name"
+  },
+  {
+   "fieldname": "print_format",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Print Format",
+   "options": "Print Format"
+  },
+  {
+   "fieldname": "letter_head",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Letter Head",
+   "options": "Letter Head"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2022-06-10 15:06:47.854929",
+ "modified": "2022-11-23 19:10:49.683993",
  "modified_by": "Administrator",
  "module": "PDF on Submit",
  "name": "Enabled DocType",
@@ -35,5 +51,6 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }
