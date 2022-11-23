@@ -71,7 +71,7 @@ def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None)
     if show_progress:
         publish_progress(**progress)
 
-    doctype_folder = create_folder(_(doctype), "Home")
+    doctype_folder = create_folder(doctype, "Home")
     title_folder = create_folder(title, doctype_folder)
 
     if show_progress:
