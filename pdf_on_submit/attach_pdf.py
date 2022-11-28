@@ -91,7 +91,7 @@ def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None,
         doc = frappe.get_doc(doctype, name)
         pdf_data = PrintFormatGenerator(print_format, doc, letter_head).render_pdf()
     else:
-        pdf_data = get_pdf_data(doctype, name, print_format)
+        pdf_data = get_pdf_data(doctype, name, print_format, letter_head)
 
     if show_progress:
         progress.percent = 66
@@ -114,9 +114,9 @@ def create_folder(folder, parent):
     return new_folder_name
 
 
-def get_pdf_data(doctype, name, print_format):
+def get_pdf_data(doctype, name, print_format: None, letterhead: None):
     """Document -> HTML -> PDF."""
-    html = frappe.get_print(doctype, name, print_format)
+    html = frappe.get_print(doctype, name, print_format, letterhead=letterhead)
     return frappe.utils.pdf.get_pdf(html)
 
 
