@@ -73,7 +73,9 @@ def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None,
 
     if lang:
         frappe.local.lang = lang
+        # unset lang and jenv to load new language
         frappe.local.lang_full_dict = None
+        frappe.local.jenv = None
 
     if show_progress:
         publish_progress(**progress)
