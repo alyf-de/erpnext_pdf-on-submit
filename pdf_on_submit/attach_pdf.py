@@ -19,7 +19,7 @@ import frappe
 
 from frappe import _
 from frappe import publish_progress
-from frappe.core.doctype.file.file import create_new_folder
+from frappe.core.api.file import create_new_folder
 from frappe.utils.file_manager import save_file
 from frappe.model.naming import _format_autoname
 from frappe.utils.weasyprint import PrintFormatGenerator
