@@ -1,5 +1,5 @@
 import frappe
-from frappe.tests.utils import FrappeTestCase, change_settings
+from frappe.tests.utils import FrappeTestCase
 
 TEST_DOCTYPE = "Test Submittable DocType"
 
@@ -12,28 +12,26 @@ class TestPDFOnSubmit(FrappeTestCase):
 		frappe.db.rollback()
 
 	def test_pdf_on_submit(self):
-		with change_settings(
-			"PDF on Submit Settings",
-			{
-				"enabled_for": [{"document_type": TEST_DOCTYPE}],
-				"create_pdf_in_background": 0,
-			}
-		):
-			doc = frappe.new_doc(TEST_DOCTYPE)
-			doc.title = "Test PDF on Submit"
-			doc.save()
-			doc.submit()
+		settings = frappe.get_single("PDF on Submit Settings")
+		settings.append("enabled_for", {"document_type": TEST_DOCTYPE})
+		settings.create_pdf_in_background = 0
+		settings.save()
 
-			attached_file = frappe.db.exists("File", {"attached_to_doctype": TEST_DOCTYPE, "attached_to_name": doc.name})
+		doc = frappe.new_doc(TEST_DOCTYPE)
+		doc.title = "Test PDF on Submit"
+		doc.save()
+		doc.submit()
 
-			self.assertIsNotNone(attached_file)
+		attached_file = frappe.db.exists("File", {"attached_to_doctype": TEST_DOCTYPE, "attached_to_name": doc.name})
 
-			file = frappe.get_doc("File", attached_file)
-			file_name: str = file.get("file_name", "")
+		self.assertIsNotNone(attached_file)
 
-			self.assertIsNotNone(file_name)
-			self.assertTrue(file_name.startswith(doc.name))
-			self.assertTrue(file_name.endswith("pdf"))
+		file = frappe.get_doc("File", attached_file)
+		file_name: str = file.get("file_name", "")
+
+		self.assertIsNotNone(file_name)
+		self.assertTrue(file_name.startswith(doc.name))
+		self.assertTrue(file_name.endswith("pdf"))
 
 
 def create_submittable_doctype(name: str):
