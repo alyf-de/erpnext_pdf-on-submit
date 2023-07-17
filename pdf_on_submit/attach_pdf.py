@@ -29,30 +29,31 @@ def attach_pdf(doc, event=None):
     settings = frappe.get_single("PDF on Submit Settings")
 
     if enabled_doctypes := settings.get("enabled_for", {"document_type": doc.doctype}):
-        enabled_doctype = enabled_doctypes[0]
+        enabled_doctype = enabled_doctypes
     else:
         return
 
-    auto_name = enabled_doctype.auto_name
-    print_format = enabled_doctype.print_format or doc.meta.default_print_format or "Standard"
-    letter_head = enabled_doctype.letter_head or None
+    for doct in enabled_doctype:
+        auto_name = doct.auto_name
+        print_format = doct.print_format or doc.meta.default_print_format or "Standard"
+        letter_head = doct.letter_head or None
 
-    fallback_language = frappe.db.get_single_value("System Settings", "language") or "en"
-    args = {
-        "doctype": doc.doctype,
-        "name": doc.name,
-        "title": doc.get_title(),
-        "lang": getattr(doc, "language", fallback_language),
-        "show_progress": not settings.create_pdf_in_background,
-        "auto_name": auto_name,
-        "print_format": print_format,
-        "letter_head": letter_head,
-    }
+        fallback_language = frappe.db.get_single_value("System Settings", "language") or "en"
+        args = {
+            "doctype": doc.doctype,
+            "name": doc.name,
+            "title": doc.get_title(),
+            "lang": getattr(doc, "language", fallback_language),
+            "show_progress": not settings.create_pdf_in_background,
+            "auto_name": auto_name,
+            "print_format": print_format,
+            "letter_head": letter_head,
+        }
 
-    if settings.create_pdf_in_background:
-        enqueue(args)
-    else:
-        execute(**args)
+        if settings.create_pdf_in_background:
+            enqueue(args)
+        else:
+            execute(**args)
 
 
 def enqueue(args):
