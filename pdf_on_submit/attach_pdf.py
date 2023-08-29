@@ -16,12 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import frappe
-
 from frappe import _
-from frappe import publish_progress
 from frappe.core.api.file import create_new_folder
-from frappe.utils.file_manager import save_file
 from frappe.model.naming import _format_autoname
+from frappe.realtime import publish_realtime
 from frappe.utils.weasyprint import PrintFormatGenerator
 
 
@@ -69,7 +67,13 @@ def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None,
     2. Get raw PDF data
     3. Save PDF file and attach it to the document
     """
-    progress = frappe._dict(title=_("Creating PDF ..."), percent=0, doctype=doctype, docname=name)
+    def publish_progress(percent):
+        publish_realtime(
+            "progress",
+            {"percent": percent, "title": _("Creating PDF ..."), "description": None},
+            doctype=doctype,
+            docname=name,
+        )
 
     if lang:
         frappe.local.lang = lang
@@ -78,14 +82,13 @@ def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None,
         frappe.local.jenv = None
 
     if show_progress:
-        publish_progress(**progress)
+        publish_progress(0)
 
     doctype_folder = create_folder(doctype, "Home")
     title_folder = create_folder(title, doctype_folder)
 
     if show_progress:
-        progress.percent = 33
-        publish_progress(**progress)
+        publish_progress(33)
 
     if frappe.db.get_value("Print Format", print_format, "print_format_builder_beta"):
         doc = frappe.get_doc(doctype, name)
@@ -94,14 +97,12 @@ def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None,
         pdf_data = get_pdf_data(doctype, name, print_format, letter_head)
 
     if show_progress:
-        progress.percent = 66
-        publish_progress(**progress)
+        publish_progress(66)
 
     save_and_attach(pdf_data, doctype, name, title_folder, auto_name)
 
     if show_progress:
-        progress.percent = 100
-        publish_progress(**progress)
+        publish_progress(100)
 
 
 def create_folder(folder, parent):
@@ -134,7 +135,14 @@ def save_and_attach(content, to_doctype, to_name, folder, auto_name=None):
     else:
         file_name = "{to_name}.pdf".format(to_name=to_name.replace("/", "-"))
 
-    save_file(file_name, content, to_doctype, to_name, folder=folder, is_private=1)
+    file = frappe.new_doc("File")
+    file.file_name = file_name
+    file.content = content
+    file.folder = folder
+    file.is_private = 1
+    file.attached_to_doctype = to_doctype
+    file.attached_to_name = to_name
+    file.save()
 
 
 def set_name_from_naming_options(autoname, doc):
