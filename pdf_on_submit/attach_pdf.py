@@ -20,7 +20,6 @@ from frappe import _
 from frappe.core.api.file import create_new_folder
 from frappe.model.naming import _format_autoname
 from frappe.realtime import publish_realtime
-from frappe.utils.file_manager import save_file
 from frappe.utils.weasyprint import PrintFormatGenerator
 
 
@@ -136,7 +135,14 @@ def save_and_attach(content, to_doctype, to_name, folder, auto_name=None):
     else:
         file_name = "{to_name}.pdf".format(to_name=to_name.replace("/", "-"))
 
-    save_file(file_name, content, to_doctype, to_name, folder=folder, is_private=1)
+    file = frappe.new_doc("File")
+    file.file_name = file_name
+    file.content = content
+    file.folder = folder
+    file.is_private = 1
+    file.attached_to_doctype = to_doctype
+    file.attached_to_name = to_name
+    file.save()
 
 
 def set_name_from_naming_options(autoname, doc):
