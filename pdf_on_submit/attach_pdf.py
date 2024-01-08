@@ -47,16 +47,16 @@ def attach_pdf(doc, event=None):
         "letter_head": letter_head,
     }
 
-    if settings.create_pdf_in_background:
-        enqueue(args)
-    else:
-        execute(**args)
-
-
-def enqueue(args):
-    """Add method `execute` with given args to the queue."""
-    frappe.enqueue(method=execute, queue='long',
-                   timeout=30, is_async=True, **args)
+    frappe.enqueue(
+        method=execute,
+        timeout=30,
+        now=bool(
+            not settings.create_pdf_in_background
+            or frappe.flags.in_test
+            or frappe.conf.developer_mode
+        ),
+        **args,
+    )
 
 
 def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None, print_format=None, letter_head=None):
