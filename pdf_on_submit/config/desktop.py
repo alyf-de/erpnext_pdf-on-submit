@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from frappe import _
-
 def get_data():
 	return [
 		{
@@ -9,6 +5,6 @@ def get_data():
 			"color": "#DB2B39",
 			"icon": "octicon octicon-file-pdf",
 			"type": "module",
-			"label": _("PDF on Submit")
+			"label": "PDF on Submit",
 		}
 	]
