@@ -3,7 +3,7 @@
 
 frappe.ui.form.on("PDF on Submit Settings", {
 	refresh(frm) {
-		frm.set_query("print_format", "enabled_for", function(doc, cdt, cdn) {
+		frm.set_query("print_format", "enabled_for", function (doc, cdt, cdn) {
 			return {
 				filters: {
 					doc_type: locals[cdt][cdn].document_type,

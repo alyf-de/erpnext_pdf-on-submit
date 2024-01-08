@@ -22,7 +22,9 @@ class TestPDFOnSubmit(FrappeTestCase):
 		doc.save()
 		doc.submit()
 
-		attached_file = frappe.db.exists("File", {"attached_to_doctype": TEST_DOCTYPE, "attached_to_name": doc.name})
+		attached_file = frappe.db.exists(
+			"File", {"attached_to_doctype": TEST_DOCTYPE, "attached_to_name": doc.name}
+		)
 
 		self.assertIsNotNone(attached_file)
 
@@ -48,6 +50,6 @@ def create_submittable_doctype(name: str):
 			"fieldname": "title",
 			"fieldtype": "Data",
 			"label": "Title",
-		}
+		},
 	)
 	submittable_doctype.save()

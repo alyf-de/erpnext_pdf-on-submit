@@ -39,7 +39,7 @@ app_license = "GPLv3"
 
 # website user home page (by Role)
 # role_home_page = {
-#	"Role": "home_page"
+# 	"Role": "home_page"
 # }
 
 # Website user home page (by function)
@@ -80,14 +80,7 @@ app_license = "GPLv3"
 # Hook on document methods and events
 
 doc_events = {
-#   "*": {
-#       "on_update": "method",
-#       "on_cancel": "method",
-#       "on_trash": "method"
-#   }
-    "*": {
-        "on_submit": "pdf_on_submit.attach_pdf.attach_pdf"
-    }
+	"*": {"on_submit": "pdf_on_submit.attach_pdf.attach_pdf"}
 }
 
 # Scheduled Tasks
@@ -122,4 +115,3 @@ doc_events = {
 # override_whitelisted_methods = {
 # 	"frappe.desk.doctype.event.event.get_events": "pdf_on_submit.event.get_events"
 # }
-
