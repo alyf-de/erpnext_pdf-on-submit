@@ -59,7 +59,7 @@ def enqueue(args):
                    timeout=30, is_async=True, **args)
 
 
-def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None, print_format=None, letter_head=None):
+def execute(doctype, name, title=None, lang=None, show_progress=True, auto_name=None, print_format=None, letter_head=None):
     """
     Queue calls this method, when it's ready.
 
@@ -85,7 +85,8 @@ def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None,
         publish_progress(0)
 
     doctype_folder = create_folder(doctype, "Home")
-    title_folder = create_folder(title, doctype_folder)
+    title_folder = create_folder(title, doctype_folder) if title else None
+    target_folder = title_folder or doctype_folder
 
     if show_progress:
         publish_progress(33)
@@ -99,7 +100,7 @@ def execute(doctype, name, title, lang=None, show_progress=True, auto_name=None,
     if show_progress:
         publish_progress(66)
 
-    save_and_attach(pdf_data, doctype, name, title_folder, auto_name)
+    save_and_attach(pdf_data, doctype, name, target_folder, auto_name)
 
     if show_progress:
         publish_progress(100)
