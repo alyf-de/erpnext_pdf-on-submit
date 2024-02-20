@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import frappe
 from frappe import _
 from frappe.core.api.file import create_new_folder
@@ -66,7 +67,7 @@ def attach_pdf(doc, event=None):
 def execute(
 	doctype,
 	name,
-	title,
+	title=None,
 	lang=None,
 	show_progress=True,
 	auto_name=None,
@@ -99,7 +100,8 @@ def execute(
 		publish_progress(0)
 
 	doctype_folder = create_folder(doctype, "Home")
-	title_folder = create_folder(title, doctype_folder)
+	title_folder = create_folder(title, doctype_folder) if title else None
+	target_folder = title_folder or doctype_folder
 
 	if show_progress:
 		publish_progress(33)
@@ -113,7 +115,7 @@ def execute(
 	if show_progress:
 		publish_progress(66)
 
-	save_and_attach(pdf_data, doctype, name, title_folder, auto_name)
+	save_and_attach(pdf_data, doctype, name, target_folder, auto_name)
 
 	if show_progress:
 		publish_progress(100)
