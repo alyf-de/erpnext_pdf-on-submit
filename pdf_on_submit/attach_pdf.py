@@ -39,7 +39,7 @@ def attach_pdf(doc, event=None):
     args = {
         "doctype": doc.doctype,
         "name": doc.name,
-        "title": doc.get_title(),
+        "title": doc.get_title() if doc.meta.title_field else None,
         "lang": getattr(doc, "language", fallback_language),
         "show_progress": not settings.create_pdf_in_background,
         "auto_name": auto_name,
