@@ -93,6 +93,16 @@ def execute(
 		else:
 			pdf_data = get_pdf_data(doctype, name, print_format, letter_head)
 
+	if doctype == "Sales Invoice" and "eu_einvoice" in frappe.get_installed_apps():
+		try:
+			from eu_einvoice.european_e_invoice.custom.sales_invoice import attach_xml_to_pdf
+			pdf_data = attach_xml_to_pdf(name, pdf_data)
+		except Exception:
+			msg = _("Failed to attach XML to PDF for Sales Invoice {0}").format(name)
+			if show_progress:
+				frappe.msgprint(msg, indicator="red", alert=True)
+			frappe.log_error(title=msg)
+
 	if show_progress:
 		publish_progress(66)
 
