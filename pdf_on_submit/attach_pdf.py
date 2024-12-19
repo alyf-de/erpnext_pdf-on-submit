@@ -46,6 +46,7 @@ def attach_pdf(doc, event=None):
 			or frappe.flags.in_test
 			or frappe.conf.developer_mode
 		),
+		enqueue_after_commit=True,
 		**args,
 	)
 
