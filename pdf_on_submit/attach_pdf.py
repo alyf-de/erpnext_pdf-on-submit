@@ -101,7 +101,7 @@ def execute(
 			msg = _("Failed to attach XML to PDF for Sales Invoice {0}").format(name)
 			if show_progress:
 				frappe.msgprint(msg, indicator="red", alert=True)
-			frappe.log_error(title=msg)
+			frappe.log_error(title=msg, reference_doctype=doctype, reference_name=name)
 
 	if show_progress:
 		publish_progress(66)
