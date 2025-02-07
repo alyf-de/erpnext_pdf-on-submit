@@ -27,7 +27,12 @@ frappe.ui.form.on("Enabled DocType", {
 				},
 			],
 			primary_action: function () {
-				frappe.model.set_value(cdt, cdn, "filters", JSON.stringify(container.filter_group.get_filters(), null, 2));
+				frappe.model.set_value(
+					cdt,
+					cdn,
+					"filters",
+					JSON.stringify(container.filter_group.get_filters(), null, 2)
+				);
 				dialog.hide(); // TODO: for some reason this also hides the child row
 			},
 			primary_action_label: "Set",
@@ -43,5 +48,5 @@ frappe.ui.form.on("Enabled DocType", {
 
 			dialog.show();
 		});
-	}
+	},
 });
