@@ -1,14 +1,14 @@
 # Translations template for PDF on Submit.
-# Copyright (C) 2024 ALYF GmbH
+# Copyright (C) 2025 ALYF GmbH
 # This file is distributed under the same license as the PDF on Submit project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PDF on Submit VERSION\n"
 "Report-Msgid-Bugs-To: hallo@alyf.de\n"
-"POT-Creation-Date: 2024-07-21 00:05+0053\n"
-"PO-Revision-Date: 2024-07-21 00:05+0053\n"
+"POT-Creation-Date: 2025-02-07 19:25+0053\n"
+"PO-Revision-Date: 2025-02-07 19:25+0053\n"
 "Last-Translator: hallo@alyf.de\n"
 "Language-Team: hallo@alyf.de\n"
 "MIME-Version: 1.0\n"
@@ -17,68 +17,92 @@ msgstr ""
 "Generated-By: Babel 2.13.1\n"
 
 #. Name of a role
-#: pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "Accounts Manager"
 msgstr ""
 
 #. Label of a Section Break field in DocType 'PDF on Submit Settings'
-#: pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "Active"
 msgstr ""
 
 #. Label of a Data field in DocType 'Enabled DocType'
-#: pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
+#: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
 msgid "Auto Name"
 msgstr ""
 
 #. Label of a Check field in DocType 'PDF on Submit Settings'
-#: pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "Create PDF In Background"
 msgstr ""
 
-#: attach_pdf.py:74
+#: pdf_on_submit/attach_pdf.py:85
 msgid "Creating PDF ..."
 msgstr ""
 
 #. Label of a Link field in DocType 'Enabled DocType'
-#: pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
+#: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
 msgid "Document Type"
 msgstr ""
 
+#. Label of a Button field in DocType 'Enabled DocType'
+#: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
+msgid "Edit Filters"
+msgstr ""
+
 #. Name of a DocType
-#: pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
+#: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
 msgid "Enabled DocType"
 msgstr ""
 
 #. Label of a Table field in DocType 'PDF on Submit Settings'
-#: pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "Enabled For"
 msgstr ""
 
+#: pdf_on_submit/attach_pdf.py:112
+msgid "Failed to attach XML to PDF for Sales Invoice {0}"
+msgstr ""
+
+#. Label of a Code field in DocType 'Enabled DocType'
+#: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
+msgid "Filters"
+msgstr ""
+
 #. Label of a Link field in DocType 'Enabled DocType'
-#: pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
+#: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
 msgid "Letter Head"
 msgstr ""
 
 #. Description of the 'Auto Name' (Data) field in DocType 'Enabled DocType'
-#: pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
+#: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
 msgid ""
 "Naming Options:\n"
 "<ol><li><b>format:EXAMPLE-{MM}-{fieldname1}-{fieldname2}-{#####}</b> - Replace all braced words (fieldnames, date words (DD, MM, YY), series) with their value. Outside braces, any characters can be used.</li></ol>"
 msgstr ""
 
+#. Description of the 'Edit Filters' (Button) field in DocType 'Enabled
+#. DocType'
+#: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
+msgid "Optional: create PDF only if the submitted document matches these filters."
+msgstr ""
+
 #. Name of a DocType
-#: pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "PDF on Submit Settings"
 msgstr ""
 
 #. Label of a Link field in DocType 'Enabled DocType'
-#: pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
+#: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
 msgid "Print Format"
 msgstr ""
 
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.js:22
+msgid "Set Filters"
+msgstr ""
+
 #. Name of a role
-#: pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "System Manager"
 msgstr ""
 
