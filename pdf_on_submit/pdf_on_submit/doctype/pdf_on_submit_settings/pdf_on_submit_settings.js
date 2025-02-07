@@ -35,7 +35,7 @@ frappe.ui.form.on("Enabled DocType", {
 				);
 				dialog.hide(); // TODO: for some reason this also hides the child row
 			},
-			primary_action_label: "Set",
+			primary_action_label: __("Set Filters"),
 		});
 
 		frappe.model.with_doctype(row.document_type, () => {
