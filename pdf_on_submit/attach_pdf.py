@@ -1,12 +1,15 @@
 # Copyright (c) 2019, Raffael Meyer and contributors
 # For license information, please see license.txt
 
+import json
+
 import frappe
 from frappe import _
 from frappe.core.api.file import create_new_folder
 from frappe.model.naming import _format_autoname
 from frappe.realtime import publish_realtime
 from frappe.translate import print_language
+from frappe.utils.data import evaluate_filters
 from frappe.utils.weasyprint import PrintFormatGenerator
 
 
@@ -17,6 +20,13 @@ def attach_pdf(doc, event=None):
 		enabled_doctype = enabled_doctypes[0]
 	else:
 		return
+
+	if enabled_doctype.filters:
+		filters = json.loads(enabled_doctype.filters)
+		if filters:
+			condition_met = evaluate_filters(doc, filters)
+			if not condition_met:
+				return
 
 	auto_name = enabled_doctype.auto_name
 	print_format = (

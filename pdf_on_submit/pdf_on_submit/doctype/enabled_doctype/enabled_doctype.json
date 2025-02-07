@@ -8,7 +8,10 @@
   "document_type",
   "print_format",
   "letter_head",
-  "auto_name"
+  "auto_name",
+  "section_break_rset",
+  "edit_filters",
+  "filters"
  ],
  "fields": [
   {
@@ -38,11 +41,27 @@
    "in_list_view": 1,
    "label": "Letter Head",
    "options": "Letter Head"
+  },
+  {
+   "fieldname": "section_break_rset",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "edit_filters",
+   "fieldtype": "Button",
+   "label": "Edit Filters"
+  },
+  {
+   "fieldname": "filters",
+   "fieldtype": "Code",
+   "label": "Filters",
+   "options": "JSON",
+   "read_only": 1
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2022-11-23 19:10:49.683993",
+ "modified": "2025-02-07 18:27:42.976858",
  "modified_by": "Administrator",
  "module": "PDF on Submit",
  "name": "Enabled DocType",
