@@ -11,42 +11,25 @@ frappe.ui.form.on("PDF on Submit Settings", {
 			};
 		});
 	},
-});
-
-frappe.ui.form.on("Enabled DocType", {
-	edit_filters(frm, cdt, cdn) {
-		const row = locals[cdt][cdn];
+	enabled_for_on_form_rendered(frm, dt, a, b, c) {
+		const row = frm.cur_grid.doc;
 		const filters = row.filters ? JSON.parse(row.filters) : [];
-		const container = {};
-		const dialog = new frappe.ui.Dialog({
-			title: __("Set Filters"),
-			fields: [
-				{
-					fieldtype: "HTML",
-					fieldname: "filter_area",
-				},
-			],
-			primary_action: function () {
-				frappe.model.set_value(
-					cdt,
-					cdn,
-					"filters",
-					JSON.stringify(container.filter_group.get_filters(), null, 2)
-				);
-				dialog.hide(); // TODO: for some reason this also hides the child row
-			},
-			primary_action_label: __("Set Filters"),
-		});
 
 		frappe.model.with_doctype(row.document_type, () => {
-			container.filter_group = new frappe.ui.FilterGroup({
-				parent: dialog.get_field("filter_area").$wrapper,
+			const filter_group = new frappe.ui.FilterGroup({
+				parent: frm.cur_grid.wrapper.find("[data-fieldname='filter_area']"),
 				doctype: row.document_type,
-				on_change: () => {},
+				on_change: () => {
+					frappe.model.set_value(
+						row.doctype,
+						row.name,
+						"filters",
+						JSON.stringify(filter_group.get_filters())
+					);
+				},
 			});
-			filters && container.filter_group.add_filters_to_filter_group(filters);
 
-			dialog.show();
+			filter_group.add_filters_to_filter_group(filters);
 		});
 	},
 });

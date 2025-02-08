@@ -10,7 +10,8 @@
   "letter_head",
   "auto_name",
   "section_break_rset",
-  "edit_filters",
+  "filter_description",
+  "filter_area",
   "filters"
  ],
  "fields": [
@@ -43,26 +44,32 @@
    "options": "Letter Head"
   },
   {
+   "collapsible": 1,
    "fieldname": "section_break_rset",
-   "fieldtype": "Section Break"
-  },
-  {
-   "description": "Optional: create PDF only if the submitted document matches these filters.",
-   "fieldname": "edit_filters",
-   "fieldtype": "Button",
-   "label": "Edit Filters"
+   "fieldtype": "Section Break",
+   "label": "Filters"
   },
   {
    "fieldname": "filters",
    "fieldtype": "Code",
+   "hidden": 1,
    "label": "Filters",
    "options": "JSON",
    "read_only": 1
+  },
+  {
+   "fieldname": "filter_area",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "filter_description",
+   "fieldtype": "HTML",
+   "options": "Optional: create PDF only if the submitted document matches these filters.<br><br>"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2025-02-07 19:24:29.460345",
+ "modified": "2025-02-08 01:03:04.756526",
  "modified_by": "Administrator",
  "module": "PDF on Submit",
  "name": "Enabled DocType",
