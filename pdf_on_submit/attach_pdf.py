@@ -16,49 +16,48 @@ from frappe.utils.weasyprint import PrintFormatGenerator
 def attach_pdf(doc, event=None):
 	settings = frappe.get_single("PDF on Submit Settings")
 
-	if enabled_doctypes := settings.get("enabled_for", {"document_type": doc.doctype}):
-		enabled_doctype = enabled_doctypes[0]
-	else:
+	enabled_doctypes = settings.get("enabled_for", {"document_type": doc.doctype})
+	if not enabled_doctypes:
 		return
+	for enabled_doctype in enabled_doctypes:
+		if enabled_doctype.filters:
+			filters = json.loads(enabled_doctype.filters)
+			if filters:
+				condition_met = evaluate_filters(doc, filters)
+				if not condition_met:
+					return
 
-	if enabled_doctype.filters:
-		filters = json.loads(enabled_doctype.filters)
-		if filters:
-			condition_met = evaluate_filters(doc, filters)
-			if not condition_met:
-				return
+		auto_name = enabled_doctype.auto_name
+		print_format = (
+			enabled_doctype.print_format or doc.meta.default_print_format or "Standard"
+		)
+		letter_head = enabled_doctype.letter_head or None
 
-	auto_name = enabled_doctype.auto_name
-	print_format = (
-		enabled_doctype.print_format or doc.meta.default_print_format or "Standard"
-	)
-	letter_head = enabled_doctype.letter_head or None
+		fallback_language = (
+			frappe.db.get_single_value("System Settings", "language") or "en"
+		)
+		args = {
+			"doctype": doc.doctype,
+			"name": doc.name,
+			"title": doc.get_title() if doc.meta.title_field else None,
+			"lang": getattr(doc, "language", fallback_language),
+			"show_progress": not settings.create_pdf_in_background,
+			"auto_name": auto_name,
+			"print_format": print_format,
+			"letter_head": letter_head,
+		}
 
-	fallback_language = (
-		frappe.db.get_single_value("System Settings", "language") or "en"
-	)
-	args = {
-		"doctype": doc.doctype,
-		"name": doc.name,
-		"title": doc.get_title() if doc.meta.title_field else None,
-		"lang": getattr(doc, "language", fallback_language),
-		"show_progress": not settings.create_pdf_in_background,
-		"auto_name": auto_name,
-		"print_format": print_format,
-		"letter_head": letter_head,
-	}
-
-	frappe.enqueue(
-		method=execute,
-		timeout=30,
-		now=bool(
-			not settings.create_pdf_in_background
-			or frappe.flags.in_test
-			or frappe.conf.developer_mode
-		),
-		enqueue_after_commit=True,
-		**args,
-	)
+		frappe.enqueue(
+			method=execute,
+			timeout=30,
+			now=bool(
+				not settings.create_pdf_in_background
+				or frappe.flags.in_test
+				or frappe.conf.developer_mode
+			),
+			enqueue_after_commit=True,
+			**args,
+		)
 
 
 def execute(
