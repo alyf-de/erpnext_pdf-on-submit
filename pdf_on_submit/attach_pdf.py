@@ -15,25 +15,28 @@ from frappe.utils.weasyprint import PrintFormatGenerator
 
 def attach_pdf(doc, event=None):
 	settings = frappe.get_single("PDF on Submit Settings")
+	enabled_doctypes = settings.get("enabled_for", {"document_type": doc.doctype})
 
-	if enabled_doctypes := settings.get("enabled_for", {"document_type": doc.doctype}):
-		enabled_doctype = enabled_doctypes[0]
-	else:
+	if not enabled_doctypes:
 		return
 
-	if enabled_doctype.filters:
-		filters = json.loads(enabled_doctype.filters)
+	for dt_settings in enabled_doctypes:
+		process_enabled_doctype(doc, dt_settings, settings.create_pdf_in_background)
+
+
+def process_enabled_doctype(doc, settings, in_background):
+	if settings.filters:
+		filters = json.loads(settings.filters)
 		if filters:
 			condition_met = evaluate_filters(doc, filters)
 			if not condition_met:
 				return
 
-	auto_name = enabled_doctype.auto_name
+	auto_name = settings.auto_name
 	print_format = (
-		enabled_doctype.print_format or doc.meta.default_print_format or "Standard"
+		settings.print_format or doc.meta.default_print_format or "Standard"
 	)
-	letter_head = enabled_doctype.letter_head or None
-
+	letter_head = settings.letter_head or None
 	fallback_language = (
 		frappe.db.get_single_value("System Settings", "language") or "en"
 	)
@@ -42,7 +45,7 @@ def attach_pdf(doc, event=None):
 		"name": doc.name,
 		"title": doc.get_title() if doc.meta.title_field else None,
 		"lang": getattr(doc, "language", fallback_language),
-		"show_progress": not settings.create_pdf_in_background,
+		"show_progress": not in_background,
 		"auto_name": auto_name,
 		"print_format": print_format,
 		"letter_head": letter_head,
@@ -52,7 +55,7 @@ def attach_pdf(doc, event=None):
 		method=execute,
 		timeout=30,
 		now=bool(
-			not settings.create_pdf_in_background
+			not in_background
 			or frappe.flags.in_test
 			or frappe.conf.developer_mode
 		),
