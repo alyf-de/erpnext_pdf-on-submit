@@ -1,7 +1,7 @@
 # PDF on Submit
 
 Automatically generates and attaches a PDF when a document gets submitted. Works for printable & submittable Doctypes.
-![Screencast of PDF generation](docs/screencast2.gif)
+![Screencast of PDF generation](docs/screencast.gif)
 
 ## Install on Frappe Cloud
 
