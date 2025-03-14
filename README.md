@@ -29,6 +29,8 @@ If you don't choose a different configuration, PDFs will be generated with the d
 
 Alternatively, you can choose a different **Print Format** and **Letter Head** for each DocType. You can also define a custom format for the PDF file name.
 
+![PDF on Submit Settings](docs/settings.gif)
+
 ### Filters and different PDFs for the same DocType
 
 It is possible to add multiple rows for the same DocType. In the row's _Filters_ section you can set filters based on the fields of the selected DocType. This way you can generate different PDFs based on the document's content. E.g. say you have two different print formats for the **Sales Invoice** DocType: one for normal invoices and one for credit notes. You can create two rows with different Print Formats and apply a filter on the _Is Return_ field. This way, when you submit a credit note, the PDF will be generated with the credit note's print format and when you submit a normal invoice, the PDF will be generated with the normal invoice's print format. However, the filters don't need to be exclusive. You can also generate multiple PDFs for the same document.
@@ -42,8 +44,6 @@ Disable this option to get the PDF immediately. In this case, when you submit th
 ### Language
 
 The PDF will be created in the language that is specified in the _Language_ field of the current document. In your **Customer** and **Supplier** masters you can choose their respective _Print Language_.
-
-![PDF on Submit Settings](docs/settings.gif)
 
 ## Add translations
 
