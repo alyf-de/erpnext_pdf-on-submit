@@ -45,6 +45,8 @@ To change the settings of this app, you can open **PDF on Submit Settings** via 
 
     Disable this option to get the PDF immediately. When you submit the document you will see a progress bar while the PDF gets created. When it's done you immediately see the PDF attached to the document.
 
+  - The PDF will be created in the language that is specified in the "Language" field of the current document. In your **Customer** and **Supplier** masters you can choose the default "Print Language".
+
 ![PDF on Submit Settings](docs/settings.gif)
 
 ## Add translations
