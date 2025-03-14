@@ -10,6 +10,14 @@ frappe.ui.form.on("PDF on Submit Settings", {
 				},
 			};
 		});
+
+		frm.set_query("document_type", "enabled_for", function (doc, cdt, cdn) {
+			return {
+				filters: {
+					is_submittable: 1,
+				},
+			};
+		});
 	},
 	enabled_for_on_form_rendered(frm, dt, a, b, c) {
 		const row = frm.cur_grid.doc;
