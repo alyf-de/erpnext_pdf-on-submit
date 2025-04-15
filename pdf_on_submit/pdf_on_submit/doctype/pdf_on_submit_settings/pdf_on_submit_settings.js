@@ -49,7 +49,17 @@ frappe.ui.form.on("Enabled DocType", {
 	document_type(frm, cdt, cdn) {
 		const row = locals[cdt][cdn];
 		frappe.model.set_value(row.doctype, row.name, "filters", "[]");
-		frappe.model.set_value(row.doctype, row.name, "print_format", "");
+
+		if (row.print_format) {
+			// Check if the print format is valid for the document type
+			// If not, set the print format to an empty string
+			frappe.db.get_value("Print Format", row.print_format, "doc_type").then((r) => {
+				if (r.message.doc_type !== row.document_type) {
+					frappe.model.set_value(row.doctype, row.name, "print_format", "");
+				}
+			});
+		}
+
 		if (frm.cur_grid) {
 			frm.events.enabled_for_on_form_rendered(frm);
 		}
