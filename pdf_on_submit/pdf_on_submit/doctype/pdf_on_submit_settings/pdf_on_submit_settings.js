@@ -22,11 +22,7 @@ frappe.ui.form.on("PDF on Submit Settings", {
 	enabled_for_on_form_rendered(frm) {
 		const row = frm.cur_grid.doc;
 		const parent = frm.cur_grid.wrapper.find("[data-fieldname='filter_area']");
-
-		if (!row.document_type) {
-			parent.empty();
-			return;
-		}
+		parent.empty();
 
 		const filters = row.filters ? JSON.parse(row.filters) : [];
 
