@@ -43,6 +43,7 @@ def process_enabled_doctype(doc, settings, in_background):
 	args = {
 		"doctype": doc.doctype,
 		"name": doc.name,
+		"to_field": settings.attach_to_field,
 		"title": doc.get_title() if doc.meta.title_field else None,
 		"lang": getattr(doc, "language", fallback_language),
 		"show_progress": not in_background,
@@ -67,6 +68,7 @@ def process_enabled_doctype(doc, settings, in_background):
 def execute(
 	doctype,
 	name,
+	to_field=None,
 	title=None,
 	lang=None,
 	show_progress=True,
@@ -120,7 +122,7 @@ def execute(
 	if show_progress:
 		publish_progress(66)
 
-	save_and_attach(pdf_data, doctype, name, target_folder, auto_name)
+	save_and_attach(pdf_data, doctype, name, target_folder, auto_name, to_field)
 
 	if show_progress:
 		publish_progress(100)
@@ -143,7 +145,7 @@ def get_pdf_data(doctype, name, print_format: None, letterhead: None):
 	return frappe.utils.pdf.get_pdf(html)
 
 
-def save_and_attach(content, to_doctype, to_name, folder, auto_name=None):
+def save_and_attach(content, to_doctype, to_name, folder, auto_name=None, to_field=None):
 	"""
 	Save content to disk and create a File document.
 
@@ -164,7 +166,11 @@ def save_and_attach(content, to_doctype, to_name, folder, auto_name=None):
 	file.is_private = 1
 	file.attached_to_doctype = to_doctype
 	file.attached_to_name = to_name
+	file.attached_to_field = to_field
 	file.save()
+
+	if to_field:
+		frappe.db.set_value(to_doctype, to_name, to_field, file.file_url)
 
 
 def set_name_from_naming_options(autoname, doc):
