@@ -48,10 +48,8 @@ def _avoid_fields_being_processed_multiple_times(attach_to_fields):
 
 def _check_if_attach_to_fields_are_valid(attach_to_fields):
 	for doctype, fieldname in attach_to_fields:
-		if (
-			not frappe.db.exists("DocField", {"parent": doctype, "fieldname": fieldname, "fieldtype": "Attach"})
-			and not frappe.db.exists("Custom Field", {"dt": doctype, "fieldname": fieldname, "fieldtype": "Attach"})
-		):
+		meta = frappe.get_meta(doctype)
+		if not meta.get("fields", {"fieldtype": "Attach", "fieldname": fieldname}):
 			frappe.throw(
-				_("The field {0} in the DocType {1} is not a valid field.").format(fieldname, doctype)
+				_("{0} is not a valid field for DocType {1}.").format(_(meta.get_label(fieldname)), _(doctype))
 			)
