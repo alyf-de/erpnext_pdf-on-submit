@@ -32,11 +32,12 @@ class PDFonSubmitSettings(Document):
 			if enabled_doctype.attach_to_field
 		]
 		if attach_to_fields:
-			_avoid_fields_being_processed_multiple_times(attach_to_fields)
+			_check_for_duplicate_fieldnames(attach_to_fields)
 			_check_if_attach_to_fields_are_valid(attach_to_fields)
 
 
-def _avoid_fields_being_processed_multiple_times(attach_to_fields):
+def _check_for_duplicate_fieldnames(attach_to_fields):
+	"""Ensure only one PDF file will be attached to a specific field."""
 	seen_fields = set()
 	for pair in attach_to_fields:
 		if pair in seen_fields:
