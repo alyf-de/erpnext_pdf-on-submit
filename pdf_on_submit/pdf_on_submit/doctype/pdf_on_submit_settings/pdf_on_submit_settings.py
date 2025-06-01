@@ -52,5 +52,5 @@ def _check_if_attach_to_fields_are_valid(attach_to_fields):
 		meta = frappe.get_meta(doctype)
 		if not meta.get("fields", {"fieldtype": "Attach", "fieldname": fieldname}):
 			frappe.throw(
-				_("{0} is not a valid field for DocType {1}.").format(_(meta.get_label(fieldname)), _(doctype))
+				_("{0} is not a valid field for DocType {1}.").format(fieldname, _(doctype))
 			)
