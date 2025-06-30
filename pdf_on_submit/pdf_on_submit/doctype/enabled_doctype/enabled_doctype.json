@@ -70,14 +70,14 @@
   {
    "description": "If set, the PDF will be stored in this specific Attach field. If not set, it will be attached to the document without a specific field.<br>\n<b>Note:</b> The Attach fields should be 'No Copy' and 'Read Only'. Otherwise they get overwritten on submit.",
    "fieldname": "attach_to_field",
-   "fieldtype": "Data",
+   "fieldtype": "Select",
    "label": "Attach To Field"
   }
  ],
  "grid_page_length": 50,
  "istable": 1,
  "links": [],
- "modified": "2025-05-30 15:02:33.129321",
+ "modified": "2025-06-29 13:32:14.451432",
  "modified_by": "Administrator",
  "module": "PDF on Submit",
  "name": "Enabled DocType",

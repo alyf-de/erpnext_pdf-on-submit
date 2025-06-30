@@ -18,6 +18,10 @@ frappe.ui.form.on("PDF on Submit Settings", {
 				},
 			};
 		});
+
+		frm.doc.enabled_for.map((field) => {
+			set_field_options(frm, field.doctype, field.name);
+		});
 	},
 	enabled_for_on_form_rendered(frm) {
 		const row = frm.cur_grid.doc;
@@ -46,6 +50,10 @@ frappe.ui.form.on("PDF on Submit Settings", {
 });
 
 frappe.ui.form.on("Enabled DocType", {
+	enabled_for_add: (frm, cdt, cdn) => {
+		set_field_options(frm, cdt, cdn);
+	},
+	
 	document_type(frm, cdt, cdn) {
 		const row = locals[cdt][cdn];
 		frappe.model.set_value(row.doctype, row.name, "filters", "[]");
@@ -63,5 +71,39 @@ frappe.ui.form.on("Enabled DocType", {
 		if (frm.cur_grid) {
 			frm.events.enabled_for_on_form_rendered(frm);
 		}
+
+		set_field_options(frm, cdt, cdn);
 	},
 });
+
+function set_field_options(frm, cdt, cdn) {
+	const doc = frappe.get_doc(cdt, cdn);
+	const document_type = doc.document_type;
+
+	// set options for `attach_to_field`
+	frappe.model.with_doctype(document_type, () => {
+		const meta = frappe.get_meta(document_type);
+		const fields = [
+			"",
+			...meta.fields.filter((field) => {
+				return (
+					["Attach"].includes(field.fieldtype) && field.is_virtual === 0 && field.read_only === 1 && field.no_copy === 1
+				);
+			})
+			.sort((a, b) => a.label.localeCompare(b.label))
+		];
+
+		frm.fields_dict.enabled_for.grid.update_docfield_property(
+			"attach_to_field",
+			"options",
+			fields
+				.map((field) => {
+					return {
+						value: field.fieldname,
+						label: __(field.label),
+					};
+				})
+		);
+		frm.refresh_field("enabled_for");
+	});
+}
