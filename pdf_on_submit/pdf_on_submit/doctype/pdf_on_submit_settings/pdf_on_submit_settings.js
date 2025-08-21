@@ -53,6 +53,7 @@ frappe.ui.form.on("Enabled DocType", {
 	document_type(frm, cdt, cdn) {
 		const row = locals[cdt][cdn];
 		frappe.model.set_value(row.doctype, row.name, "filters", "[]");
+		frappe.model.set_value(row.doctype, row.name, "attach_to_field", "");
 
 		if (row.print_format) {
 			// Check if the print format is valid for the document type
