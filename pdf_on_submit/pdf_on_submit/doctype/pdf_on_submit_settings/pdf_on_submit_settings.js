@@ -19,8 +19,8 @@ frappe.ui.form.on("PDF on Submit Settings", {
 			};
 		});
 
-		frm.doc.enabled_for.map((field) => {
-			set_field_options(frm, field.doctype, field.name);
+		frm.doc.enabled_for.forEach((row) => {
+			set_field_options(frm, row.doctype, row.name);
 		});
 	},
 	enabled_for_on_form_rendered(frm) {
