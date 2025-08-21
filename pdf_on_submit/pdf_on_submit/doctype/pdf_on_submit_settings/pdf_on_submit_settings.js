@@ -53,8 +53,12 @@ frappe.ui.form.on("Enabled DocType", {
 	enabled_for_add: (frm, cdt, cdn) => {
 		set_field_options(frm, cdt, cdn);
 	},
-	
+
 	document_type(frm, cdt, cdn) {
+		if (!locals[cdt][cdn].document_type) {
+			return;
+		}
+
 		const row = locals[cdt][cdn];
 		frappe.model.set_value(row.doctype, row.name, "filters", "[]");
 
