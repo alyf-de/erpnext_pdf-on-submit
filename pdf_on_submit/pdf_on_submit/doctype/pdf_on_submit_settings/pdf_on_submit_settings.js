@@ -89,25 +89,37 @@ function set_field_options(frm, cdt, cdn) {
 		const meta = frappe.get_meta(document_type);
 		const fields = [
 			"",
-			...meta.fields.filter((field) => {
-				return (
-					["Attach"].includes(field.fieldtype) && field.is_virtual === 0 && field.read_only === 1 && field.no_copy === 1
-				);
-			})
-			.sort((a, b) => a.label.localeCompare(b.label))
-		];
-
-		frm.fields_dict.enabled_for.grid.update_docfield_property(
-			"attach_to_field",
-			"options",
-			fields
+			...meta.fields
+				.filter(
+					(field) =>
+						field.fieldtype === "Attach" &&
+						field.is_virtual === 0 &&
+						field.read_only === 1 &&
+						field.no_copy === 1
+				)
 				.map((field) => {
 					return {
 						value: field.fieldname,
 						label: __(field.label),
 					};
 				})
-		);
-		frm.refresh_field("enabled_for");
+				.sort((a, b) => a.label.localeCompare(b.label)),
+		];
+
+		const grid = frm.fields_dict.enabled_for.grid;
+		for (const row of grid.grid_rows) {
+			if (row.doc.name !== cdn) {
+				continue;
+			}
+
+			let docfield = row?.docfields?.find((d) => d.fieldname === "attach_to_field");
+			if (docfield) {
+				docfield.options = fields;
+			} else {
+				throw `field attach_to_field not found`;
+			}
+		}
+
+		grid.debounced_refresh();
 	});
 }
