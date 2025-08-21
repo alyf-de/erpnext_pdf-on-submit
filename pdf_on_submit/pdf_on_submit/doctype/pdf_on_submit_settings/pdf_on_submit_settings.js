@@ -51,10 +51,6 @@ frappe.ui.form.on("PDF on Submit Settings", {
 
 frappe.ui.form.on("Enabled DocType", {
 	document_type(frm, cdt, cdn) {
-		if (!locals[cdt][cdn].document_type) {
-			return;
-		}
-
 		const row = locals[cdt][cdn];
 		frappe.model.set_value(row.doctype, row.name, "filters", "[]");
 
@@ -81,6 +77,11 @@ function set_attach_to_field_options(frm, cdt, cdn) {
 	const doc = frappe.get_doc(cdt, cdn);
 	const document_type = doc.document_type;
 	const grid = frm.fields_dict.enabled_for.grid;
+
+	if (!document_type) {
+		set_field_options(grid, cdn, "attach_to_field", [""]);
+		return;
+	}
 
 	// set options for `attach_to_field`
 	frappe.model.with_doctype(document_type, () => {
