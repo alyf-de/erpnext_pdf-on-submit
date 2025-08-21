@@ -20,7 +20,7 @@ frappe.ui.form.on("PDF on Submit Settings", {
 		});
 
 		frm.doc.enabled_for.forEach((row) => {
-			set_field_options(frm, row.doctype, row.name);
+			set_attach_to_field_options(frm, row.doctype, row.name);
 		});
 	},
 	enabled_for_on_form_rendered(frm) {
@@ -72,13 +72,15 @@ frappe.ui.form.on("Enabled DocType", {
 			frm.events.enabled_for_on_form_rendered(frm);
 		}
 
-		set_field_options(frm, cdt, cdn);
+		set_attach_to_field_options(frm, cdt, cdn);
 	},
 });
 
-function set_field_options(frm, cdt, cdn) {
+
+function set_attach_to_field_options(frm, cdt, cdn) {
 	const doc = frappe.get_doc(cdt, cdn);
 	const document_type = doc.document_type;
+	const grid = frm.fields_dict.enabled_for.grid;
 
 	// set options for `attach_to_field`
 	frappe.model.with_doctype(document_type, () => {
@@ -102,20 +104,29 @@ function set_field_options(frm, cdt, cdn) {
 				.sort((a, b) => a.label.localeCompare(b.label)),
 		];
 
-		const grid = frm.fields_dict.enabled_for.grid;
-		for (const row of grid.grid_rows) {
-			if (row.doc.name !== cdn) {
-				continue;
-			}
-
-			let docfield = row?.docfields?.find((d) => d.fieldname === "attach_to_field");
-			if (docfield) {
-				docfield.options = fields;
-			} else {
-				throw `field attach_to_field not found`;
-			}
-		}
-
+		set_field_options(grid, cdn, "attach_to_field", fields);
 		grid.debounced_refresh();
 	});
+}
+
+/**
+ * Set the options for a field in a specific grid row
+ * @param {frappe.ui.form.Grid} grid - frm.fields_dict.[child_table_name].grid
+ * @param {string} row_name - The name of the grid row
+ * @param {string} fieldname - The fieldname to set the options for
+ * @param {any[]} options - The options to set for the field
+ */
+function set_field_options(grid, row_name, fieldname, options) {
+	for (const row of grid.grid_rows) {
+		if (row.doc.name !== row_name) {
+			continue;
+		}
+
+		let docfield = row?.docfields?.find((d) => d.fieldname === fieldname);
+		if (docfield) {
+			docfield.options = options;
+		} else {
+			throw `field ${fieldname} not found`;
+		}
+	}
 }
