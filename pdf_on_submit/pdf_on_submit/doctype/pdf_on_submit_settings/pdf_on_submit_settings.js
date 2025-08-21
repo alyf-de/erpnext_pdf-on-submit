@@ -28,6 +28,10 @@ frappe.ui.form.on("PDF on Submit Settings", {
 		const parent = frm.cur_grid.wrapper.find("[data-fieldname='filter_area']");
 		parent.empty();
 
+		if (!row.document_type) {
+			return;
+		}
+
 		const filters = row.filters && row.filters !== "[]" ? JSON.parse(row.filters) : [];
 
 		frappe.model.with_doctype(row.document_type, () => {
