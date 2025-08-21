@@ -50,10 +50,6 @@ frappe.ui.form.on("PDF on Submit Settings", {
 });
 
 frappe.ui.form.on("Enabled DocType", {
-	enabled_for_add: (frm, cdt, cdn) => {
-		set_field_options(frm, cdt, cdn);
-	},
-
 	document_type(frm, cdt, cdn) {
 		if (!locals[cdt][cdn].document_type) {
 			return;
