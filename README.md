@@ -25,9 +25,18 @@ To change the settings of this app, you can open **PDF on Submit Settings** via 
 
 In the _Enabled For_ table, add a row for each DocType you want to enable PDF generation for.
 
-If you don't choose a different configuration, PDFs will be generated with the default **Print Format** and **Letter Head**. The PDF is named like the document name.
+If you don't choose a different configuration, PDFs will be generated with the default **Print Format** and **Letter Head**. By default, the PDF is named like the document name.
 
 Alternatively, you can choose a different **Print Format** and **Letter Head** for each DocType. You can also define a custom format for the PDF file name.
+
+If your transaction DocType has an attachment field, you can choose to attach the generated PDF to that field. Please note that the field needs to have the following properties:
+
+- Fieldtype: Attach
+- Read Only: Yes
+    This is to prevent users from adding an attachment that will be overwritten on submit.
+- No Copy: Yes
+    This is to prevent the attachment from being copied to other documents.
+- Is Virtual: No
 
 ![PDF on Submit Settings](docs/settings.gif)
 
