@@ -26,13 +26,30 @@ To change the settings of this app, you can open **PDF on Submit Settings** via 
 
 - Choose active DocTypes
 
+<<<<<<< HEAD
   Here you can select for which DocTypes this app is active. DocTypes that are disabled will be ignored.
+=======
+If you don't choose a different configuration, PDFs will be generated with the default **Print Format** and **Letter Head**. By default, the PDF is named like the document name.
+>>>>>>> 3565746 (feat: make the Attach To Field a (optional) setting (#66))
 
 - Create PDF in Background
 
+<<<<<<< HEAD
     Enable this option if you want to continue your work immediately. The PDFs will just appear once they are created. (This might require a reload of the current document.) Recommended if you usually submit many sales documents in bulk.
     
     Disable this option to get the PDF immediately. When you submit the document you will see a progress bar while the PDF gets created. When it's done you immediately see the PDF attached to the document.
+=======
+If your transaction DocType has an attachment field, you can choose to attach the generated PDF to that field. Please note that the field needs to have the following properties:
+
+- Fieldtype: Attach
+- Read Only: Yes
+    This is to prevent users from adding an attachment that will be overwritten on submit.
+- No Copy: Yes
+    This is to prevent the attachment from being copied to other documents.
+- Is Virtual: No
+
+![PDF on Submit Settings](docs/settings.gif)
+>>>>>>> 3565746 (feat: make the Attach To Field a (optional) setting (#66))
 
 ![PDF on Submit Settings](docs/settings.png)
 
