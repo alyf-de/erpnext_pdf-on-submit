@@ -25,6 +25,8 @@ def attach_pdf(doc, event=None):
 
 
 def process_enabled_doctype(doc, settings, in_background):
+	DEFAULT_TIMEOUT = 30 
+	
 	if settings.filters:
 		filters = json.loads(settings.filters)
 		if filters:
@@ -54,7 +56,7 @@ def process_enabled_doctype(doc, settings, in_background):
 
 	frappe.enqueue(
 		method=execute,
-		timeout=30,
+		timeout= frappe.get_single_value("PDF on Submit Settings", "timeout") or DEFAULT_TIMEOUT,
 		now=bool(
 			not in_background
 			or frappe.flags.in_test
