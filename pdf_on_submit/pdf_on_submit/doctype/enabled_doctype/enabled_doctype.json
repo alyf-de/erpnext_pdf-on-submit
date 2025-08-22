@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "document_type",
+  "attach_to_field",
   "print_format",
   "letter_head",
   "auto_name"
@@ -38,17 +39,55 @@
    "in_list_view": 1,
    "label": "Letter Head",
    "options": "Letter Head"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_rset",
+   "fieldtype": "Section Break",
+   "label": "Filters"
+  },
+  {
+   "fieldname": "filters",
+   "fieldtype": "Code",
+   "hidden": 1,
+   "label": "Filters",
+   "options": "JSON",
+   "read_only": 1
+  },
+  {
+   "fieldname": "filter_area",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "filter_description",
+   "fieldtype": "HTML",
+   "options": "Optional: create PDF only if the submitted document matches these filters.<br><br>"
+  },
+  {
+   "description": "If set, the PDF will be stored in this specific Attach field. If not set, it will be attached to the document without a specific field.<br>\n<b>Note:</b> The Attach fields should be 'No Copy' and 'Read Only'. Otherwise they get overwritten on submit.",
+   "fieldname": "attach_to_field",
+   "fieldtype": "Select",
+   "label": "Attach To Field"
+>>>>>>> 3565746 (feat: make the Attach To Field a (optional) setting (#66))
   }
  ],
+ "grid_page_length": 50,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2022-11-23 19:10:49.683993",
+=======
+ "modified": "2025-06-29 13:32:14.451432",
+>>>>>>> 3565746 (feat: make the Attach To Field a (optional) setting (#66))
  "modified_by": "Administrator",
  "module": "PDF on Submit",
  "name": "Enabled DocType",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],

@@ -54,6 +54,7 @@ def attach_pdf(doc, event=None):
         execute(**args)
 
 
+<<<<<<< HEAD
 def enqueue(args):
     """Add method `execute` with given args to the queue."""
     frappe.enqueue(
@@ -69,6 +70,62 @@ def enqueue(args):
 def execute(doctype, name, title=None, lang=None, show_progress=True, auto_name=None, print_format=None, letter_head=None):
     """
     Queue calls this method, when it's ready.
+=======
+def process_enabled_doctype(doc, settings, in_background):
+	if settings.filters:
+		filters = json.loads(settings.filters)
+		if filters:
+			condition_met = evaluate_filters(doc, filters)
+			if not condition_met:
+				return
+
+	auto_name = settings.auto_name
+	print_format = (
+		settings.print_format or doc.meta.default_print_format or "Standard"
+	)
+	letter_head = settings.letter_head or None
+	fallback_language = (
+		frappe.db.get_single_value("System Settings", "language") or "en"
+	)
+	args = {
+		"doctype": doc.doctype,
+		"name": doc.name,
+		"to_field": settings.attach_to_field,
+		"title": doc.get_title() if doc.meta.title_field else None,
+		"lang": getattr(doc, "language", fallback_language),
+		"show_progress": not in_background,
+		"auto_name": auto_name,
+		"print_format": print_format,
+		"letter_head": letter_head,
+	}
+
+	frappe.enqueue(
+		method=execute,
+		timeout=30,
+		now=bool(
+			not in_background
+			or frappe.flags.in_test
+			or frappe.conf.developer_mode
+		),
+		enqueue_after_commit=True,
+		**args,
+	)
+
+
+def execute(
+	doctype,
+	name,
+	to_field=None,
+	title=None,
+	lang=None,
+	show_progress=True,
+	auto_name=None,
+	print_format=None,
+	letter_head=None,
+):
+	"""
+	Queue calls this method, when it's ready.
+>>>>>>> 3565746 (feat: make the Attach To Field a (optional) setting (#66))
 
     1. Create necessary folders
     2. Get raw PDF data
@@ -114,8 +171,15 @@ def execute(doctype, name, title=None, lang=None, show_progress=True, auto_name=
 
     save_and_attach(pdf_data, doctype, name, target_folder, auto_name)
 
+<<<<<<< HEAD
     if show_progress:
         publish_progress(100)
+=======
+	save_and_attach(pdf_data, doctype, name, target_folder, auto_name, to_field)
+
+	if show_progress:
+		publish_progress(100)
+>>>>>>> 3565746 (feat: make the Attach To Field a (optional) setting (#66))
 
 
 def create_folder(folder, parent):
@@ -135,9 +199,15 @@ def get_pdf_data(doctype, name, print_format: None, letterhead: None):
     return frappe.utils.pdf.get_pdf(html)
 
 
+<<<<<<< HEAD
 def save_and_attach(content, to_doctype, to_name, folder, auto_name=None):
     """
     Save content to disk and create a File document.
+=======
+def save_and_attach(content, to_doctype, to_name, folder, auto_name=None, to_field=None):
+	"""
+	Save content to disk and create a File document.
+>>>>>>> 3565746 (feat: make the Attach To Field a (optional) setting (#66))
 
     File document is linked to another document.
     """
@@ -149,6 +219,7 @@ def save_and_attach(content, to_doctype, to_name, folder, auto_name=None):
     else:
         file_name = "{to_name}.pdf".format(to_name=to_name.replace("/", "-"))
 
+<<<<<<< HEAD
     file = frappe.new_doc("File")
     file.file_name = file_name
     file.content = content
@@ -157,6 +228,20 @@ def save_and_attach(content, to_doctype, to_name, folder, auto_name=None):
     file.attached_to_doctype = to_doctype
     file.attached_to_name = to_name
     file.save()
+=======
+	file = frappe.new_doc("File")
+	file.file_name = file_name
+	file.content = content
+	file.folder = folder
+	file.is_private = 1
+	file.attached_to_doctype = to_doctype
+	file.attached_to_name = to_name
+	file.attached_to_field = to_field
+	file.save()
+>>>>>>> 3565746 (feat: make the Attach To Field a (optional) setting (#66))
+
+	if to_field:
+		frappe.db.set_value(to_doctype, to_name, to_field, file.file_url)
 
 
 def set_name_from_naming_options(autoname, doc):
