@@ -56,7 +56,7 @@ def process_enabled_doctype(doc, settings, in_background):
 		timeout=30,
 		now=bool(
 			not in_background
-			or frappe.flags.in_test
+			or frappe.in_test
 			or frappe.conf.developer_mode
 		),
 		enqueue_after_commit=True,
