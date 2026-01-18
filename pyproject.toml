@@ -20,7 +20,7 @@ frappe = ">=16.0.0,<17.0.0"
 
 [tool.ruff]
 line-length = 110
-target-version = "py310"
+target-version = "py314"
 
 [tool.ruff.lint]
 typing-modules = ["frappe.types.DF"]
