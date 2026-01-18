@@ -36,7 +36,7 @@
  "icon": "octicon octicon-file-pdf",
  "issingle": 1,
  "links": [],
- "modified": "2021-01-13 15:44:40.308041",
+ "modified": "2026-01-18 22:11:04.756526",
  "modified_by": "Administrator",
  "module": "PDF on Submit",
  "name": "PDF on Submit Settings",
@@ -62,7 +62,7 @@
   }
  ],
  "quick_entry": 1,
- "sort_field": "modified",
+ "sort_field": "creation",
  "sort_order": "ASC",
  "track_changes": 1
 }
