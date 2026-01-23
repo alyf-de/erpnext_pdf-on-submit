@@ -49,6 +49,32 @@ The PDF will be created in the language that is specified in the _Language_ fiel
 
 To add translations for a new language, please copy `pdf_on_submit/locale/main.pot` to `pdf_on_submit/locale/<language_code>.po` and fill in the translations (`msgstr`) for each `msgid`. When you're done, you can commit your changes and send a PR.
 
+## Helpers
+
+### `split_quill`
+
+This helper function is used to split the HTML content of a Quill editor into a list of HTML strings, each representing a direct child of the editor div. This is useful for breaking text-editor content into separate table rows in a print format.
+
+```jinja
+<table>
+    {% for paragraph in split_quill(row.description) %}
+        <tr>
+            <td>{{ paragraph }}</td>
+        </tr>
+    {% endfor %}
+</table>
+```
+
+### `get_serial_numbers`
+
+This helper function is used to get the serial numbers for a transaction row. The row is expected to have either a `serial_no` or a `serial_and_batch_bundle` field.
+
+```jinja
+{% for serial_number in get_serial_numbers(row) %}
+    {{ serial_number }}
+{% endfor %}
+```
+
 ## Licence
 
 Copyright (C) 2025  ALYF GmbH <hallo@alyf.de>
