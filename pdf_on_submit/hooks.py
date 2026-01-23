@@ -115,6 +115,6 @@ doc_events = {"*": {"on_submit": "pdf_on_submit.attach_pdf.attach_pdf"}}
 # }
 
 jinja = {
-	"methods": ["pdf_on_submit.quill.split_quill"],
+	"methods": ["pdf_on_submit.quill.split_quill", "pdf_on_submit.serial_numbers.get_serial_numbers"],
 	# "filters": "pdf_on_submit.utils.jinja_filters"
 }
