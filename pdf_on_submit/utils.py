@@ -17,9 +17,6 @@ def get_print_details(doctype: str, docname: str) -> tuple:
 	print_format = doc.meta.default_print_format or "Standard"
 	letter_head = doc.letter_head or None
 
-	if "pdf_on_submit" not in frappe.get_installed_apps():
-		return (print_format, letter_head)
-
 	settings = frappe.get_single("PDF on Submit Settings")
 	matched_config = get_matching_enabled_doctype(doc, settings)
 
