@@ -4,7 +4,7 @@ from pdf_on_submit.attach_pdf import get_matching_enabled_doctype
 
 
 @frappe.whitelist()
-def get_print_details(doctype: str, docname: str) -> tuple:
+def get_print_details(doctype: str, docname: str) -> tuple[str, str | None]:
 	"""
 	Get print format and letter head for a document based on PDF on Submit Settings.
 
