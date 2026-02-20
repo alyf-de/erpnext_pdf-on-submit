@@ -3,20 +3,6 @@ from frappe import _
 from pdf_on_submit.attach_pdf import get_matching_enabled_doctype
 
 
-ALLOWED_DOCTYPES = [
-	"Quotation",
-	"Sales Order",
-	"Sales Invoice",
-	"Delivery Note",
-	"Dunning",
-	"Request for Quotation",
-	"Supplier Quotation",
-	"Purchase Order",
-	"Purchase Invoice",
-	"Purchase Receipt",
-]
-
-
 @frappe.whitelist()
 def get_print_details(doctype: str, docname: str) -> tuple:
 	"""
@@ -24,9 +10,6 @@ def get_print_details(doctype: str, docname: str) -> tuple:
 
 	Returns: (print_format, letter_head)
 	"""
-	if doctype not in ALLOWED_DOCTYPES:
-		frappe.throw(_("Print details not available for this document type"))
-
 	if not frappe.has_permission(doctype, "print", docname):
 		frappe.throw(_("No permission to print this document"))
 

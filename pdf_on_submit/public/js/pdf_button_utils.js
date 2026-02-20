@@ -2,7 +2,9 @@
 
 window.pdf_on_submit = window.pdf_on_submit || {};
 
-// Doctypes that support PDF button
+// Common doctypes with PDF button enabled by default
+// To enable for other doctypes, add a Client Script:
+//   frappe.ui.form.on("Your DocType", { refresh: pdf_on_submit.add_pdf_button });
 pdf_on_submit.ALLOWED_DOCTYPES = [
 	"Quotation",
 	"Sales Order",
