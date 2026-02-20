@@ -13,6 +13,31 @@ from frappe.utils.data import evaluate_filters
 from frappe.utils.weasyprint import PrintFormatGenerator
 
 
+def get_matching_enabled_doctype(doc, settings=None):
+	"""
+	Get the first enabled_doctype configuration that matches this document.
+	Rows are evaluated in table order (idx). First match wins.
+
+	Returns: EnabledDocType object (=Settings Row) or None
+	"""
+	if not settings:
+		settings = frappe.get_single("PDF on Submit Settings")
+
+	enabled_doctypes = settings.get("enabled_for", {"document_type": doc.doctype})
+
+	for dt_settings in enabled_doctypes:
+		if not dt_settings.filters:
+			return dt_settings
+
+		filters = json.loads(dt_settings.filters)
+		if filters and not evaluate_filters(doc, filters):
+			continue
+
+		return dt_settings
+
+	return None
+
+
 def attach_pdf(doc, event=None):
 	settings = frappe.get_single("PDF on Submit Settings")
 	enabled_doctypes = settings.get("enabled_for", {"document_type": doc.doctype})

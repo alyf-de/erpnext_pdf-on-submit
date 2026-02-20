@@ -16,7 +16,7 @@ app_license = "GPLv3"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/pdf_on_submit/css/pdf_on_submit.css"
-# app_include_js = "/assets/pdf_on_submit/js/pdf_on_submit.js"
+app_include_js = "/assets/pdf_on_submit/js/pdf_button_utils.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/pdf_on_submit/css/pdf_on_submit.css"
@@ -26,7 +26,18 @@ app_license = "GPLv3"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {
+	"Quotation": "public/js/doctypes/quotation.js",
+	"Sales Order": "public/js/doctypes/sales_order.js",
+	"Sales Invoice": "public/js/doctypes/sales_invoice.js",
+	"Delivery Note": "public/js/doctypes/delivery_note.js",
+	"Dunning": "public/js/doctypes/dunning.js",
+	"Request for Quotation": "public/js/doctypes/request_for_quotation.js",
+	"Supplier Quotation": "public/js/doctypes/supplier_quotation.js",
+	"Purchase Order": "public/js/doctypes/purchase_order.js",
+	"Purchase Invoice": "public/js/doctypes/purchase_invoice.js",
+	"Purchase Receipt": "public/js/doctypes/purchase_receipt.js",
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
