@@ -2,6 +2,29 @@
 
 window.pdf_on_submit = window.pdf_on_submit || {};
 
+// Doctypes that support PDF button
+pdf_on_submit.ALLOWED_DOCTYPES = [
+	"Quotation",
+	"Sales Order",
+	"Sales Invoice",
+	"Delivery Note",
+	"Dunning",
+	"Request for Quotation",
+	"Supplier Quotation",
+	"Purchase Order",
+	"Purchase Invoice",
+	"Purchase Receipt",
+];
+
+// Register handler for all allowed doctypes
+$(document).on("app_ready", function () {
+	pdf_on_submit.ALLOWED_DOCTYPES.forEach((doctype) => {
+		frappe.ui.form.on(doctype, {
+			refresh: pdf_on_submit.add_pdf_button,
+		});
+	});
+});
+
 pdf_on_submit.add_pdf_button = async function (frm) {
 	// Don't show button for new/unsaved documents
 	if (frm.is_new()) {
