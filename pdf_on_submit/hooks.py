@@ -121,3 +121,8 @@ jinja = {
 	"methods": ["pdf_on_submit.quill.split_quill", "pdf_on_submit.serial_numbers.get_serial_numbers"],
 	# "filters": "pdf_on_submit.utils.jinja_filters"
 }
+
+# Translation
+# ------------
+# List of apps whose translatable strings should be excluded from this app's translations.
+ignore_translatable_strings_from = ["frappe", "erpnext"]
