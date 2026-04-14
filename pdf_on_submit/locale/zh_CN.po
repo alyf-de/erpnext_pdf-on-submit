@@ -1,44 +1,46 @@
-# German translations for PDF on Submit.
-# Copyright (C) 2024 ALYF GmbH
+# Chinese (Simplified, China) translations for PDF on Submit.
+# Copyright (C) 2026 ALYF GmbH
 # This file is distributed under the same license as the PDF on Submit project.
-# ALYF GmbH <hallo@alyf.de>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PDF on Submit VERSION\n"
 "Report-Msgid-Bugs-To: hallo@alyf.de\n"
 "POT-Creation-Date: 2026-04-14 21:32+0053\n"
-"PO-Revision-Date: 2024-07-20 23:34+0053\n"
+"PO-Revision-Date: 2026-04-14 21:24+0053\n"
 "Last-Translator: hallo@alyf.de\n"
 "Language-Team: hallo@alyf.de\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. Label of the create_pdf_in_background (Check) field in DocType 'PDF on
 #. Submit Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "Create PDF In Background"
-msgstr "PDF im Hintergrund erstellen"
+msgstr "在后台创建PDF"
 
 #: pdf_on_submit/attach_pdf.py:80
 msgid "Creating PDF ..."
-msgstr "Erstelle PDF ..."
+msgstr "正在创建 PDF ..."
 
 #. Name of a DocType
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
 msgid "Enabled DocType"
-msgstr "Aktivierter Dokumenttyp"
+msgstr "已启用的DocType"
 
 #. Label of the enabled_for (Table) field in DocType 'PDF on Submit Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "Enabled For"
-msgstr "Aktiviert für"
+msgstr "启用对象"
 
 #: pdf_on_submit/attach_pdf.py:108
 msgid "Failed to attach XML to PDF for Sales Invoice {0}"
-msgstr "Fehler beim Anhängen von XML an PDF für Verkaufsrechnung {0}"
+msgstr "无法将XML附加到销售发票 {0} 的PDF中"
 
 #. Description of the 'Auto Name' (Data) field in DocType 'Enabled DocType'
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
@@ -46,8 +48,8 @@ msgid ""
 "Naming Options:\n"
 "<ol><li><b>format:EXAMPLE-{MM}-{fieldname1}-{fieldname2}-{#####}</b> - Replace all braced words (fieldnames, date words (DD, MM, YY), series) with their value. Outside braces, any characters can be used.</li></ol>"
 msgstr ""
-"Optionen:\n"
-"<ol><li><b>format:BEISPIEL-{MM}-{feldname1}-{feldname2}-{#####}</b> - Ersetzt alle in geschweiften Klammern stehenden Wörter (Feldnamen, Datumsangaben (DD, MM, YY), Nummernkreise) durch ihren Wert. Außerhalb der geschweiften Klammern können beliebige Zeichen verwendet werden.</li></ol>"
+"命名选项：\n"
+"<ol><li><b>format:EXAMPLE-{MM}-{fieldname1}-{fieldname2}-{#####}</b> - 将所有花括号中的词（字段名、日期词（DD、MM、YY）、序列）替换为其对应的值。在花括号之外，可以使用任意字符。</li></ol>"
 
 #. Content of the 'filter_description' (HTML) field in DocType 'Enabled
 #. DocType'
@@ -55,15 +57,13 @@ msgstr ""
 msgid ""
 "Optional: create PDF only if the submitted document matches these "
 "filters.<br><br>"
-msgstr ""
-"Optional: PDF nur erstellen, wenn das eingereichte Dokument diesen Filtern "
-"entspricht.<br><br>"
+msgstr "可选：仅当已提交的文档符合这些筛选条件时才创建PDF。<br><br>"
 
 #. Name of a DocType
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "PDF on Submit Settings"
-msgstr "PDF-on-Submit-Einstellungen"
+msgstr "提交时PDF设置"
 
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:16
 msgid "Row #{0}: invalid filters for <b>{1}</b>: {2}"
-msgstr "Zeile #{0}: Ungültige Filter für <b>{1}</b>: {2}"
+msgstr "第 #{0} 行：<b>{1}</b> 的筛选条件无效：{2}"
