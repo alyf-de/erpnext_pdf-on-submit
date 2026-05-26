@@ -17,6 +17,7 @@ app_license = "GPLv3"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/pdf_on_submit/css/pdf_on_submit.css"
 app_include_js = "/assets/pdf_on_submit/js/pdf_button_utils.js"
+extend_bootinfo = "pdf_on_submit.utils.extend_boot_info"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/pdf_on_submit/css/pdf_on_submit.css"

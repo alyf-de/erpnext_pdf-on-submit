@@ -1,26 +1,14 @@
-// Shared PDF button utility for sales/purchase doctypes
+// Shared PDF button utility.
+// Auto-registers for every doctype listed in PDF on Submit Settings > enabled_for
+// when the global "Show PDF Button" toggle is on (loaded from boot info).
 
 window.pdf_on_submit = window.pdf_on_submit || {};
 
-// Common doctypes with PDF button enabled by default
-// To enable for other doctypes, add a Client Script:
-//   frappe.ui.form.on("Your DocType", { refresh: pdf_on_submit.add_pdf_button });
-pdf_on_submit.ALLOWED_DOCTYPES = [
-	"Quotation",
-	"Sales Order",
-	"Sales Invoice",
-	"Delivery Note",
-	"Dunning",
-	"Request for Quotation",
-	"Supplier Quotation",
-	"Purchase Order",
-	"Purchase Invoice",
-	"Purchase Receipt",
-];
-
-// Register handler for all allowed doctypes
 $(document).on("app_ready", function () {
-	pdf_on_submit.ALLOWED_DOCTYPES.forEach((doctype) => {
+	const boot = frappe.boot.pdf_on_submit || {};
+	if (!boot.show_pdf_button) return;
+
+	(boot.enabled_doctypes || []).forEach((doctype) => {
 		frappe.ui.form.on(doctype, {
 			refresh: pdf_on_submit.add_pdf_button,
 		});
@@ -28,16 +16,7 @@ $(document).on("app_ready", function () {
 });
 
 pdf_on_submit.add_pdf_button = async function (frm) {
-	// Don't show button for new/unsaved documents
-	if (frm.is_new()) {
-		return;
-	}
-
-	const show_button = await frappe.db.get_single_value("PDF on Submit Settings", "show_pdf_button");
-
-	if (!show_button) {
-		return;
-	}
+	if (frm.is_new()) return;
 
 	frm.remove_custom_button(__("PDF"));
 
@@ -51,6 +30,8 @@ pdf_on_submit.add_pdf_button = async function (frm) {
 				},
 			});
 
+			// frappe.call auto-displays server errors; bail silently if no message.
+			if (!response || !response.message) return;
 			const [print_format, letter_head] = response.message;
 
 			const params = new URLSearchParams({
@@ -63,7 +44,6 @@ pdf_on_submit.add_pdf_button = async function (frm) {
 			}).toString();
 
 			const url = frappe.urllib.get_full_url("/api/method/frappe.utils.print_format.download_pdf?" + params);
-
 			window.open(url, "_blank");
 		} catch (error) {
 			console.error("PDF generation failed:", error);
@@ -71,7 +51,7 @@ pdf_on_submit.add_pdf_button = async function (frm) {
 				title: __("Error"),
 				indicator: "red",
 				message: __("Failed to generate PDF. {0}", [
-					error.message || "Please check your permissions and try again.",
+					error.message || __("Please check your permissions and try again."),
 				]),
 			});
 		}
