@@ -21,6 +21,9 @@ pdf_on_submit.add_pdf_button = async function (frm) {
 	frm.remove_custom_button(__("PDF"));
 
 	frm.add_custom_button(__("PDF"), async () => {
+		// Open the popup synchronously while still in the user-gesture context,
+		// before any await, to avoid browser popup blockers.
+		const popup = window.open("", "_blank");
 		try {
 			const response = await frappe.call({
 				method: "pdf_on_submit.utils.get_print_details",
@@ -31,7 +34,10 @@ pdf_on_submit.add_pdf_button = async function (frm) {
 			});
 
 			// frappe.call auto-displays server errors; bail silently if no message.
-			if (!response || !response.message) return;
+			if (!response || !response.message) {
+				popup && popup.close();
+				return;
+			}
 			const [print_format, letter_head] = response.message;
 
 			const params = new URLSearchParams({
@@ -44,8 +50,9 @@ pdf_on_submit.add_pdf_button = async function (frm) {
 			}).toString();
 
 			const url = frappe.urllib.get_full_url("/api/method/frappe.utils.print_format.download_pdf?" + params);
-			window.open(url, "_blank");
+			popup.location.href = url;
 		} catch (error) {
+			popup && popup.close();
 			console.error("PDF generation failed:", error);
 			frappe.msgprint({
 				title: __("Error"),
