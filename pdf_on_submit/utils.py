@@ -9,10 +9,14 @@ def extend_boot_info(bootinfo):
 		settings = frappe.get_single("PDF on Submit Settings")
 	except frappe.PermissionError:
 		return
+
+	show_pdf_button = cint(settings.show_pdf_button)
 	bootinfo.pdf_on_submit = frappe._dict(
 		{
-			"show_pdf_button": cint(settings.show_pdf_button),
-			"enabled_doctypes": [row.document_type for row in settings.enabled_for if row.document_type],
+			"show_pdf_button": show_pdf_button,
+			"enabled_doctypes": [row.document_type for row in settings.enabled_for if row.document_type]
+			if show_pdf_button
+			else [],
 		}
 	)
 
