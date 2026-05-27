@@ -15,6 +15,18 @@ $(document).on("app_ready", function () {
 	});
 });
 
+pdf_on_submit.build_pdf_url = function (frm, { print_format, letter_head }) {
+	const params = new URLSearchParams({
+		doctype: frm.doc.doctype,
+		name: frm.doc.name,
+		format: print_format,
+		no_letterhead: 0,
+		letterhead: letter_head || "",
+		...(frm.doc.language && { _lang: frm.doc.language }),
+	}).toString();
+	return frappe.urllib.get_full_url("/api/method/frappe.utils.print_format.download_pdf?" + params);
+};
+
 pdf_on_submit.add_pdf_button = async function (frm) {
 	if (frm.is_new()) return;
 
@@ -42,25 +54,35 @@ pdf_on_submit.add_pdf_button = async function (frm) {
 			});
 
 			// frappe.call auto-displays server errors; bail silently if no message.
-			if (!response || !response.message) {
-				popup && popup.close();
+			const matches = response && response.message;
+			if (!matches || !matches.length) {
+				popup.close();
 				return;
 			}
-			const [print_format, letter_head] = response.message;
 
-			const params = new URLSearchParams({
-				doctype: frm.doc.doctype,
-				name: frm.doc.name,
-				format: print_format,
-				no_letterhead: 0,
-				letterhead: letter_head || "",
-				...(frm.doc.language && { _lang: frm.doc.language }),
-			}).toString();
+			const [first, ...rest] = matches;
+			popup.location.href = pdf_on_submit.build_pdf_url(frm, first);
 
-			const url = frappe.urllib.get_full_url("/api/method/frappe.utils.print_format.download_pdf?" + params);
-			popup.location.href = url;
+			if (rest.length) {
+				const items = rest
+					.map((m) => {
+						const label = m.letter_head
+							? `${frappe.utils.escape_html(m.print_format)} – ${frappe.utils.escape_html(m.letter_head)}`
+							: frappe.utils.escape_html(m.print_format);
+						const href = frappe.utils.escape_html(pdf_on_submit.build_pdf_url(frm, m));
+						return `<li><a href="${href}" target="_blank" rel="noopener">${label}</a></li>`;
+					})
+					.join("");
+				frappe.msgprint({
+					title: __("Additional print formats"),
+					indicator: "blue",
+					message:
+						__("More formats are configured for this document. Click to open:") +
+						`<ul>${items}</ul>`,
+				});
+			}
 		} catch (error) {
-			popup && popup.close();
+			popup.close();
 			console.error("PDF generation failed:", error);
 			frappe.msgprint({
 				title: __("Error"),

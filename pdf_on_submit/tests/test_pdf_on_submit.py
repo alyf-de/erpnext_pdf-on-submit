@@ -93,9 +93,10 @@ class TestGetPrintDetails(FrappeTestCase):
 				self._call()
 
 	def test_returns_standard_when_no_match(self):
-		print_format, letter_head = self._call()
-		self.assertEqual(print_format, "Standard")
-		self.assertIsNone(letter_head)
+		results = self._call()
+		self.assertEqual(len(results), 1)
+		self.assertEqual(results[0]["print_format"], "Standard")
+		self.assertIsNone(results[0]["letter_head"])
 
 	def test_returns_matched_config_print_format(self):
 		# Use a non-default value so the assertion proves the override ran.
@@ -105,8 +106,8 @@ class TestGetPrintDetails(FrappeTestCase):
 		)
 		self.settings.flags.ignore_links = True
 		self.settings.save()
-		print_format, _ = self._call()
-		self.assertEqual(print_format, "Custom Format")
+		results = self._call()
+		self.assertEqual(results[0]["print_format"], "Custom Format")
 
 	def test_returns_matched_config_letter_head(self):
 		self.settings.append(
@@ -115,15 +116,29 @@ class TestGetPrintDetails(FrappeTestCase):
 		)
 		self.settings.flags.ignore_links = True
 		self.settings.save()
-		_, letter_head = self._call()
-		self.assertEqual(letter_head, "Custom Letter Head")
+		results = self._call()
+		self.assertEqual(results[0]["letter_head"], "Custom Letter Head")
 
 	def test_letter_head_falls_back_to_doc(self):
 		self.doc.letter_head = "Test Letter Head"
 		self.doc.save()
-		with patch("pdf_on_submit.utils.get_matching_enabled_doctype", return_value=None):
-			_, letter_head = self._call()
-		self.assertEqual(letter_head, "Test Letter Head")
+		with patch("pdf_on_submit.utils.iter_matching_enabled_doctypes", return_value=iter([])):
+			results = self._call()
+		self.assertEqual(results[0]["letter_head"], "Test Letter Head")
+
+	def test_returns_one_entry_per_matching_row(self):
+		self.settings.append(
+			"enabled_for",
+			{"document_type": TEST_DOCTYPE, "print_format": "Format A", "letter_head": ""},
+		)
+		self.settings.append(
+			"enabled_for",
+			{"document_type": TEST_DOCTYPE, "print_format": "Format B", "letter_head": ""},
+		)
+		self.settings.flags.ignore_links = True
+		self.settings.save()
+		results = self._call()
+		self.assertEqual([r["print_format"] for r in results], ["Format A", "Format B"])
 
 
 class TestExtendBootInfo(FrappeTestCase):

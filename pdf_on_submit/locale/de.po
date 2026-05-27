@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PDF on Submit VERSION\n"
 "Report-Msgid-Bugs-To: hallo@alyf.de\n"
-"POT-Creation-Date: 2026-05-27 09:53+0053\n"
+"POT-Creation-Date: 2026-05-27 13:49+0053\n"
 "PO-Revision-Date: 2024-07-20 23:34+0053\n"
 "Last-Translator: hallo@alyf.de\n"
 "Language-Team: hallo@alyf.de\n"
@@ -16,13 +16,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
+#: pdf_on_submit/public/js/pdf_button_utils.js:77
+msgid "Additional print formats"
+msgstr "Weitere Druckformate"
+
 #. Label of the create_pdf_in_background (Check) field in DocType 'PDF on
 #. Submit Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "Create PDF In Background"
 msgstr "PDF im Hintergrund erstellen"
 
-#: pdf_on_submit/attach_pdf.py:105
+#: pdf_on_submit/attach_pdf.py:88
 msgid "Creating PDF ..."
 msgstr "Erstelle PDF ..."
 
@@ -42,13 +46,17 @@ msgstr "Aktivierter Dokumenttyp"
 msgid "Enabled For"
 msgstr "Aktiviert für"
 
-#: pdf_on_submit/attach_pdf.py:133
+#: pdf_on_submit/attach_pdf.py:116
 msgid "Failed to attach XML to PDF for Sales Invoice {0}"
 msgstr "Fehler beim Anhängen von XML an PDF für Verkaufsrechnung {0}"
 
-#: pdf_on_submit/public/js/pdf_button_utils.js:69
+#: pdf_on_submit/public/js/pdf_button_utils.js:91
 msgid "Failed to generate PDF. {0}"
 msgstr "PDF-Erstellung fehlgeschlagen. {0}"
+
+#: pdf_on_submit/public/js/pdf_button_utils.js:80
+msgid "More formats are configured for this document. Click to open:"
+msgstr "Für dieses Dokument sind weitere Formate konfiguriert. Zum Öffnen anklicken:"
 
 #. Description of the 'Auto Name' (Data) field in DocType 'Enabled DocType'
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
@@ -74,11 +82,11 @@ msgstr "Optional: PDF nur erstellen, wenn das eingereichte Dokument diesen Filte
 msgid "PDF on Submit Settings"
 msgstr "PDF-on-Submit-Einstellungen"
 
-#: pdf_on_submit/public/js/pdf_button_utils.js:31
+#: pdf_on_submit/public/js/pdf_button_utils.js:43
 msgid "Please allow popups for this site and try again."
 msgstr "Bitte Popups für diese Seite erlauben und erneut versuchen."
 
-#: pdf_on_submit/public/js/pdf_button_utils.js:29
+#: pdf_on_submit/public/js/pdf_button_utils.js:41
 msgid "Popup Blocked"
 msgstr "Popup blockiert"
 

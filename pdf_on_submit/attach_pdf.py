@@ -6,6 +6,7 @@ import json
 import frappe
 from frappe import _
 from frappe.core.api.file import create_new_folder
+from frappe.model.document import Document
 from frappe.model.naming import _format_autoname
 from frappe.realtime import publish_realtime
 from frappe.translate import print_language
@@ -13,50 +14,32 @@ from frappe.utils.data import evaluate_filters
 from frappe.utils.weasyprint import PrintFormatGenerator
 
 
-def get_matching_enabled_doctype(doc, settings=None):
+def iter_matching_enabled_doctypes(doc, settings = None):
 	"""
-	Get the first enabled_doctype configuration that matches this document.
-	Rows are evaluated in table order (idx). First match wins.
-
-	Returns: EnabledDocType object (=Settings Row) or None
+	Yield enabled_doctype configuration rows whose filters match this document,
+	in table order (idx).
 	"""
-	if not settings:
+	if settings is None:
 		settings = frappe.get_single("PDF on Submit Settings")
 
-	enabled_doctypes = settings.get("enabled_for", {"document_type": doc.doctype})
+	if not settings.enabled_for:
+		return
 
-	for dt_settings in enabled_doctypes:
-		if not dt_settings.filters:
-			return dt_settings
-
-		filters = json.loads(dt_settings.filters)
-		if filters and not evaluate_filters(doc, filters):
-			continue
-
-		return dt_settings
-
-	return None
+	for row in settings.get("enabled_for", {"document_type": doc.doctype}):
+		if row.filters:
+			filters = json.loads(row.filters)
+			if filters and not evaluate_filters(doc, filters):
+				continue
+		yield row
 
 
 def attach_pdf(doc, event=None):
 	settings = frappe.get_single("PDF on Submit Settings")
-	enabled_doctypes = settings.get("enabled_for", {"document_type": doc.doctype})
-
-	if not enabled_doctypes:
-		return
-
-	for dt_settings in enabled_doctypes:
-		process_enabled_doctype(doc, dt_settings, settings.create_pdf_in_background)
+	for row in iter_matching_enabled_doctypes(doc, settings):
+		process_enabled_doctype(doc, row, settings.create_pdf_in_background)
 
 
 def process_enabled_doctype(doc, settings, in_background):
-	if settings.filters:
-		filters = json.loads(settings.filters)
-		if filters:
-			condition_met = evaluate_filters(doc, filters)
-			if not condition_met:
-				return
-
 	auto_name = settings.auto_name
 	print_format = settings.print_format or doc.meta.default_print_format or "Standard"
 	letter_head = settings.letter_head or None
