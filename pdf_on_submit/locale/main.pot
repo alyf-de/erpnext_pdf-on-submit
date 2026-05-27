@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PDF on Submit VERSION\n"
 "Report-Msgid-Bugs-To: hallo@alyf.de\n"
-"POT-Creation-Date: 2026-04-14 21:32+0053\n"
-"PO-Revision-Date: 2026-04-14 21:32+0053\n"
+"POT-Creation-Date: 2026-05-27 09:39+0053\n"
+"PO-Revision-Date: 2026-05-27 09:39+0053\n"
 "Last-Translator: hallo@alyf.de\n"
 "Language-Team: hallo@alyf.de\n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,12 @@ msgstr ""
 msgid "Creating PDF ..."
 msgstr ""
 
+#. Description of the 'Show PDF Button' (Check) field in DocType 'PDF on Submit
+#. Settings'
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
+msgid "Displays a PDF button on the Form View for each enabled DocType."
+msgstr ""
+
 #. Name of a DocType
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
 msgid "Enabled DocType"
@@ -36,7 +42,7 @@ msgstr ""
 msgid "Enabled For"
 msgstr ""
 
-#: pdf_on_submit/public/js/pdf_button_utils.js:43
+#: pdf_on_submit/public/js/pdf_button_utils.js:66
 msgid "Error"
 msgstr ""
 
@@ -44,7 +50,7 @@ msgstr ""
 msgid "Failed to attach XML to PDF for Sales Invoice {0}"
 msgstr ""
 
-#: pdf_on_submit/public/js/pdf_button_utils.js:45
+#: pdf_on_submit/public/js/pdf_button_utils.js:69
 msgid "Failed to generate PDF. {0}"
 msgstr ""
 
@@ -55,7 +61,7 @@ msgid ""
 "<ol><li><b>format:EXAMPLE-{MM}-{fieldname1}-{fieldname2}-{#####}</b> - Replace all braced words (fieldnames, date words (DD, MM, YY), series) with their value. Outside braces, any characters can be used.</li></ol>"
 msgstr ""
 
-#: pdf_on_submit/utils.py:29
+#: pdf_on_submit/utils.py:32
 msgid "No permission to print this document"
 msgstr ""
 
@@ -65,15 +71,22 @@ msgstr ""
 msgid "Optional: create PDF only if the submitted document matches these filters.<br><br>"
 msgstr ""
 
+#: pdf_on_submit/public/js/pdf_button_utils.js:21
+#: pdf_on_submit/public/js/pdf_button_utils.js:23
+msgid "PDF"
+msgstr ""
+
 #. Name of a DocType
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "PDF on Submit Settings"
 msgstr ""
 
-#. Description of the 'Show PDF Button in Sales and Purchase DocTypes' (Check)
-#. field in DocType 'PDF on Submit Settings'
-#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
-msgid "Respects PDF on Submit Settings. Falls back to Default ERPNext Print Format if set"
+#: pdf_on_submit/public/js/pdf_button_utils.js:31
+msgid "Please allow popups for this site and try again."
+msgstr ""
+
+#: pdf_on_submit/public/js/pdf_button_utils.js:29
+msgid "Popup Blocked"
 msgstr ""
 
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:16
@@ -83,5 +96,5 @@ msgstr ""
 #. Label of the show_pdf_button (Check) field in DocType 'PDF on Submit
 #. Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
-msgid "Show PDF Button in Sales and Purchase DocTypes"
+msgid "Show PDF Button"
 msgstr ""

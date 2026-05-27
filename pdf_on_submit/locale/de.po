@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PDF on Submit VERSION\n"
 "Report-Msgid-Bugs-To: hallo@alyf.de\n"
-"POT-Creation-Date: 2026-04-14 21:32+0053\n"
+"POT-Creation-Date: 2026-05-27 09:39+0053\n"
 "PO-Revision-Date: 2024-07-20 23:34+0053\n"
 "Last-Translator: hallo@alyf.de\n"
 "Language-Team: hallo@alyf.de\n"
@@ -26,6 +26,12 @@ msgstr "PDF im Hintergrund erstellen"
 msgid "Creating PDF ..."
 msgstr "Erstelle PDF ..."
 
+#. Description of the 'Show PDF Button' (Check) field in DocType 'PDF on Submit
+#. Settings'
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
+msgid "Displays a PDF button on the Form View for each enabled DocType."
+msgstr "Zeigt eine PDF-Schaltfläche in der Formularansicht für jeden aktivierten Dokumenttyp an."
+
 #. Name of a DocType
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
 msgid "Enabled DocType"
@@ -36,7 +42,7 @@ msgstr "Aktivierter Dokumenttyp"
 msgid "Enabled For"
 msgstr "Aktiviert für"
 
-#: pdf_on_submit/public/js/pdf_button_utils.js:43
+#: pdf_on_submit/public/js/pdf_button_utils.js:66
 msgid "Error"
 msgstr "Fehler"
 
@@ -44,7 +50,7 @@ msgstr "Fehler"
 msgid "Failed to attach XML to PDF for Sales Invoice {0}"
 msgstr "Fehler beim Anhängen von XML an PDF für Verkaufsrechnung {0}"
 
-#: pdf_on_submit/public/js/pdf_button_utils.js:45
+#: pdf_on_submit/public/js/pdf_button_utils.js:69
 msgid "Failed to generate PDF. {0}"
 msgstr "PDF-Erstellung fehlgeschlagen. {0}"
 
@@ -57,7 +63,7 @@ msgstr ""
 "Optionen:\n"
 "<ol><li><b>format:BEISPIEL-{MM}-{feldname1}-{feldname2}-{#####}</b> - Ersetzt alle in geschweiften Klammern stehenden Wörter (Feldnamen, Datumsangaben (DD, MM, YY), Nummernkreise) durch ihren Wert. Außerhalb der geschweiften Klammern können beliebige Zeichen verwendet werden.</li></ol>"
 
-#: pdf_on_submit/utils.py:29
+#: pdf_on_submit/utils.py:32
 msgid "No permission to print this document"
 msgstr "Keine Berechtigung zum Drucken dieses Dokuments"
 
@@ -71,8 +77,8 @@ msgstr ""
 "Optional: PDF nur erstellen, wenn das eingereichte Dokument diesen Filtern "
 "entspricht.<br><br>"
 
-#: pdf_on_submit/public/js/pdf_button_utils.js:12
-#: pdf_on_submit/public/js/pdf_button_utils.js:14
+#: pdf_on_submit/public/js/pdf_button_utils.js:21
+#: pdf_on_submit/public/js/pdf_button_utils.js:23
 msgid "PDF"
 msgstr "PDF"
 
@@ -81,11 +87,13 @@ msgstr "PDF"
 msgid "PDF on Submit Settings"
 msgstr "PDF-on-Submit-Einstellungen"
 
-#. Description of the 'Show PDF Button in Sales and Purchase DocTypes' (Check)
-#. field in DocType 'PDF on Submit Settings'
-#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
-msgid "Respects PDF on Submit Settings. Falls back to Default ERPNext Print Format if set"
-msgstr "Berücksichtigt PDF-on-Submit-Einstellungen. Verwendet Standard-ERPNext-Druckformat, falls gesetzt"
+#: pdf_on_submit/public/js/pdf_button_utils.js:31
+msgid "Please allow popups for this site and try again."
+msgstr "Bitte Popups für diese Seite erlauben und erneut versuchen."
+
+#: pdf_on_submit/public/js/pdf_button_utils.js:29
+msgid "Popup Blocked"
+msgstr "Popup blockiert"
 
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:16
 msgid "Row #{0}: invalid filters for <b>{1}</b>: {2}"
@@ -94,5 +102,5 @@ msgstr "Zeile #{0}: Ungültige Filter für <b>{1}</b>: {2}"
 #. Label of the show_pdf_button (Check) field in DocType 'PDF on Submit
 #. Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
-msgid "Show PDF Button in Sales and Purchase DocTypes"
-msgstr "PDF-Schaltfläche in Verkaufs- und Einkaufsbelegen anzeigen"
+msgid "Show PDF Button"
+msgstr "PDF-Schaltfläche anzeigen"
