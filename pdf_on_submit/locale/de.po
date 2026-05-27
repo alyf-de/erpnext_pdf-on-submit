@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PDF on Submit VERSION\n"
 "Report-Msgid-Bugs-To: hallo@alyf.de\n"
-"POT-Creation-Date: 2026-05-27 09:39+0053\n"
+"POT-Creation-Date: 2026-05-27 09:53+0053\n"
 "PO-Revision-Date: 2024-07-20 23:34+0053\n"
 "Last-Translator: hallo@alyf.de\n"
 "Language-Team: hallo@alyf.de\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Create PDF In Background"
 msgstr "PDF im Hintergrund erstellen"
 
-#: pdf_on_submit/attach_pdf.py:80
+#: pdf_on_submit/attach_pdf.py:105
 msgid "Creating PDF ..."
 msgstr "Erstelle PDF ..."
 
@@ -42,11 +42,7 @@ msgstr "Aktivierter Dokumenttyp"
 msgid "Enabled For"
 msgstr "Aktiviert für"
 
-#: pdf_on_submit/public/js/pdf_button_utils.js:66
-msgid "Error"
-msgstr "Fehler"
-
-#: pdf_on_submit/attach_pdf.py:108
+#: pdf_on_submit/attach_pdf.py:133
 msgid "Failed to attach XML to PDF for Sales Invoice {0}"
 msgstr "Fehler beim Anhängen von XML an PDF für Verkaufsrechnung {0}"
 
@@ -70,17 +66,8 @@ msgstr "Keine Berechtigung zum Drucken dieses Dokuments"
 #. Content of the 'filter_description' (HTML) field in DocType 'Enabled
 #. DocType'
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
-msgid ""
-"Optional: create PDF only if the submitted document matches these "
-"filters.<br><br>"
-msgstr ""
-"Optional: PDF nur erstellen, wenn das eingereichte Dokument diesen Filtern "
-"entspricht.<br><br>"
-
-#: pdf_on_submit/public/js/pdf_button_utils.js:21
-#: pdf_on_submit/public/js/pdf_button_utils.js:23
-msgid "PDF"
-msgstr "PDF"
+msgid "Optional: create PDF only if the submitted document matches these filters.<br><br>"
+msgstr "Optional: PDF nur erstellen, wenn das eingereichte Dokument diesen Filtern entspricht.<br><br>"
 
 #. Name of a DocType
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
@@ -104,3 +91,4 @@ msgstr "Zeile #{0}: Ungültige Filter für <b>{1}</b>: {2}"
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "Show PDF Button"
 msgstr "PDF-Schaltfläche anzeigen"
+

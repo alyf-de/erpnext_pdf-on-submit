@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PDF on Submit VERSION\n"
 "Report-Msgid-Bugs-To: hallo@alyf.de\n"
-"POT-Creation-Date: 2026-05-27 09:39+0053\n"
-"PO-Revision-Date: 2026-05-27 09:39+0053\n"
+"POT-Creation-Date: 2026-05-27 09:53+0053\n"
+"PO-Revision-Date: 2026-05-27 09:53+0053\n"
 "Last-Translator: hallo@alyf.de\n"
 "Language-Team: hallo@alyf.de\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Create PDF In Background"
 msgstr ""
 
-#: pdf_on_submit/attach_pdf.py:80
+#: pdf_on_submit/attach_pdf.py:105
 msgid "Creating PDF ..."
 msgstr ""
 
@@ -42,11 +42,7 @@ msgstr ""
 msgid "Enabled For"
 msgstr ""
 
-#: pdf_on_submit/public/js/pdf_button_utils.js:66
-msgid "Error"
-msgstr ""
-
-#: pdf_on_submit/attach_pdf.py:108
+#: pdf_on_submit/attach_pdf.py:133
 msgid "Failed to attach XML to PDF for Sales Invoice {0}"
 msgstr ""
 
@@ -71,11 +67,6 @@ msgstr ""
 msgid "Optional: create PDF only if the submitted document matches these filters.<br><br>"
 msgstr ""
 
-#: pdf_on_submit/public/js/pdf_button_utils.js:21
-#: pdf_on_submit/public/js/pdf_button_utils.js:23
-msgid "PDF"
-msgstr ""
-
 #. Name of a DocType
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "PDF on Submit Settings"
@@ -98,3 +89,4 @@ msgstr ""
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "Show PDF Button"
 msgstr ""
+
