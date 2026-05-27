@@ -24,6 +24,14 @@ pdf_on_submit.add_pdf_button = async function (frm) {
 		// Open the popup synchronously while still in the user-gesture context,
 		// before any await, to avoid browser popup blockers.
 		const popup = window.open("", "_blank");
+		if (!popup) {
+			frappe.msgprint({
+				title: __("Popup Blocked"),
+				indicator: "orange",
+				message: __("Please allow popups for this site and try again."),
+			});
+			return;
+		}
 		try {
 			const response = await frappe.call({
 				method: "pdf_on_submit.utils.get_print_details",
