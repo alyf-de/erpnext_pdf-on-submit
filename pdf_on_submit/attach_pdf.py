@@ -6,7 +6,6 @@ import json
 import frappe
 from frappe import _
 from frappe.core.api.file import create_new_folder
-from frappe.model.document import Document
 from frappe.model.naming import _format_autoname
 from frappe.realtime import publish_realtime
 from frappe.translate import print_language

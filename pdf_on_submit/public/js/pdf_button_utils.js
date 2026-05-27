@@ -45,16 +45,11 @@ pdf_on_submit.add_pdf_button = async function (frm) {
 			return;
 		}
 		try {
-			const response = await frappe.call({
-				method: "pdf_on_submit.utils.get_print_details",
-				args: {
-					doctype: frm.doc.doctype,
-					docname: frm.doc.name,
-				},
+			const matches = await frappe.xcall("pdf_on_submit.utils.get_print_details", {
+				doctype: frm.doc.doctype,
+				docname: frm.doc.name,
 			});
 
-			// frappe.call auto-displays server errors; bail silently if no message.
-			const matches = response && response.message;
 			if (!matches || !matches.length) {
 				popup.close();
 				return;

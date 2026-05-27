@@ -31,6 +31,7 @@ def get_print_details(doctype: str, docname: str) -> list[dict]:
 	if not frappe.db.exists("DocType", doctype) or not frappe.has_permission(doctype, "print", docname):
 		frappe.throw(_("No permission to print this document"))
 
+	settings = frappe.get_single("PDF on Submit Settings")
 	doc = frappe.get_doc(doctype, docname)
 	default_print_format = doc.meta.default_print_format or "Standard"
 	default_letter_head = getattr(doc, "letter_head", None) or None
@@ -40,7 +41,7 @@ def get_print_details(doctype: str, docname: str) -> list[dict]:
 			"print_format": row.print_format or default_print_format,
 			"letter_head": row.letter_head or default_letter_head,
 		}
-		for row in iter_matching_enabled_doctypes(doc)
+		for row in iter_matching_enabled_doctypes(doc, settings)
 	]
 
 	if not results:
