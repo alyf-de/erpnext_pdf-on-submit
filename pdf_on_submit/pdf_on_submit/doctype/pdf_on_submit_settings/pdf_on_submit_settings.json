@@ -40,16 +40,16 @@
   },
   {
    "default": "0",
-   "description": "Respects PDF on Submit Settings. Falls back to Default ERPNext Print Format if set",
+   "description": "Displays a PDF button on the Form View for each enabled DocType.",
    "fieldname": "show_pdf_button",
    "fieldtype": "Check",
-   "label": "Show PDF Button in Sales and Purchase DocTypes"
+   "label": "Show PDF Button"
   }
  ],
  "icon": "octicon octicon-file-pdf",
  "issingle": 1,
  "links": [],
- "modified": "2026-02-20 11:27:01.008289",
+ "modified": "2026-05-27 09:19:52.227943",
  "modified_by": "henning@alyf.de",
  "module": "PDF on Submit",
  "name": "PDF on Submit Settings",
