@@ -106,7 +106,10 @@ def _is_ordered_list_item(list_tag: Tag, item: Tag) -> bool:
 def _get_quill_indent(item: Tag) -> int:
 	for class_name in item.get("class", []):
 		if class_name.startswith("ql-indent-"):
-			return int(class_name.removeprefix("ql-indent-"))
+			try:
+				return int(class_name.removeprefix("ql-indent-"))
+			except ValueError:
+				pass
 
 	return 0
 
