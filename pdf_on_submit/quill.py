@@ -1,3 +1,5 @@
+import copy
+
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString, Tag
 
@@ -77,14 +79,14 @@ def _is_blank_text(element: Tag | NavigableString) -> bool:
 def _new_tag_like(tag: Tag) -> Tag:
 	soup = BeautifulSoup("", "html.parser")
 	new_tag = soup.new_tag(tag.name)
-	new_tag.attrs = dict(tag.attrs)
+	new_tag.attrs = copy.deepcopy(tag.attrs)
 	return new_tag
 
 
 def _wrap_in_editor(editor_tag: Tag, fragment: str) -> str:
 	soup = BeautifulSoup("", "html.parser")
 	editor = soup.new_tag("div")
-	editor.attrs = dict(editor_tag.attrs)
+	editor.attrs = copy.deepcopy(editor_tag.attrs)
 	fragment_soup = BeautifulSoup(fragment, "html.parser")
 
 	for child in list(fragment_soup.contents):
