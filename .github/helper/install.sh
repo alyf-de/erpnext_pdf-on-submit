@@ -37,7 +37,11 @@ sed -i 's/redis_socketio:/# redis_socketio:/g' Procfile
 bench get-app pdf_on_submit "${GITHUB_WORKSPACE}"
 bench setup requirements --dev
 
-bench start &> bench_start.log &
 bench new-site --db-root-password root --admin-password admin test_site
+bench --site test_site set-config host_name "http://test_site:8000"
+
+CI=Yes bench build --production
+
+bench start &> bench_start.log &
 
 wait $wkpid
