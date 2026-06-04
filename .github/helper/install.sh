@@ -6,6 +6,13 @@ cd ~ || exit
 
 sudo apt update && sudo apt install redis-server libcups2-dev
 
+install_whktml() {
+    wget -O /tmp/wkhtmltox.deb https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.jammy_amd64.deb
+    sudo apt install /tmp/wkhtmltox.deb
+}
+install_whktml &
+wkpid=$!
+
 pip install frappe-bench
 
 git clone https://github.com/frappe/frappe --branch version-16 --depth 1
@@ -32,3 +39,5 @@ bench setup requirements --dev
 
 bench start &> bench_start.log &
 bench new-site --db-root-password root --admin-password admin test_site
+
+wait $wkpid
