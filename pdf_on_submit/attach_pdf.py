@@ -13,7 +13,7 @@ from frappe.utils.data import evaluate_filters
 from frappe.utils.weasyprint import PrintFormatGenerator
 
 
-def iter_matching_enabled_doctypes(doc, settings = None):
+def iter_matching_enabled_doctypes(doc, settings=None):
 	"""
 	Yield enabled_doctype configuration rows whose filters match this document,
 	in table order (idx).
