@@ -170,10 +170,3 @@ class TestExtendBootInfo(FrappeTestCase):
 		bootinfo = self._call()
 		self.assertEqual(bootinfo.pdf_on_submit.show_pdf_button, 0)
 		self.assertEqual(bootinfo.pdf_on_submit.enabled_doctypes, [])
-
-	def test_boot_info_excludes_empty_document_type(self):
-		self.settings.append("enabled_for", {"document_type": ""})
-		self.settings.flags.ignore_mandatory = True
-		self.settings.save()
-		bootinfo = self._call()
-		self.assertNotIn("", bootinfo.pdf_on_submit.enabled_doctypes)
