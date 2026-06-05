@@ -5,7 +5,6 @@ from pdf_on_submit.attach_pdf import iter_matching_enabled_doctypes
 
 
 def extend_boot_info(bootinfo):
-
 	settings = frappe.get_single("PDF on Submit Settings")
 
 	show_pdf_button = cint(settings.show_pdf_button)
