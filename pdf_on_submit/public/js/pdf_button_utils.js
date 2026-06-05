@@ -71,9 +71,7 @@ pdf_on_submit.add_pdf_button = async function (frm) {
 				frappe.msgprint({
 					title: __("Additional print formats"),
 					indicator: "blue",
-					message:
-						__("More formats are configured for this document. Click to open:") +
-						`<ul>${items}</ul>`,
+					message: __("More formats are configured for this document. Click to open:") + `<ul>${items}</ul>`,
 				});
 			}
 		} catch (error) {
