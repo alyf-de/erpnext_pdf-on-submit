@@ -6,6 +6,8 @@ from unittest.mock import patch
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
+from pdf_on_submit.utils import extend_boot_info, get_print_details
+
 TEST_DOCTYPE = "Test Submittable DocType"
 
 
@@ -82,18 +84,13 @@ class TestGetPrintDetails(FrappeTestCase):
 		frappe.set_user("Administrator")
 		frappe.db.rollback()
 
-	def _call(self, doctype=TEST_DOCTYPE, docname=None):
-		from pdf_on_submit.utils import get_print_details
-
-		return get_print_details(doctype, docname or self.doc.name)
-
 	def test_rejects_without_print_permission(self):
 		with patch("frappe.has_permission", return_value=False):
 			with self.assertRaises(frappe.ValidationError):
-				self._call()
+				get_print_details(TEST_DOCTYPE, self.doc.name)
 
 	def test_returns_standard_when_no_match(self):
-		results = self._call()
+		results = get_print_details(TEST_DOCTYPE, self.doc.name)
 		self.assertEqual(len(results), 1)
 		self.assertEqual(results[0]["print_format"], "Standard")
 		self.assertIsNone(results[0]["letter_head"])
@@ -106,7 +103,7 @@ class TestGetPrintDetails(FrappeTestCase):
 		)
 		self.settings.flags.ignore_links = True
 		self.settings.save()
-		results = self._call()
+		results = get_print_details(TEST_DOCTYPE, self.doc.name)
 		self.assertEqual(results[0]["print_format"], "Custom Format")
 
 	def test_returns_matched_config_letter_head(self):
@@ -116,14 +113,14 @@ class TestGetPrintDetails(FrappeTestCase):
 		)
 		self.settings.flags.ignore_links = True
 		self.settings.save()
-		results = self._call()
+		results = get_print_details(TEST_DOCTYPE, self.doc.name)
 		self.assertEqual(results[0]["letter_head"], "Custom Letter Head")
 
 	def test_letter_head_falls_back_to_doc(self):
 		self.doc.letter_head = "Test Letter Head"
 		self.doc.save()
 		with patch("pdf_on_submit.utils.iter_matching_enabled_doctypes", return_value=iter([])):
-			results = self._call()
+			results = get_print_details(TEST_DOCTYPE, self.doc.name)
 		self.assertEqual(results[0]["letter_head"], "Test Letter Head")
 
 	def test_returns_one_entry_per_matching_row(self):
@@ -137,7 +134,7 @@ class TestGetPrintDetails(FrappeTestCase):
 		)
 		self.settings.flags.ignore_links = True
 		self.settings.save()
-		results = self._call()
+		results = get_print_details(TEST_DOCTYPE, self.doc.name)
 		self.assertEqual([r["print_format"] for r in results], ["Format A", "Format B"])
 
 
@@ -152,21 +149,16 @@ class TestExtendBootInfo(FrappeTestCase):
 	def tearDown(self) -> None:
 		frappe.db.rollback()
 
-	def _call(self):
-		from pdf_on_submit.utils import extend_boot_info
-
+	def test_boot_info_includes_enabled_doctype(self):
 		bootinfo = frappe._dict()
 		extend_boot_info(bootinfo)
-		return bootinfo
-
-	def test_boot_info_includes_enabled_doctype(self):
-		bootinfo = self._call()
 		self.assertEqual(bootinfo.pdf_on_submit.show_pdf_button, 1)
 		self.assertIn(TEST_DOCTYPE, bootinfo.pdf_on_submit.enabled_doctypes)
 
 	def test_boot_info_show_pdf_button_reflects_setting(self):
 		self.settings.show_pdf_button = 0
 		self.settings.save()
-		bootinfo = self._call()
+		bootinfo = frappe._dict()
+		extend_boot_info(bootinfo)
 		self.assertEqual(bootinfo.pdf_on_submit.show_pdf_button, 0)
 		self.assertEqual(bootinfo.pdf_on_submit.enabled_doctypes, [])
