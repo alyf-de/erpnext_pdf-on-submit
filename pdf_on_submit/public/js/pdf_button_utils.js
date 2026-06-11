@@ -32,6 +32,8 @@ pdf_on_submit.add_pdf_button = async function (frm) {
 
 	frm.remove_custom_button(__("PDF"));
 
+	if (!frm.has_perm("print")) return;
+
 	frm.add_custom_button(__("PDF"), async () => {
 		// Open the popup synchronously while still in the user-gesture context,
 		// before any await, to avoid browser popup blockers.
