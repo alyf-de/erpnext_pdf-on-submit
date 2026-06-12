@@ -40,13 +40,9 @@ def attach_pdf(doc, event=None):
 
 def process_enabled_doctype(doc, settings, in_background):
 	auto_name = settings.auto_name
-	print_format = (
-		settings.print_format or doc.meta.default_print_format or "Standard"
-	)
+	print_format = settings.print_format or doc.meta.default_print_format or "Standard"
 	letter_head = settings.letter_head or None
-	fallback_language = (
-		frappe.db.get_single_value("System Settings", "language") or "en"
-	)
+	fallback_language = frappe.db.get_single_value("System Settings", "language") or "en"
 	args = {
 		"doctype": doc.doctype,
 		"name": doc.name,
@@ -62,11 +58,7 @@ def process_enabled_doctype(doc, settings, in_background):
 	frappe.enqueue(
 		method=execute,
 		timeout=30,
-		now=bool(
-			not in_background
-			or frappe.flags.in_test
-			or frappe.conf.developer_mode
-		),
+		now=bool(not in_background or frappe.flags.in_test or frappe.conf.developer_mode),
 		enqueue_after_commit=True,
 		**args,
 	)
@@ -119,6 +111,7 @@ def execute(
 	if doctype == "Sales Invoice" and "eu_einvoice" in frappe.get_installed_apps():
 		try:
 			from eu_einvoice.european_e_invoice.custom.sales_invoice import attach_xml_to_pdf
+
 			pdf_data = attach_xml_to_pdf(name, pdf_data)
 		except Exception:
 			msg = _("Failed to attach XML to PDF for Sales Invoice {0}").format(name)
