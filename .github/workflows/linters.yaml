@@ -11,16 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Set up Python 3.14
+      - name: Set up Python 3.11
         uses: actions/setup-python@v6
         with:
-          python-version: '3.14'
+          python-version: '3.11'
           cache: pip
 
-      - name: Set up Node.js 24
+      - name: Set up Node.js 18
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: '18'
           check-latest: true
 
       - name: Install and Run Pre-commit
@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.14'
+          python-version: '3.11'
 
       - uses: actions/checkout@v6
 

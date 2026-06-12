@@ -15,7 +15,7 @@ wkpid=$!
 
 pip install frappe-bench
 
-git clone https://github.com/frappe/frappe --branch version-16 --depth 1
+git clone https://github.com/frappe/frappe --branch version-15 --depth 1
 bench init --skip-assets --frappe-path ~/frappe --python "$(which python)" frappe-bench
 
 mysql --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL character_set_server = 'utf8mb4'"

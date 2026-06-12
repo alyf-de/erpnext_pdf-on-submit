@@ -13,7 +13,7 @@ on:
       - "**.po"
 
 concurrency:
-  group: version-16-pdf_on_submit-${{ github.event.number }}
+  group: version-15-pdf_on_submit-${{ github.event.number }}
   cancel-in-progress: true
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
 
     services:
       mariadb:
-        image: mariadb:11.8
+        image: mariadb:10.6
         env:
           MARIADB_ROOT_PASSWORD: root
         ports:
@@ -43,12 +43,12 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.14'
+          python-version: '3.11'
 
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 18
           check-latest: true
 
       - name: Add to Hosts
