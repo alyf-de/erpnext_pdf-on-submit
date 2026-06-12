@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PDF on Submit VERSION\n"
 "Report-Msgid-Bugs-To: hallo@alyf.de\n"
-"POT-Creation-Date: 2026-04-14 21:32+0053\n"
-"PO-Revision-Date: 2026-04-14 21:32+0053\n"
+"POT-Creation-Date: 2026-05-27 13:49+0053\n"
+"PO-Revision-Date: 2026-05-27 13:49+0053\n"
 "Last-Translator: hallo@alyf.de\n"
 "Language-Team: hallo@alyf.de\n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
+#: pdf_on_submit/public/js/pdf_button_utils.js:77
+msgid "Additional print formats"
+msgstr ""
+
 #. Label of the create_pdf_in_background (Check) field in DocType 'PDF on
 #. Submit Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
 msgid "Create PDF In Background"
 msgstr ""
 
-#: pdf_on_submit/attach_pdf.py:80
+#: pdf_on_submit/attach_pdf.py:88
 msgid "Creating PDF ..."
+msgstr ""
+
+#. Description of the 'Show PDF Button' (Check) field in DocType 'PDF on Submit
+#. Settings'
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
+msgid "Displays a PDF button on the Form View for each enabled DocType."
 msgstr ""
 
 #. Name of a DocType
@@ -36,8 +46,16 @@ msgstr ""
 msgid "Enabled For"
 msgstr ""
 
-#: pdf_on_submit/attach_pdf.py:108
+#: pdf_on_submit/attach_pdf.py:116
 msgid "Failed to attach XML to PDF for Sales Invoice {0}"
+msgstr ""
+
+#: pdf_on_submit/public/js/pdf_button_utils.js:91
+msgid "Failed to generate PDF. {0}"
+msgstr ""
+
+#: pdf_on_submit/public/js/pdf_button_utils.js:80
+msgid "More formats are configured for this document. Click to open:"
 msgstr ""
 
 #. Description of the 'Auto Name' (Data) field in DocType 'Enabled DocType'
@@ -45,6 +63,10 @@ msgstr ""
 msgid ""
 "Naming Options:\n"
 "<ol><li><b>format:EXAMPLE-{MM}-{fieldname1}-{fieldname2}-{#####}</b> - Replace all braced words (fieldnames, date words (DD, MM, YY), series) with their value. Outside braces, any characters can be used.</li></ol>"
+msgstr ""
+
+#: pdf_on_submit/utils.py:32
+msgid "No permission to print this document"
 msgstr ""
 
 #. Content of the 'filter_description' (HTML) field in DocType 'Enabled
@@ -58,7 +80,21 @@ msgstr ""
 msgid "PDF on Submit Settings"
 msgstr ""
 
+#: pdf_on_submit/public/js/pdf_button_utils.js:43
+msgid "Please allow popups for this site and try again."
+msgstr ""
+
+#: pdf_on_submit/public/js/pdf_button_utils.js:41
+msgid "Popup Blocked"
+msgstr ""
+
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:16
 msgid "Row #{0}: invalid filters for <b>{1}</b>: {2}"
+msgstr ""
+
+#. Label of the show_pdf_button (Check) field in DocType 'PDF on Submit
+#. Settings'
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json
+msgid "Show PDF Button"
 msgstr ""
 
