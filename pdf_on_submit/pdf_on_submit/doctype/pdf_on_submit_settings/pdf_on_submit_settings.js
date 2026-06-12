@@ -77,7 +77,6 @@ frappe.ui.form.on("Enabled DocType", {
 	},
 });
 
-
 function set_attach_to_field_options(frm, cdt, cdn) {
 	const doc = frappe.get_doc(cdt, cdn);
 	const document_type = doc.document_type;

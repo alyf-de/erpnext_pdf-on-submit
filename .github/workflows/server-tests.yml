@@ -1,0 +1,95 @@
+
+name: Server
+
+on:
+  pull_request:
+    paths-ignore:
+      - "**.css"
+      - "**.js"
+      - "**.md"
+      - "**.html"
+      - "**.csv"
+      - "**.pot"
+      - "**.po"
+
+concurrency:
+  group: version-15-pdf_on_submit-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      NODE_ENV: "production"
+
+    strategy:
+      fail-fast: false
+
+    services:
+      mariadb:
+        image: mariadb:10.6
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=5s --health-timeout=2s --health-retries=3
+
+    steps:
+      - name: Clone
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 18
+          check-latest: true
+
+      - name: Add to Hosts
+        run: |
+          echo "127.0.0.1 test_site" | sudo tee -a /etc/hosts
+
+      - name: Cache pip
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
+      - name: Install
+        run: |
+          bash ${GITHUB_WORKSPACE}/.github/helper/install.sh
+
+      - name: Install pdf_on_submit
+        working-directory: /home/runner/frappe-bench
+        run: |
+          bench --site test_site install-app pdf_on_submit
+        env:
+          TYPE: server
+
+      - name: Run Tests
+        working-directory: /home/runner/frappe-bench
+        run: |
+          bench --site test_site set-config allow_tests true
+          bench --site test_site run-tests --app pdf_on_submit
+        env:
+          TYPE: server
+
+      - name: Uninstall pdf_on_submit
+        working-directory: /home/runner/frappe-bench
+        run: |
+          bench --site test_site uninstall-app --yes --no-backup pdf_on_submit
+        env:
+          TYPE: server
+
+      - name: Show bench output
+        if: ${{ always() }}
+        run: cat ~/frappe-bench/bench_start.log || true
