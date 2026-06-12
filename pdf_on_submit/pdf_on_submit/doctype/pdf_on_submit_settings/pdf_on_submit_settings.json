@@ -8,7 +8,9 @@
   "section_break_1",
   "enabled_for",
   "section_break_8",
-  "create_pdf_in_background"
+  "create_pdf_in_background",
+  "column_break_eoam",
+  "show_pdf_button"
  ],
  "fields": [
   {
@@ -31,12 +33,27 @@
    "fieldtype": "Table",
    "label": "Enabled For",
    "options": "Enabled DocType"
+  },
+  {
+   "fieldname": "column_break_eoam",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Displays a PDF button on the Form View for each enabled DocType.",
+   "fieldname": "show_pdf_button",
+   "fieldtype": "Check",
+   "label": "Show PDF Button"
   }
  ],
  "icon": "octicon octicon-file-pdf",
  "issingle": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-01-13 15:44:40.308041",
+=======
+ "modified": "2026-05-27 09:19:52.227943",
+>>>>>>> 114c2d1 (feat: add optional PDF Button for Sales and Purchase Doctypes (#75))
  "modified_by": "Administrator",
  "module": "PDF on Submit",
  "name": "PDF on Submit Settings",
@@ -62,7 +79,13 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+>>>>>>> 114c2d1 (feat: add optional PDF Button for Sales and Purchase Doctypes (#75))
  "sort_order": "ASC",
+ "states": [],
  "track_changes": 1
 }
