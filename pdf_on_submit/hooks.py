@@ -1,7 +1,7 @@
 # Copyright (c) 2019, Raffael Meyer and contributors
 # For license information, please see license.txt
 
-from . import __version__ as app_version
+from . import __version__ as app_version  # noqa: F401
 
 app_name = "pdf_on_submit"
 app_title = "PDF on Submit"
@@ -80,9 +80,7 @@ app_license = "GPLv3"
 # ---------------
 # Hook on document methods and events
 
-doc_events = {
-	"*": {"on_submit": "pdf_on_submit.attach_pdf.attach_pdf"}
-}
+doc_events = {"*": {"on_submit": "pdf_on_submit.attach_pdf.attach_pdf"}}
 
 # Scheduled Tasks
 # ---------------
