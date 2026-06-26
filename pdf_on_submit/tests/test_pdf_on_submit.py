@@ -162,3 +162,18 @@ class TestExtendBootInfo(FrappeTestCase):
 		extend_boot_info(bootinfo)
 		self.assertEqual(bootinfo.pdf_on_submit.show_pdf_button, 0)
 		self.assertEqual(bootinfo.pdf_on_submit.enabled_doctypes, [])
+
+	def test_boot_info_deduplicates_enabled_doctypes(self):
+		self.settings.append(
+			"enabled_for",
+			{"document_type": TEST_DOCTYPE, "print_format": "Format A", "letter_head": ""},
+		)
+		self.settings.append(
+			"enabled_for",
+			{"document_type": TEST_DOCTYPE, "print_format": "Format B", "letter_head": ""},
+		)
+		self.settings.flags.ignore_links = True
+		self.settings.save()
+		bootinfo = frappe._dict()
+		extend_boot_info(bootinfo)
+		self.assertEqual(bootinfo.pdf_on_submit.enabled_doctypes, [TEST_DOCTYPE])
