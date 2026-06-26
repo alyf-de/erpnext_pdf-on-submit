@@ -11,9 +11,7 @@ def extend_boot_info(bootinfo):
 	bootinfo.pdf_on_submit = frappe._dict(
 		{
 			"show_pdf_button": show_pdf_button,
-			"enabled_doctypes": list(
-				{row.document_type for row in settings.enabled_for if row.document_type}
-			)
+			"enabled_doctypes": list({row.document_type for row in settings.enabled_for if row.document_type})
 			if show_pdf_button
 			else [],
 		}
