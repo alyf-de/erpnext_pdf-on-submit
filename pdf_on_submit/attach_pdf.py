@@ -10,7 +10,7 @@ from frappe.model.naming import _format_autoname
 from frappe.realtime import publish_realtime
 from frappe.translate import print_language
 from frappe.utils.data import evaluate_filters
-from frappe.utils.weasyprint import PrintFormatGenerator
+from frappe.utils.print_format_generator import PrintFormatGenerator
 
 
 def iter_matching_enabled_doctypes(doc, settings=None):
