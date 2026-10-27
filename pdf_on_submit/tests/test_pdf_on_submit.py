@@ -6,6 +6,7 @@ from unittest.mock import patch
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
+from pdf_on_submit.attach_pdf import get_pdf_data
 from pdf_on_submit.utils import extend_boot_info, get_print_details
 
 TEST_DOCTYPE = "Test Submittable DocType"
@@ -177,3 +178,20 @@ class TestExtendBootInfo(FrappeTestCase):
 		bootinfo = frappe._dict()
 		extend_boot_info(bootinfo)
 		self.assertEqual(bootinfo.pdf_on_submit.enabled_doctypes, [TEST_DOCTYPE])
+
+
+class TestGetPDFData(FrappeTestCase):
+	def test_renders_with_the_print_format_pdf_generator(self):
+		# frappe.get_print(as_pdf=True) picks the generator configured on the print
+		# format (for example Chrome); frappe.utils.pdf.get_pdf always uses wkhtmltopdf.
+		with (
+			patch("frappe.get_print", return_value=b"%PDF-1.7") as get_print,
+			patch("frappe.utils.pdf.get_pdf") as get_pdf,
+		):
+			pdf = get_pdf_data("Sales Invoice", "SINV-0001", "Standard", "Letter Head")
+
+		self.assertEqual(pdf, b"%PDF-1.7")
+		get_print.assert_called_once_with(
+			"Sales Invoice", "SINV-0001", "Standard", letterhead="Letter Head", as_pdf=True
+		)
+		get_pdf.assert_not_called()
