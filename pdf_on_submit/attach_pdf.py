@@ -138,9 +138,8 @@ def create_folder(folder, parent):
 
 
 def get_pdf_data(doctype, name, print_format: None, letterhead: None):
-	"""Document -> HTML -> PDF."""
-	html = frappe.get_print(doctype, name, print_format, letterhead=letterhead)
-	return frappe.utils.pdf.get_pdf(html)
+	"""Document -> PDF, rendered with the print format's PDF generator."""
+	return frappe.get_print(doctype, name, print_format, letterhead=letterhead, as_pdf=True)
 
 
 def save_and_attach(content, to_doctype, to_name, folder, auto_name=None):
