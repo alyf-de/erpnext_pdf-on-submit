@@ -1,12 +1,13 @@
 # Copyright (c) 2023, Raffael Meyer and contributors
 # For license information, please see license.txt
 
-from unittest.mock import patch
+import sys
+from unittest.mock import MagicMock, patch
 
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
-from pdf_on_submit.attach_pdf import get_pdf_data
+from pdf_on_submit.attach_pdf import attach_einvoice_xml, get_pdf_data
 from pdf_on_submit.utils import extend_boot_info, get_print_details
 
 TEST_DOCTYPE = "Test Submittable DocType"
@@ -195,3 +196,30 @@ class TestGetPDFData(FrappeTestCase):
 			"Sales Invoice", "SINV-0001", "Standard", letterhead="Letter Head", as_pdf=True
 		)
 		get_pdf.assert_not_called()
+
+
+EINVOICE_MODULE = "eu_einvoice.european_e_invoice.einvoice"
+SALES_INVOICE_MODULE = "eu_einvoice.european_e_invoice.custom.sales_invoice"
+
+
+class TestAttachEInvoiceXML(FrappeTestCase):
+	def test_passes_the_doctype_to_eu_einvoice(self):
+		einvoice = MagicMock()
+		einvoice.attach_xml_to_pdf.return_value = b"%PDF with XML"
+		with patch.dict(sys.modules, {EINVOICE_MODULE: einvoice}):
+			pdf = attach_einvoice_xml("Purchase Invoice", "PINV-0001", b"%PDF")
+
+		self.assertEqual(pdf, b"%PDF with XML")
+		einvoice.attach_xml_to_pdf.assert_called_once_with("PINV-0001", b"%PDF", doctype="Purchase Invoice")
+
+	def test_older_eu_einvoice_only_supports_sales_invoice(self):
+		# Older eu_einvoice releases have no generic `einvoice` module.
+		sales_invoice = MagicMock()
+		sales_invoice.attach_xml_to_pdf.return_value = b"%PDF with XML"
+		with patch.dict(sys.modules, {EINVOICE_MODULE: None, SALES_INVOICE_MODULE: sales_invoice}):
+			purchase_pdf = attach_einvoice_xml("Purchase Invoice", "PINV-0001", b"%PDF")
+			sales_pdf = attach_einvoice_xml("Sales Invoice", "SINV-0001", b"%PDF")
+
+		self.assertEqual(purchase_pdf, b"%PDF")
+		self.assertEqual(sales_pdf, b"%PDF with XML")
+		sales_invoice.attach_xml_to_pdf.assert_called_once_with("SINV-0001", b"%PDF")
