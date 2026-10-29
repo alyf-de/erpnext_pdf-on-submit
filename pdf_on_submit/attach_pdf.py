@@ -128,8 +128,10 @@ def attach_einvoice_xml(doctype, name, pdf_data):
 	"""Embed the e-invoice XML, for every doctype that eu_einvoice supports."""
 	try:
 		from eu_einvoice.european_e_invoice.einvoice import attach_xml_to_pdf
-	except ImportError:
+	except ModuleNotFoundError as e:
 		# Older eu_einvoice releases only support Sales Invoice
+		if e.name != "eu_einvoice.european_e_invoice.einvoice":
+			raise
 		if doctype != "Sales Invoice":
 			return pdf_data
 

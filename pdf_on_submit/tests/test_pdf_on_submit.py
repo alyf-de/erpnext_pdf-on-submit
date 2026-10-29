@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import sys
+from types import ModuleType
 from unittest.mock import MagicMock, patch
 
 import frappe
@@ -223,3 +224,14 @@ class TestAttachEInvoiceXML(FrappeTestCase):
 		self.assertEqual(purchase_pdf, b"%PDF")
 		self.assertEqual(sales_pdf, b"%PDF with XML")
 		sales_invoice.attach_xml_to_pdf.assert_called_once_with("SINV-0001", b"%PDF")
+
+	def test_broken_eu_einvoice_import_is_raised(self):
+		# The generic module exists, but one of its own imports fails.
+		def raise_missing_dependency(attr):
+			raise ModuleNotFoundError("No module named 'drafthorse'", name="drafthorse")
+
+		broken_einvoice = ModuleType(EINVOICE_MODULE)
+		broken_einvoice.__getattr__ = raise_missing_dependency
+		with patch.dict(sys.modules, {EINVOICE_MODULE: broken_einvoice}):
+			with self.assertRaises(ModuleNotFoundError):
+				attach_einvoice_xml("Purchase Invoice", "PINV-0001", b"%PDF")
