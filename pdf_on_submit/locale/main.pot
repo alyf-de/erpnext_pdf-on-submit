@@ -47,7 +47,7 @@ msgid "Enabled For"
 msgstr ""
 
 #: pdf_on_submit/attach_pdf.py:116
-msgid "Failed to attach XML to PDF for Sales Invoice {0}"
+msgid "Failed to attach XML to PDF for {0} {1}"
 msgstr ""
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:91

@@ -106,13 +106,11 @@ def execute(
 		else:
 			pdf_data = get_pdf_data(doctype, name, print_format, letter_head)
 
-	if doctype == "Sales Invoice" and "eu_einvoice" in frappe.get_installed_apps():
+	if "eu_einvoice" in frappe.get_installed_apps():
 		try:
-			from eu_einvoice.european_e_invoice.custom.sales_invoice import attach_xml_to_pdf
-
-			pdf_data = attach_xml_to_pdf(name, pdf_data)
+			pdf_data = attach_einvoice_xml(doctype, name, pdf_data)
 		except Exception:
-			msg = _("Failed to attach XML to PDF for Sales Invoice {0}").format(name)
+			msg = _("Failed to attach XML to PDF for {0} {1}").format(_(doctype), name)
 			if show_progress:
 				frappe.msgprint(msg, indicator="red", alert=True)
 			frappe.log_error(title=msg, reference_doctype=doctype, reference_name=name)
@@ -124,6 +122,24 @@ def execute(
 
 	if show_progress:
 		publish_progress(100)
+
+
+def attach_einvoice_xml(doctype, name, pdf_data):
+	"""Embed the e-invoice XML, for every doctype that eu_einvoice supports."""
+	try:
+		from eu_einvoice.european_e_invoice.einvoice import attach_xml_to_pdf
+	except ModuleNotFoundError as e:
+		# Older eu_einvoice releases only support Sales Invoice
+		if e.name != "eu_einvoice.european_e_invoice.einvoice":
+			raise
+		if doctype != "Sales Invoice":
+			return pdf_data
+
+		from eu_einvoice.european_e_invoice.custom.sales_invoice import attach_xml_to_pdf
+
+		return attach_xml_to_pdf(name, pdf_data)
+
+	return attach_xml_to_pdf(name, pdf_data, doctype=doctype)
 
 
 def create_folder(folder, parent):
