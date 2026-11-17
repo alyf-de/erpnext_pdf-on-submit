@@ -50,9 +50,15 @@ msgstr "Aktivierter Dokumenttyp"
 msgid "Enabled For"
 msgstr "Aktiviert für"
 
+<<<<<<< HEAD
 #: pdf_on_submit/attach_pdf.py:124
 msgid "Failed to attach XML to PDF for Sales Invoice {0}"
 msgstr "Fehler beim Anhängen von XML an PDF für Verkaufsrechnung {0}"
+=======
+#: pdf_on_submit/attach_pdf.py:116
+msgid "Failed to attach XML to PDF for {0} {1}"
+msgstr "Fehler beim Anhängen von XML an PDF für {0} {1}"
+>>>>>>> 322221a (feat: allow e-invoice attachment for any DocType (#94))
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:85
 msgid "Failed to generate PDF. {0}"

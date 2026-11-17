@@ -42,9 +42,15 @@ msgstr "已启用的DocType"
 msgid "Enabled For"
 msgstr "启用对象"
 
+<<<<<<< HEAD
 #: pdf_on_submit/attach_pdf.py:117
 msgid "Failed to attach XML to PDF for Sales Invoice {0}"
 msgstr "无法将XML附加到销售发票 {0} 的PDF中"
+=======
+#: pdf_on_submit/attach_pdf.py:108
+msgid "Failed to attach XML to PDF for {0} {1}"
+msgstr "无法将XML附加到 {0} {1} 的PDF中"
+>>>>>>> 322221a (feat: allow e-invoice attachment for any DocType (#94))
 
 #. Description of the 'Attach To Field' (Select) field in DocType 'Enabled
 #. DocType'

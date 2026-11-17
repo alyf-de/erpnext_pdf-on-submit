@@ -50,8 +50,13 @@ msgstr ""
 msgid "Enabled For"
 msgstr ""
 
+<<<<<<< HEAD
 #: pdf_on_submit/attach_pdf.py:124
 msgid "Failed to attach XML to PDF for Sales Invoice {0}"
+=======
+#: pdf_on_submit/attach_pdf.py:116
+msgid "Failed to attach XML to PDF for {0} {1}"
+>>>>>>> 322221a (feat: allow e-invoice attachment for any DocType (#94))
 msgstr ""
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:85
