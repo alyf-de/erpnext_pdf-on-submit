@@ -42,15 +42,9 @@ msgstr "সক্রিয় DocType"
 msgid "Enabled For"
 msgstr "সক্রিয় করা হয়েছে"
 
-<<<<<<< HEAD
 #: pdf_on_submit/attach_pdf.py:117
-msgid "Failed to attach XML to PDF for Sales Invoice {0}"
-msgstr "বিক্রয় চালান {0}-এর PDF-এ XML সংযুক্ত করতে ব্যর্থ হয়েছে"
-=======
-#: pdf_on_submit/attach_pdf.py:108
 msgid "Failed to attach XML to PDF for {0} {1}"
 msgstr "{0} {1}-এর PDF-এ XML সংযুক্ত করতে ব্যর্থ হয়েছে"
->>>>>>> 322221a (feat: allow e-invoice attachment for any DocType (#94))
 
 #. Description of the 'Attach To Field' (Select) field in DocType 'Enabled
 #. DocType'

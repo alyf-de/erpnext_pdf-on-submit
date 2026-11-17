@@ -42,15 +42,9 @@ msgstr "有効なDocType"
 msgid "Enabled For"
 msgstr "有効対象"
 
-<<<<<<< HEAD
 #: pdf_on_submit/attach_pdf.py:117
-msgid "Failed to attach XML to PDF for Sales Invoice {0}"
-msgstr "販売請求書 {0} のPDFへのXML添付に失敗しました"
-=======
-#: pdf_on_submit/attach_pdf.py:108
 msgid "Failed to attach XML to PDF for {0} {1}"
 msgstr "{0} {1} のPDFへのXML添付に失敗しました"
->>>>>>> 322221a (feat: allow e-invoice attachment for any DocType (#94))
 
 #. Description of the 'Attach To Field' (Select) field in DocType 'Enabled
 #. DocType'
