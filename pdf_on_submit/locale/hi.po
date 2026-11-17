@@ -43,8 +43,8 @@ msgid "Enabled For"
 msgstr "के लिए सक्षम"
 
 #: pdf_on_submit/attach_pdf.py:117
-msgid "Failed to attach XML to PDF for Sales Invoice {0}"
-msgstr "बिक्री चालान {0} के PDF में XML संलग्न करने में विफल"
+msgid "Failed to attach XML to PDF for {0} {1}"
+msgstr "{0} {1} के PDF में XML संलग्न करने में विफल"
 
 #. Description of the 'Attach To Field' (Select) field in DocType 'Enabled
 #. DocType'
