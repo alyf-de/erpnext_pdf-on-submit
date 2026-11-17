@@ -39,8 +39,8 @@ msgid "Enabled For"
 msgstr "有効対象"
 
 #: pdf_on_submit/attach_pdf.py:108
-msgid "Failed to attach XML to PDF for Sales Invoice {0}"
-msgstr "販売請求書 {0} のPDFへのXML添付に失敗しました"
+msgid "Failed to attach XML to PDF for {0} {1}"
+msgstr "{0} {1} のPDFへのXML添付に失敗しました"
 
 #. Description of the 'Auto Name' (Data) field in DocType 'Enabled DocType'
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json
