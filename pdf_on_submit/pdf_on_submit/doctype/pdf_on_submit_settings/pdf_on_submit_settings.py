@@ -1,5 +1,7 @@
 # Copyright (c) 2019, Raffael Meyer and contributors
 # For license information, please see license.txt
+from collections import Counter
+
 import frappe
 from frappe import _
 from frappe.model.document import Document
@@ -23,9 +25,10 @@ class PDFonSubmitSettings(Document):
 	def validate_attach_to_fields(self):
 		"""
 		Validates:
-		1) attach_to_field is not processed multiple times in one document
-		2) that the `attach_to_field` is a valid field in the DocType.
-		Note: The 2nd validation would be more robust (but less performant), if done for each transaction.
+		1) that the `attach_to_field` is a valid field in the DocType.
+		2) warns if an `attach_to_field` is used in multiple rows. Their filters must be mutually exclusive,
+		   otherwise submitting a matching document fails (see `attach_pdf`).
+		Note: The 1st validation would be more robust (but less performant), if done for each transaction.
 		"""
 		attach_to_fields = [
 			(enabled_doctype.document_type, enabled_doctype.attach_to_field)
@@ -33,21 +36,20 @@ class PDFonSubmitSettings(Document):
 			if enabled_doctype.attach_to_field
 		]
 		if attach_to_fields:
-			_check_for_duplicate_fieldnames(attach_to_fields)
 			_check_if_attach_to_fields_are_valid(attach_to_fields)
+			_warn_about_duplicate_fieldnames(attach_to_fields)
 
 
-def _check_for_duplicate_fieldnames(attach_to_fields):
-	"""Ensure only one PDF file will be attached to a specific field."""
-	seen_fields = set()
-	for pair in attach_to_fields:
-		if pair in seen_fields:
-			frappe.throw(
-				_("It is not allowed to set the attach field {0} in the DocType {1} multiple times.").format(
-					pair[1], pair[0]
-				)
+def _warn_about_duplicate_fieldnames(attach_to_fields):
+	for (doctype, fieldname), count in Counter(attach_to_fields).items():
+		if count > 1:
+			frappe.msgprint(
+				_(
+					"The attach field {0} is used in multiple rows for DocType {1}. Please make sure that the filters of these rows are mutually exclusive. Otherwise, submitting a document that matches more than one of these rows will fail."
+				).format(_(frappe.get_meta(doctype).get_label(fieldname)), _(doctype)),
+				title=_("Duplicate Attach Field"),
+				indicator="orange",
 			)
-		seen_fields.add(pair)
 
 
 def _check_if_attach_to_fields_are_valid(attach_to_fields):

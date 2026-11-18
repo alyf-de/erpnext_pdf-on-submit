@@ -66,9 +66,21 @@ msgid ""
 "<b>Note:</b> The Attach fields should be 'No Copy' and 'Read Only'. Otherwise they get overwritten on submit."
 msgstr ""
 
-#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:45
-msgid "It is not allowed to set the attach field {0} in the DocType {1} multiple times."
-msgstr "Es ist nicht erlaubt, das Anhang-Feld {0} im DocType {1} mehrfach festzulegen."
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:49
+msgid "The attach field {0} is used in multiple rows for DocType {1}. Please make sure that the filters of these rows are mutually exclusive. Otherwise, submitting a document that matches more than one of these rows will fail."
+msgstr "Das Anhang-Feld {0} wird in mehreren Zeilen für den DocType {1} verwendet. Bitte stellen Sie sicher, dass sich die Filter dieser Zeilen gegenseitig ausschließen. Andernfalls schlägt das Buchen eines Dokuments fehl, das auf mehr als eine dieser Zeilen zutrifft."
+
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:50
+msgid "Duplicate Attach Field"
+msgstr "Doppeltes Anhang-Feld"
+
+#: pdf_on_submit/attach_pdf.py:47
+msgid "Rows #{0} and #{1} in PDF on Submit Settings both match this document and attach to the field {2}. Please make their filters mutually exclusive."
+msgstr "Die Zeilen #{0} und #{1} in den PDF on Submit Settings treffen beide auf dieses Dokument zu und hängen an das Feld {2} an. Bitte sorgen Sie dafür, dass sich ihre Filter gegenseitig ausschließen."
+
+#: pdf_on_submit/attach_pdf.py:52
+msgid "Conflicting PDF on Submit Settings"
+msgstr "Widersprüchliche PDF on Submit Settings"
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:75
 msgid "More formats are configured for this document. Click to open:"

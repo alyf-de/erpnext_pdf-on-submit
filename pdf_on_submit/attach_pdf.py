@@ -34,7 +34,26 @@ def iter_matching_enabled_doctypes(doc, settings=None):
 
 def attach_pdf(doc, event=None):
 	settings = frappe.get_single("PDF on Submit Settings")
-	for row in iter_matching_enabled_doctypes(doc, settings):
+	rows = list(iter_matching_enabled_doctypes(doc, settings))
+
+	# Overlapping filters would let two PDFs overwrite each other in the same attach field.
+	# Throwing here rolls back the submit before any PDF job is enqueued.
+	idx_by_field = {}
+	for row in rows:
+		if not row.attach_to_field:
+			continue
+		if row.attach_to_field in idx_by_field:
+			frappe.throw(
+				_(
+					"Rows #{0} and #{1} in PDF on Submit Settings both match this document and attach to the field {2}. Please make their filters mutually exclusive."
+				).format(
+					idx_by_field[row.attach_to_field], row.idx, _(doc.meta.get_label(row.attach_to_field))
+				),
+				title=_("Conflicting PDF on Submit Settings"),
+			)
+		idx_by_field[row.attach_to_field] = row.idx
+
+	for row in rows:
 		process_enabled_doctype(doc, row, settings.create_pdf_in_background)
 
 
