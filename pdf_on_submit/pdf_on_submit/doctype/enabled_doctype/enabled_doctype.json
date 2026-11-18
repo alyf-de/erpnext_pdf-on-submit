@@ -77,23 +77,15 @@
  "grid_page_length": 50,
  "istable": 1,
  "links": [],
-<<<<<<< HEAD
- "modified": "2026-01-18 22:11:04.756526",
-=======
- "modified": "2025-06-29 13:32:14.451432",
->>>>>>> 3565746 (feat: make the Attach To Field a (optional) setting (#66))
+ "modified": "2026-11-18 22:22:57.000776",
  "modified_by": "Administrator",
  "module": "PDF on Submit",
  "name": "Enabled DocType",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
-<<<<<<< HEAD
- "sort_field": "creation",
-=======
  "row_format": "Dynamic",
- "sort_field": "modified",
->>>>>>> 3565746 (feat: make the Attach To Field a (optional) setting (#66))
+ "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1
