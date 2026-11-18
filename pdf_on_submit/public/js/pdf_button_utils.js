@@ -15,7 +15,7 @@ $(document).on("app_ready", function () {
 					return;
 				}
 
-				frm.page.add_button(__("PDF"), () => pdf_on_submit.open_pdf(frm), { icon: "small-file" });
+				frm.add_custom_button(__("PDF"), () => pdf_on_submit.open_pdf(frm));
 			},
 		});
 	});
