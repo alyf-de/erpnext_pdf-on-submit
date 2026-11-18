@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PDF on Submit VERSION\n"
 "Report-Msgid-Bugs-To: hallo@alyf.de\n"
-"POT-Creation-Date: 2026-11-18 13:45+0053\n"
-"PO-Revision-Date: 2026-11-18 13:45+0053\n"
+"POT-Creation-Date: 2026-11-18 19:44+0053\n"
+"PO-Revision-Date: 2026-11-18 19:44+0053\n"
 "Last-Translator: hallo@alyf.de\n"
 "Language-Team: hallo@alyf.de\n"
 "MIME-Version: 1.0\n"
@@ -25,16 +25,12 @@ msgstr ""
 msgid "Attach To Field"
 msgstr ""
 
-#: pdf_on_submit/attach_pdf.py:52
-msgid "Conflicting PDF on Submit Settings"
-msgstr ""
-
 #. Label of a Check field in DocType 'PDF on Submit Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json:29
 msgid "Create PDF In Background"
 msgstr ""
 
-#: pdf_on_submit/attach_pdf.py:108
+#: pdf_on_submit/attach_pdf.py:95
 msgid "Creating PDF ..."
 msgstr ""
 
@@ -42,10 +38,6 @@ msgstr ""
 #. Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json:43
 msgid "Displays a PDF button on the Form View for each enabled DocType."
-msgstr ""
-
-#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:50
-msgid "Duplicate Attach Field"
 msgstr ""
 
 #. Name of a DocType
@@ -58,7 +50,7 @@ msgstr ""
 msgid "Enabled For"
 msgstr ""
 
-#: pdf_on_submit/attach_pdf.py:134
+#: pdf_on_submit/attach_pdf.py:121
 #, python-brace-format
 msgid "Failed to attach XML to PDF for {0} {1}"
 msgstr ""
@@ -115,14 +107,9 @@ msgstr ""
 msgid "Popup Blocked"
 msgstr ""
 
-#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:18
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:16
 #, python-brace-format
 msgid "Row #{0}: invalid filters for <b>{1}</b>: {2}"
-msgstr ""
-
-#: pdf_on_submit/attach_pdf.py:48
-#, python-brace-format
-msgid "Rows #{0} and #{1} in PDF on Submit Settings both match this document and attach to the field {2}. Please make their filters mutually exclusive."
 msgstr ""
 
 #. Label of a Check field in DocType 'PDF on Submit Settings'
@@ -130,12 +117,7 @@ msgstr ""
 msgid "Show PDF Button"
 msgstr ""
 
-#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:48
-#, python-brace-format
-msgid "The attach field {0} is used in multiple rows for DocType {1}. Please make sure that the filters of these rows are mutually exclusive. Otherwise, submitting a document that matches more than one of these rows will fail."
-msgstr ""
-
-#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:59
+#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:42
 #, python-brace-format
 msgid "{0} is not a valid field for DocType {1}."
 msgstr ""

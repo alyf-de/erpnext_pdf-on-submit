@@ -34,30 +34,17 @@ def iter_matching_enabled_doctypes(doc, settings=None):
 
 def attach_pdf(doc, event=None):
 	settings = frappe.get_single("PDF on Submit Settings")
-	rows = list(iter_matching_enabled_doctypes(doc, settings))
 
-	# Overlapping filters would let two PDFs overwrite each other in the same attach field.
-	# Throwing here rolls back the submit before any PDF job is enqueued.
-	idx_by_field = {}
-	for row in rows:
-		if not row.attach_to_field:
-			continue
-		if row.attach_to_field in idx_by_field:
-			frappe.throw(
-				_(
-					"Rows #{0} and #{1} in PDF on Submit Settings both match this document and attach to the field {2}. Please make their filters mutually exclusive."
-				).format(
-					idx_by_field[row.attach_to_field], row.idx, _(doc.meta.get_label(row.attach_to_field))
-				),
-				title=_("Conflicting PDF on Submit Settings"),
-			)
-		idx_by_field[row.attach_to_field] = row.idx
-
-	for row in rows:
-		process_enabled_doctype(doc, row, settings.create_pdf_in_background)
+	# If several matching rows use the same attach field, the first one (in table order) sets it.
+	# The other rows still attach their PDF to the document, but leave the field alone.
+	seen_attach_fields = set()
+	for row in iter_matching_enabled_doctypes(doc, settings):
+		set_attach_field = row.attach_to_field not in seen_attach_fields
+		seen_attach_fields.add(row.attach_to_field)
+		process_enabled_doctype(doc, row, settings.create_pdf_in_background, set_attach_field)
 
 
-def process_enabled_doctype(doc, settings, in_background):
+def process_enabled_doctype(doc, settings, in_background, set_attach_field=True):
 	auto_name = settings.auto_name
 	print_format = settings.print_format or doc.meta.default_print_format or "Standard"
 	letter_head = settings.letter_head or None
@@ -65,7 +52,7 @@ def process_enabled_doctype(doc, settings, in_background):
 	args = {
 		"doctype": doc.doctype,
 		"name": doc.name,
-		"to_field": settings.attach_to_field,
+		"to_field": settings.attach_to_field if set_attach_field else None,
 		"title": doc.get_title() if doc.meta.title_field else None,
 		"lang": getattr(doc, "language", fallback_language),
 		"show_progress": not in_background,

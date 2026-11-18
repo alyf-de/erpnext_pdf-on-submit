@@ -94,9 +94,9 @@ def create_submittable_doctype(name: str):
 	submittable_doctype.save()
 
 
-def blank_pdf() -> bytes:
+def blank_pdf(width=72) -> bytes:
 	writer = PdfWriter()
-	writer.add_blank_page(width=72, height=72)
+	writer.add_blank_page(width=width, height=72)
 	buffer = BytesIO()
 	writer.write(buffer)
 	return buffer.getvalue()
@@ -125,14 +125,6 @@ class TestAttachToField(FrappeTestCase):
 		doc.save()
 		return doc
 
-	def test_duplicate_attach_field_only_warns_on_save(self):
-		self.add_row(is_return=0)
-		self.add_row(is_return=1)
-		frappe.clear_messages()
-		self.settings.save()
-		titles = [msg.get("title") for msg in frappe.get_message_log()]
-		self.assertIn("Duplicate Attach Field", titles)
-
 	def test_exclusive_filters_attach_to_same_field(self):
 		self.add_row(is_return=0)
 		self.add_row(is_return=1)
@@ -151,17 +143,27 @@ class TestAttachToField(FrappeTestCase):
 			)
 		)
 
-	def test_overlapping_filters_block_submit(self):
+	def test_first_matching_row_sets_attach_field(self):
 		self.add_row(is_return=1)
 		self.add_row()
-		self.settings.create_pdf_in_background = 1
 		self.settings.save()
 
 		doc = self.new_doc(is_return=1)
-		with patch("pdf_on_submit.attach_pdf.process_enabled_doctype") as process:
-			with self.assertRaisesRegex(frappe.ValidationError, "both match this document"):
-				doc.submit()
-		process.assert_not_called()
+		first_pdf, second_pdf = blank_pdf(width=72), blank_pdf(width=144)
+		with patch("pdf_on_submit.attach_pdf.get_pdf_data", side_effect=[first_pdf, second_pdf]):
+			doc.submit()
+
+		files = frappe.get_all(
+			"File",
+			filters={"attached_to_doctype": TEST_DOCTYPE, "attached_to_name": doc.name},
+			fields=["name", "file_url", "attached_to_field"],
+		)
+		self.assertEqual(len(files), 2)
+
+		files_in_field = [file for file in files if file.attached_to_field == "pdf_file"]
+		self.assertEqual(len(files_in_field), 1)
+		self.assertEqual(frappe.db.get_value(TEST_DOCTYPE, doc.name, "pdf_file"), files_in_field[0].file_url)
+		self.assertEqual(frappe.get_doc("File", files_in_field[0].name).get_content(), first_pdf)
 
 
 class TestGetPrintDetails(FrappeTestCase):

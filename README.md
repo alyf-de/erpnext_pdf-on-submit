@@ -38,7 +38,7 @@ If your transaction DocType has an attachment field, you can choose to attach th
     This is to prevent the attachment from being copied to other documents.
 - Is Virtual: No
 
-You can use the same attachment field in multiple rows for the same DocType, as long as their filters are mutually exclusive (see below). If a document matches more than one of these rows, its submission fails, so that one PDF cannot overwrite the other.
+You can use the same attachment field in multiple rows for the same DocType. If a document matches more than one of these rows, the first matching row (in table order) sets the field. The PDFs of the other rows are still attached to the document, just not to the field. So put the more specific row above the more general one.
 
 ![PDF on Submit Settings](docs/settings.gif)
 
