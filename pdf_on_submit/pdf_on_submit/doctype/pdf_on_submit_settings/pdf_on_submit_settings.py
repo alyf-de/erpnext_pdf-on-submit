@@ -22,10 +22,9 @@ class PDFonSubmitSettings(Document):
 
 	def validate_attach_to_fields(self):
 		"""
-		Validates:
-		1) attach_to_field is not processed multiple times in one document
-		2) that the `attach_to_field` is a valid field in the DocType.
-		Note: The 2nd validation would be more robust (but less performant), if done for each transaction.
+		Validates that the `attach_to_field` is a valid field in the DocType.
+		The same field may be used in multiple rows, see `attach_pdf` for which row sets it.
+		Note: This validation would be more robust (but less performant), if done for each transaction.
 		"""
 		attach_to_fields = [
 			(enabled_doctype.document_type, enabled_doctype.attach_to_field)
@@ -33,21 +32,7 @@ class PDFonSubmitSettings(Document):
 			if enabled_doctype.attach_to_field
 		]
 		if attach_to_fields:
-			_check_for_duplicate_fieldnames(attach_to_fields)
 			_check_if_attach_to_fields_are_valid(attach_to_fields)
-
-
-def _check_for_duplicate_fieldnames(attach_to_fields):
-	"""Ensure only one PDF file will be attached to a specific field."""
-	seen_fields = set()
-	for pair in attach_to_fields:
-		if pair in seen_fields:
-			frappe.throw(
-				_("It is not allowed to set the attach field {0} in the DocType {1} multiple times.").format(
-					pair[1], pair[0]
-				)
-			)
-		seen_fields.add(pair)
 
 
 def _check_if_attach_to_fields_are_valid(attach_to_fields):

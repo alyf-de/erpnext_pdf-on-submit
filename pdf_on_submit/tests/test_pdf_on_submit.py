@@ -1,12 +1,15 @@
 # Copyright (c) 2023, Raffael Meyer and contributors
 # For license information, please see license.txt
 
+import json
 import sys
+from io import BytesIO
 from types import ModuleType
 from unittest.mock import MagicMock, patch
 
 import frappe
 from frappe.tests.utils import FrappeTestCase
+from pypdf import PdfWriter
 
 from pdf_on_submit.attach_pdf import attach_einvoice_xml, get_pdf_data
 from pdf_on_submit.utils import extend_boot_info, get_print_details
@@ -70,7 +73,97 @@ def create_submittable_doctype(name: str):
 			"label": "Letter Head",
 		},
 	)
+	submittable_doctype.append(
+		"fields",
+		{
+			"fieldname": "is_return",
+			"fieldtype": "Check",
+			"label": "Is Return",
+		},
+	)
+	submittable_doctype.append(
+		"fields",
+		{
+			"fieldname": "pdf_file",
+			"fieldtype": "Attach",
+			"label": "PDF File",
+			"read_only": 1,
+			"no_copy": 1,
+		},
+	)
 	submittable_doctype.save()
+
+
+def blank_pdf(width=72) -> bytes:
+	writer = PdfWriter()
+	writer.add_blank_page(width=width, height=72)
+	buffer = BytesIO()
+	writer.write(buffer)
+	return buffer.getvalue()
+
+
+class TestAttachToField(FrappeTestCase):
+	def setUp(self) -> None:
+		create_submittable_doctype(TEST_DOCTYPE)
+		self.settings = frappe.get_single("PDF on Submit Settings")
+		self.settings.create_pdf_in_background = 0
+
+	def tearDown(self) -> None:
+		frappe.db.rollback()
+
+	def add_row(self, is_return=None):
+		filters = [] if is_return is None else [[TEST_DOCTYPE, "is_return", "=", is_return]]
+		self.settings.append(
+			"enabled_for",
+			{"document_type": TEST_DOCTYPE, "attach_to_field": "pdf_file", "filters": json.dumps(filters)},
+		)
+
+	def new_doc(self, is_return):
+		doc = frappe.new_doc(TEST_DOCTYPE)
+		doc.title = "Test Attach To Field"
+		doc.is_return = is_return
+		doc.save()
+		return doc
+
+	def test_exclusive_filters_attach_to_same_field(self):
+		self.add_row(is_return=0)
+		self.add_row(is_return=1)
+		self.settings.save()
+
+		doc = self.new_doc(is_return=1)
+		with patch("pdf_on_submit.attach_pdf.get_pdf_data", return_value=blank_pdf()):
+			doc.submit()
+
+		file_url = frappe.db.get_value(TEST_DOCTYPE, doc.name, "pdf_file")
+		self.assertTrue(file_url)
+		self.assertTrue(
+			frappe.db.exists(
+				"File",
+				{"attached_to_doctype": TEST_DOCTYPE, "attached_to_name": doc.name, "file_url": file_url},
+			)
+		)
+
+	def test_first_matching_row_sets_attach_field(self):
+		self.add_row(is_return=1)
+		self.add_row()
+		self.settings.save()
+
+		doc = self.new_doc(is_return=1)
+		first_pdf, second_pdf = blank_pdf(width=72), blank_pdf(width=144)
+		with patch("pdf_on_submit.attach_pdf.get_pdf_data", side_effect=[first_pdf, second_pdf]):
+			doc.submit()
+
+		files = frappe.get_all(
+			"File",
+			filters={"attached_to_doctype": TEST_DOCTYPE, "attached_to_name": doc.name},
+			fields=["name", "file_url", "attached_to_field"],
+		)
+		self.assertEqual(len(files), 2)
+
+		files_in_field = [file for file in files if file.attached_to_field == "pdf_file"]
+		self.assertEqual(len(files_in_field), 1)
+		self.assertEqual(frappe.db.get_value(TEST_DOCTYPE, doc.name, "pdf_file"), files_in_field[0].file_url)
+		self.assertEqual(frappe.get_doc("File", files_in_field[0].name).get_content(), first_pdf)
 
 
 class TestGetPrintDetails(FrappeTestCase):

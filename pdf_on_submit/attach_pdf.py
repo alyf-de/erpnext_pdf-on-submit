@@ -34,11 +34,17 @@ def iter_matching_enabled_doctypes(doc, settings=None):
 
 def attach_pdf(doc, event=None):
 	settings = frappe.get_single("PDF on Submit Settings")
+
+	# If several matching rows use the same attach field, the first one (in table order) sets it.
+	# The other rows still attach their PDF to the document, but leave the field alone.
+	seen_attach_fields = set()
 	for row in iter_matching_enabled_doctypes(doc, settings):
-		process_enabled_doctype(doc, row, settings.create_pdf_in_background)
+		set_attach_field = row.attach_to_field not in seen_attach_fields
+		seen_attach_fields.add(row.attach_to_field)
+		process_enabled_doctype(doc, row, settings.create_pdf_in_background, set_attach_field)
 
 
-def process_enabled_doctype(doc, settings, in_background):
+def process_enabled_doctype(doc, settings, in_background, set_attach_field=True):
 	auto_name = settings.auto_name
 	print_format = settings.print_format or doc.meta.default_print_format or "Standard"
 	letter_head = settings.letter_head or None
@@ -46,7 +52,7 @@ def process_enabled_doctype(doc, settings, in_background):
 	args = {
 		"doctype": doc.doctype,
 		"name": doc.name,
-		"to_field": settings.attach_to_field,
+		"to_field": settings.attach_to_field if set_attach_field else None,
 		"title": doc.get_title() if doc.meta.title_field else None,
 		"lang": getattr(doc, "language", fallback_language),
 		"show_progress": not in_background,

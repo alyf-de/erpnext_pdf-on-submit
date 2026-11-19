@@ -66,10 +66,6 @@ msgid ""
 "<b>Note:</b> The Attach fields should be 'No Copy' and 'Read Only'. Otherwise they get overwritten on submit."
 msgstr ""
 
-#: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:45
-msgid "It is not allowed to set the attach field {0} in the DocType {1} multiple times."
-msgstr "Es ist nicht erlaubt, das Anhang-Feld {0} im DocType {1} mehrfach festzulegen."
-
 #: pdf_on_submit/public/js/pdf_button_utils.js:75
 msgid "More formats are configured for this document. Click to open:"
 msgstr "Für dieses Dokument sind weitere Formate konfiguriert. Zum Öffnen anklicken:"
