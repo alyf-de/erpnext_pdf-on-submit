@@ -20,7 +20,7 @@ msgstr ""
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:73
 msgid "Additional print formats"
-msgstr ""
+msgstr "অতিরিক্ত প্রিন্ট ফরম্যাট"
 
 #. Label of a Select field in DocType 'Enabled DocType'
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json:74
@@ -40,7 +40,7 @@ msgstr "PDF তৈরি হচ্ছে ..."
 #. Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json:43
 msgid "Displays a PDF button on the Form View for each enabled DocType."
-msgstr ""
+msgstr "প্রতিটি সক্রিয় DocType-এর ফর্ম ভিউতে একটি PDF বোতাম প্রদর্শন করে।"
 
 #. Name of a DocType
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json:83
@@ -60,7 +60,7 @@ msgstr "{0} {1}-এর PDF-এ XML সংযুক্ত করতে ব্য�
 #: pdf_on_submit/public/js/pdf_button_utils.js:84
 #, python-brace-format
 msgid "Failed to generate PDF. {0}"
-msgstr ""
+msgstr "PDF তৈরি করতে ব্যর্থ হয়েছে। {0}"
 
 #. Description of the 'Attach To Field' (Select) field in DocType 'Enabled
 #. DocType'
@@ -68,11 +68,12 @@ msgstr ""
 msgid ""
 "If set, the PDF will be stored in this specific Attach field. If not set, it will be attached to the document without a specific field.<br>\n"
 "<b>Note:</b> The Attach fields should be 'No Copy' and 'Read Only'. Otherwise they get overwritten on submit."
-msgstr ""
+msgstr "সেট করা থাকলে, PDF এই নির্দিষ্ট সংযুক্তি ফিল্ডে সংরক্ষণ করা হবে। সেট করা না থাকলে, এটি কোনো নির্দিষ্ট ফিল্ড ছাড়াই ডকুমেন্টের সাথে সংযুক্ত করা হবে।<br>\n"
+"<b>দ্রষ্টব্য:</b> সংযুক্তি ফিল্ডগুলো 'কোনো কপি নয়' এবং 'শুধুমাত্র পঠনযোগ্য' হওয়া উচিত। অন্যথায় জমা দেওয়ার সময় সেগুলো ওভাররাইট হয়ে যাবে।"
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:75
 msgid "More formats are configured for this document. Click to open:"
-msgstr ""
+msgstr "এই নথির জন্য আরও ফরম্যাট কনফিগার করা আছে। খুলতে ক্লিক করুন:"
 
 #. Description of the 'Auto Name' (Data) field in DocType 'Enabled DocType'
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json:28
@@ -86,7 +87,7 @@ msgstr ""
 
 #: pdf_on_submit/utils.py:29
 msgid "No permission to print this document"
-msgstr ""
+msgstr "এই নথি প্রিন্ট করার অনুমতি নেই"
 
 #. Content of the 'filter_description' (HTML) field in DocType 'Enabled
 #. DocType'
@@ -101,15 +102,15 @@ msgstr "জমা দেওয়ার সময় PDF সেটিংস"
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:44
 msgid "Please allow popups for this site and try again."
-msgstr ""
+msgstr "অনুগ্রহ করে এই সাইটের জন্য পপআপের অনুমতি দিন এবং আবার চেষ্টা করুন।"
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:85
 msgid "Please check your permissions and try again."
-msgstr ""
+msgstr "অনুগ্রহ করে আপনার অনুমতিগুলো যাচাই করে আবার চেষ্টা করুন।"
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:42
 msgid "Popup Blocked"
-msgstr ""
+msgstr "পপআপ ব্লক করা হয়েছে"
 
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:16
 #, python-brace-format
@@ -119,7 +120,7 @@ msgstr "সারি #{0}: <b>{1}</b>-এর জন্য অবৈধ ফিল
 #. Label of a Check field in DocType 'PDF on Submit Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json:46
 msgid "Show PDF Button"
-msgstr ""
+msgstr "PDF বোতাম দেখান"
 
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:42
 #, python-brace-format
