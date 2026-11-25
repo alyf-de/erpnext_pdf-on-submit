@@ -23,7 +23,7 @@ msgstr "Weitere Druckformate"
 #. Label of the attach_to_field (Select) field in DocType 'Enabled DocType'
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json:74
 msgid "Attach To Field"
-msgstr ""
+msgstr "An Feld anhängen"
 
 #. Label of the create_pdf_in_background (Check) field in DocType 'PDF on
 #. Submit Settings'
@@ -67,7 +67,8 @@ msgstr "PDF-Erstellung fehlgeschlagen. {0}"
 msgid ""
 "If set, the PDF will be stored in this specific Attach field. If not set, it will be attached to the document without a specific field.<br>\n"
 "<b>Note:</b> The Attach fields should be 'No Copy' and 'Read Only'. Otherwise they get overwritten on submit."
-msgstr ""
+msgstr "Wenn gesetzt, wird das PDF in diesem bestimmten Anhangsfeld gespeichert. Wenn nicht gesetzt, wird es ohne bestimmtes Feld an das Dokument angehängt.<br>\n"
+"<b>Hinweis:</b> Die Anhangsfelder sollten 'Keine Kopie' und 'Schreibgeschützt' sein. Andernfalls werden sie beim Buchen überschrieben."
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:75
 msgid "More formats are configured for this document. Click to open:"
@@ -104,7 +105,7 @@ msgstr "Bitte Popups für diese Seite erlauben und erneut versuchen."
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:85
 msgid "Please check your permissions and try again."
-msgstr ""
+msgstr "Bitte überprüfen Sie Ihre Berechtigungen und versuchen Sie es erneut."
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:42
 msgid "Popup Blocked"
@@ -124,5 +125,5 @@ msgstr "PDF-Schaltfläche anzeigen"
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:42
 #, python-brace-format
 msgid "{0} is not a valid field for DocType {1}."
-msgstr ""
+msgstr "{0} ist kein gültiges Feld für DocType {1}."
 

@@ -20,12 +20,12 @@ msgstr ""
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:73
 msgid "Additional print formats"
-msgstr ""
+msgstr "其他打印格式"
 
 #. Label of the attach_to_field (Select) field in DocType 'Enabled DocType'
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json:74
 msgid "Attach To Field"
-msgstr ""
+msgstr "附加到字段"
 
 #. Label of the create_pdf_in_background (Check) field in DocType 'PDF on
 #. Submit Settings'
@@ -41,7 +41,7 @@ msgstr "正在创建 PDF ..."
 #. Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json:43
 msgid "Displays a PDF button on the Form View for each enabled DocType."
-msgstr ""
+msgstr "在每个已启用文档类型的表单视图中显示 PDF 按钮。"
 
 #. Name of a DocType
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json:83
@@ -61,7 +61,7 @@ msgstr "无法将XML附加到 {0} {1} 的PDF中"
 #: pdf_on_submit/public/js/pdf_button_utils.js:84
 #, python-brace-format
 msgid "Failed to generate PDF. {0}"
-msgstr ""
+msgstr "生成 PDF 失败。{0}"
 
 #. Description of the 'Attach To Field' (Select) field in DocType 'Enabled
 #. DocType'
@@ -69,11 +69,12 @@ msgstr ""
 msgid ""
 "If set, the PDF will be stored in this specific Attach field. If not set, it will be attached to the document without a specific field.<br>\n"
 "<b>Note:</b> The Attach fields should be 'No Copy' and 'Read Only'. Otherwise they get overwritten on submit."
-msgstr ""
+msgstr "如果设置，PDF将存储在此特定附件字段中。如果未设置，则将附加到单据上而不指定字段。<br>\n"
+"<b>注意：</b>附件字段应设置为“不复制”和“只读”。否则，提交时它们将被覆盖。"
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:75
 msgid "More formats are configured for this document. Click to open:"
-msgstr ""
+msgstr "此文档还配置了其他格式。点击打开："
 
 #. Description of the 'Auto Name' (Data) field in DocType 'Enabled DocType'
 #: pdf_on_submit/pdf_on_submit/doctype/enabled_doctype/enabled_doctype.json:28
@@ -87,7 +88,7 @@ msgstr ""
 
 #: pdf_on_submit/utils.py:29
 msgid "No permission to print this document"
-msgstr ""
+msgstr "无权打印此文档"
 
 #. Content of the 'filter_description' (HTML) field in DocType 'Enabled
 #. DocType'
@@ -102,15 +103,15 @@ msgstr "提交时PDF设置"
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:44
 msgid "Please allow popups for this site and try again."
-msgstr ""
+msgstr "请允许此网站的弹出窗口，然后重试。"
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:85
 msgid "Please check your permissions and try again."
-msgstr ""
+msgstr "请检查您的权限后重试。"
 
 #: pdf_on_submit/public/js/pdf_button_utils.js:42
 msgid "Popup Blocked"
-msgstr ""
+msgstr "弹出窗口已被阻止"
 
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:16
 #, python-brace-format
@@ -121,10 +122,10 @@ msgstr "第 #{0} 行：<b>{1}</b> 的筛选条件无效：{2}"
 #. Settings'
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.json:46
 msgid "Show PDF Button"
-msgstr ""
+msgstr "显示 PDF 按钮"
 
 #: pdf_on_submit/pdf_on_submit/doctype/pdf_on_submit_settings/pdf_on_submit_settings.py:42
 #, python-brace-format
 msgid "{0} is not a valid field for DocType {1}."
-msgstr ""
+msgstr "{0} 不是文档类型 {1} 的有效字段。"
 
