@@ -11,7 +11,7 @@ import frappe
 from frappe.tests.utils import FrappeTestCase
 from pypdf import PdfWriter
 
-from pdf_on_submit.attach_pdf import attach_einvoice_xml, get_pdf_data
+from pdf_on_submit.attach_pdf import attach_einvoice_xml, get_pdf_data, save_and_attach
 from pdf_on_submit.utils import extend_boot_info, get_print_details
 
 TEST_DOCTYPE = "Test Submittable DocType"
@@ -111,11 +111,16 @@ class TestAttachToField(FrappeTestCase):
 	def tearDown(self) -> None:
 		frappe.db.rollback()
 
-	def add_row(self, is_return=None):
+	def add_row(self, is_return=None, print_format=None):
 		filters = [] if is_return is None else [[TEST_DOCTYPE, "is_return", "=", is_return]]
 		self.settings.append(
 			"enabled_for",
-			{"document_type": TEST_DOCTYPE, "attach_to_field": "pdf_file", "filters": json.dumps(filters)},
+			{
+				"document_type": TEST_DOCTYPE,
+				"attach_to_field": "pdf_file",
+				"filters": json.dumps(filters),
+				"print_format": print_format,
+			},
 		)
 
 	def new_doc(self, is_return):
@@ -126,22 +131,28 @@ class TestAttachToField(FrappeTestCase):
 		return doc
 
 	def test_exclusive_filters_attach_to_same_field(self):
-		self.add_row(is_return=0)
-		self.add_row(is_return=1)
+		self.add_row(is_return=0, print_format="Test Invoice")
+		self.add_row(is_return=1, print_format="Test Credit Note")
+		self.settings.flags.ignore_links = True
 		self.settings.save()
 
-		doc = self.new_doc(is_return=1)
-		with patch("pdf_on_submit.attach_pdf.get_pdf_data", return_value=blank_pdf()):
-			doc.submit()
+		for is_return, expected_format in [(0, "Test Invoice"), (1, "Test Credit Note")]:
+			with self.subTest(is_return=is_return):
+				doc = self.new_doc(is_return=is_return)
+				with patch("pdf_on_submit.attach_pdf.get_pdf_data", return_value=blank_pdf()) as render:
+					doc.submit()
+				render.assert_called_once_with(TEST_DOCTYPE, doc.name, expected_format, None)
 
-		file_url = frappe.db.get_value(TEST_DOCTYPE, doc.name, "pdf_file")
-		self.assertTrue(file_url)
-		self.assertTrue(
-			frappe.db.exists(
-				"File",
-				{"attached_to_doctype": TEST_DOCTYPE, "attached_to_name": doc.name, "file_url": file_url},
-			)
-		)
+				file_url = doc.reload().pdf_file
+				self.assertTrue(file_url)
+				self.assertEqual(
+					frappe.get_all(
+						"File",
+						filters={"attached_to_doctype": TEST_DOCTYPE, "attached_to_name": doc.name},
+						pluck="file_url",
+					),
+					[file_url],
+				)
 
 	def test_first_matching_row_sets_attach_field(self):
 		self.add_row(is_return=1)
@@ -164,6 +175,20 @@ class TestAttachToField(FrappeTestCase):
 		self.assertEqual(len(files_in_field), 1)
 		self.assertEqual(frappe.db.get_value(TEST_DOCTYPE, doc.name, "pdf_file"), files_in_field[0].file_url)
 		self.assertEqual(frappe.get_doc("File", files_in_field[0].name).get_content(), first_pdf)
+
+
+class TestSaveAndAttach(FrappeTestCase):
+	def test_locks_document_before_saving_file(self):
+		def check_lock():
+			with self.secondary_connection():
+				self.assertIsNone(frappe.db.get_value("User", "Guest", for_update=True, skip_locked=True))
+
+		with (
+			self.primary_connection(),
+			patch("frappe.core.doctype.file.file.File.save", side_effect=check_lock) as save,
+		):
+			save_and_attach(blank_pdf(), "User", "Guest", "Home")
+			save.assert_called_once()
 
 
 class TestGetPrintDetails(FrappeTestCase):

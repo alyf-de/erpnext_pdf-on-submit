@@ -188,6 +188,8 @@ def save_and_attach(content, to_doctype, to_name, folder, auto_name=None, to_fie
 	file.attached_to_doctype = to_doctype
 	file.attached_to_name = to_name
 	file.attached_to_field = to_field
+	# Workers for the same document must take turns choosing and writing the file path.
+	frappe.db.get_value(to_doctype, to_name, for_update=True)
 	file.save()
 
 	if to_field:
